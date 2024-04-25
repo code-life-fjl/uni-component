@@ -1,0 +1,7 @@
+
+.content.data-v-1cf27b2a {
+		padding: 50px;
+}
+.content > .button.data-v-1cf27b2a {
+		margin-bottom: 20rpx;
+}

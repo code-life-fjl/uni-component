@@ -1,0 +1,22 @@
+
+.error_empty_box.data-v-77892465 {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		padding: 100rpx 50rpx;
+		font-size: 30rpx;
+}
+.error_data_box.data-v-77892465 {
+		/* padding: 30rpx 0; */
+		height: 40px;
+		line-height: 40px;
+		text-align: center;
+		color: #777777;
+		font-size: 14px;
+}
+.reload_btn.data-v-77892465 {
+		text-decoration: underline;
+		color: blue;
+		color: #777777;
+		font-size: 14px;
+}

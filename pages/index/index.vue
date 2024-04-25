@@ -1,0 +1,39 @@
+<template>
+	<view class="content">
+		<button class="button" v-for="(item, index) in pageList" :key="index"
+			@click="toPage(item.componentPath)">{{item.componentName}}</button>
+	</view>
+</template>
+
+<script setup>
+	import {
+		ref,
+	} from 'vue'
+	const pageList = ref([{
+		componentName: 'cl-select-picker',
+		componentPath: '/pages/componentPage/cl-select-picker/index'
+	},
+	{
+		componentName: 'cl-scroll-view',
+		componentPath: '/pages/componentPage/cl-scroll-view/index'
+	}])
+	const pickerSubmit = (val, curData) => {
+		console.log(val, curData);
+	}
+
+	const toPage = (url) => {
+		uni.navigateTo({
+			url
+		})
+	}
+</script>
+
+<style scoped>
+	.content {
+		padding: 50px;
+		
+	}
+	.content > .button {
+		margin-bottom: 20rpx;
+	}
+</style>
