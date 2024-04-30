@@ -17,6 +17,12 @@
 			"style": {
 				"navigationBarTitleText": "cl-scroll-view"
 			}
+		},
+		{
+			"path" : "pages/componentPage/cl-select/index",	
+			"style": {
+				"navigationBarTitleText": "cl-select"
+			}
 		}
 	],
 	"globalStyle": {

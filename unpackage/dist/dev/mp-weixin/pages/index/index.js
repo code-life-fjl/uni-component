@@ -11,6 +11,10 @@ const _sfc_main = {
       {
         componentName: "cl-scroll-view",
         componentPath: "/pages/componentPage/cl-scroll-view/index"
+      },
+      {
+        componentName: "cl-select",
+        componentPath: "/pages/componentPage/cl-select/index"
       }
     ]);
     const toPage = (url) => {

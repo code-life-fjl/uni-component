@@ -7198,5 +7198,6 @@ exports.resolveComponent = resolveComponent;
 exports.s = s;
 exports.sr = sr;
 exports.t = t;
+exports.unref = unref;
 exports.w = w;
 exports.watch = watch;

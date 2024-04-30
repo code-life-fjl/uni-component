@@ -5,6 +5,7 @@ if (!Math) {
   "./pages/index/index.js";
   "./pages/componentPage/cl-select-picker/index.js";
   "./pages/componentPage/cl-scroll-view/index.js";
+  "./pages/componentPage/cl-select/index.js";
 }
 const _sfc_main = {
   onLaunch: function() {

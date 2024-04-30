@@ -30,15 +30,15 @@
 		picker1: ''
 	})
 	const options = ref([{
-			text: '我是展示的值1',
+			label: '我是展示的值1',
 			value: 'value1'
 		},
 		{
-			text: '我是展示的值2',
+			label: '我是展示的值2',
 			value: 'value2'
 		},
 		{
-			text: '我是展示的值3',
+			label: '我是展示的值3',
 			value: 'value3'
 		},
 		4

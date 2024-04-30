@@ -2,7 +2,8 @@
   "pages": [
     "pages/index/index",
     "pages/componentPage/cl-select-picker/index",
-    "pages/componentPage/cl-scroll-view/index"
+    "pages/componentPage/cl-scroll-view/index",
+    "pages/componentPage/cl-select/index"
   ],
   "window": {
     "navigationBarTextStyle": "black",

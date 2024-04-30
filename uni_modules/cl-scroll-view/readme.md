@@ -50,7 +50,7 @@
 # 属性列表
 | 属性名						| 说明																																																			|  类型											| 默认值							|
 | -----------				| -----------													| -----------								| -----------					|
-| lowerThreshold		| 距底部/多远时（单位px），触发加载事件														|  Number | String										| 50			|
+| lowerThreshold		| 距底部/多远时（单位px），触发加载事件														|  Number, String										| 50			|
 | refresherEnabled				| 开启下拉刷新																																								|Boolean											|true								|
 | autoLoad				| 是否页面加载自动加载列表													|Boolean											| true									|
 | apiFun				| 接口方法（只支持返回Promise对象）																																										|Function											|-	|
@@ -64,10 +64,10 @@
 | successCodeField						| 判断接口请求成功的状态码字段												| String										| code							|
 | messageField						| 接口调用后获取接口提示信息的字段，传了该值则错误提示会显示对应字段的值，不穿则错误提示直接为‘加载失败！’													| String										| ''								|
 | successDataField						| 接口调用成功后接收数据字段												| String										| data								|
-| errorToastConfig						|  显示接口报错信息的弹窗，传false则不显示，传对象则弹窗使用对象里面的配置  | Object										| {duration: 1000,icon: 'error',title: '加载失败！',mask: true}		|
-| loadToastConfig						|  显示加载中太弹窗，传false则不显示，传对象则弹窗使用对象里面的配置  | Boolean	| Object									| {title: '加载中',mask: true}								|
-| emptyShowConfig						|  无数据是的页面展示情况，传false则不展示  | Boolean | Object										| {text: '暂无数据',imageSrc: 本地图片地址,}								|
-| errorShowConfig						|  接口失败后的页面展示情况，失败分为两种，1.第一次调用就直接使用，则使用默认报错图展示；2.非第一次调用，这个时候页面是有数据，所以只在底部显示  | Boolean	| Object									| {text: '加载失败，请重试',imageSrc: 本地图片地址}								|
+| errorToastConfig						|  显示接口报错信息的弹窗，传false则不显示，传对象则弹窗使用对象里面的配置  | Boolean, Object							| {duration: 1000,icon: 'error',title: '加载失败！',mask: true}		|
+| loadToastConfig						|  显示加载中太弹窗，传false则不显示，传对象则弹窗使用对象里面的配置  | Boolean, Object									| {title: '加载中',mask: true}								|
+| emptyShowConfig						|  无数据是的页面展示情况，传false则不展示  | Boolean, Object										| {text: '暂无数据',imageSrc: 本地图片地址,}								|
+| errorShowConfig						|  接口失败后的页面展示情况，失败分为两种，1.第一次调用就直接使用，则使用默认报错图展示；2.非第一次调用，这个时候页面是有数据，所以只在底部显示  | Boolean, Object									| {text: '加载失败，请重试',imageSrc: 本地图片地址}								|
 
 # 插槽
 | 插槽名						| 说明				| 作用域数据  |

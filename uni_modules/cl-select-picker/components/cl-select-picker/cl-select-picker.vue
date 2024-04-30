@@ -54,7 +54,7 @@ const props = defineProps({
   // 选中数据对象里面用来展示的字段
   labelFiled: {
     type: String,
-    default: 'text',
+    default: 'label',
   },
   // 选中数据对象里面用来回传的字段
   valueFiled: {

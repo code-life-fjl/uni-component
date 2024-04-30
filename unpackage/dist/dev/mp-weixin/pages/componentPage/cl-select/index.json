@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "cl-select",
+  "usingComponents": {
+    "cl-select": "../../../uni_modules/cl-select/components/cl-select/cl-select"
+  }
+}

@@ -1,10 +1,10 @@
 {
-  "id": "cl-scroll-view",
-  "displayName": "cl-scroll-view",
-  "version": "1.0.2",
-  "description": "cl-scroll-view",
+  "id": "cl-select",
+  "displayName": "cl-select",
+  "version": "1.0.0",
+  "description": "cl-select",
   "keywords": [
-    "cl-scroll-view"
+    "cl-select"
 ],
   "repository": "",
   "engines": {
@@ -41,13 +41,13 @@
       },
       "client": {
         "Vue": {
-          "vue2": "u",
+          "vue2": "n",
           "vue3": "y"
         },
         "App": {
           "app-vue": "y",
-          "app-nvue": "n",
-          "app-uvue": "n"
+          "app-nvue": "u",
+          "app-uvue": "u"
         },
         "H5-mobile": {
           "Safari": "y",
@@ -64,18 +64,18 @@
         },
         "小程序": {
           "微信": "y",
-          "阿里": "u",
-          "百度": "u",
-          "字节跳动": "u",
-          "QQ": "u",
-          "钉钉": "u",
-          "快手": "u",
-          "飞书": "u",
-          "京东": "u"
+          "阿里": "y",
+          "百度": "y",
+          "字节跳动": "y",
+          "QQ": "y",
+          "钉钉": "y",
+          "快手": "y",
+          "飞书": "y",
+          "京东": "y"
         },
         "快应用": {
-          "华为": "u",
-          "联盟": "u"
+          "华为": "y",
+          "联盟": "y"
         }
       }
     }

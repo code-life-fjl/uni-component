@@ -8,6 +8,13 @@
     "miniprogram": {
       "list": [
         {
+          "name": "cl-select",
+          "pathName": "pages/componentPage/cl-select/index",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
           "name": "cl-scroll-view",
           "pathName": "pages/componentPage/cl-scroll-view/index",
           "query": "",

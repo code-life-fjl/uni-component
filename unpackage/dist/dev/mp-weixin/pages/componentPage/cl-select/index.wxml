@@ -1,0 +1,1 @@
+<view class="content data-v-ad7d568c"><cl-select wx:if="{{b}}" class="data-v-ad7d568c" u-i="ad7d568c-0" bind:__l="__l" bindupdateModelValue="{{a}}" u-p="{{b}}"></cl-select></view>

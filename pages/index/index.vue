@@ -16,6 +16,10 @@
 	{
 		componentName: 'cl-scroll-view',
 		componentPath: '/pages/componentPage/cl-scroll-view/index'
+	},
+	{
+		componentName: 'cl-select',
+		componentPath: '/pages/componentPage/cl-select/index'
 	}])
 	const pickerSubmit = (val, curData) => {
 		console.log(val, curData);
