@@ -8,6 +8,13 @@
     "miniprogram": {
       "list": [
         {
+          "name": "cl-nav-bar",
+          "pathName": "pages/componentPage/cl-nav-bar/index",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
           "name": "cl-select",
           "pathName": "pages/componentPage/cl-select/index",
           "query": "",

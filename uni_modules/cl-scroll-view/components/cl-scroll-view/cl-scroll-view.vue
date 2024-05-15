@@ -14,17 +14,17 @@
 		<slot name="error" v-if="['noDataLoadError', 'loadError'].includes(loadMoreStatus) && mergeErrorConfig">
 			<view class="error_empty_box" v-if="loadMoreStatus === 'noDataLoadError'">
 				<image class="image" v-if="mergeErrorConfig.imgSrc" :src="mergeErrorConfig.imgSrc" mode="widthFix" />
-				<text class="reload_btn" v-if="mergeErrorConfig.text" @click="getList">
-					<slot name="errorShowText" :reload="getList" :errorShowText="mergeErrorConfig.text">
-						<text class="reload_btn" @click="getList" >
+				<text class="reload_btn" v-if="mergeErrorConfig.text" @click="search">
+					<slot name="errorShowText" :reload="search" :errorShowText="mergeErrorConfig.text">
+						<text class="reload_btn" @click="search" >
 							{{ mergeErrorConfig.text }}
 						</text>
 					</slot>
 				</text>
 			</view>
 			<view v-else class="error_data_box">
-				<slot name="errorShowText" :reload="getList" :errorShowText="mergeErrorConfig.text">
-					<text class="reload_btn" @click="getList">
+				<slot name="errorShowText" :reload="search" :errorShowText="mergeErrorConfig.text">
+					<text class="reload_btn" @click="search">
 						{{ mergeErrorConfig.text }}
 					</text>
 				</slot>
@@ -181,7 +181,7 @@
 	const screenOldTop = ref(0)
 	const loadMoreStatus = ref('loading')
 
-	const getList = async (type) => {
+	const search = async (type) => {
 		// 显示loading窗口
 		if (mergeLoadToastConfig.value) {
 			uni.showLoading(mergeLoadToastConfig.value)
@@ -235,7 +235,7 @@
 			}
 		} catch (error) {
 			isRefresh.value = false
-			if (list.length === 0) {
+			if (list.value.length === 0) {
 				loadMoreStatus.value = 'noDataLoadError'
 			} else {
 				loadMoreStatus.value = 'loadError'
@@ -266,7 +266,7 @@
 		// 判断所有数据是否加载完成
 		if (!isEnd.value) {
 			props.params[props.pageNumField]++
-			getList()
+			search()
 		}
 	}
 	// 刷新方法
@@ -279,13 +279,16 @@
 		backTop()
 		// 清空列表
 		list.value = []
-		getList('refresh')
+		search('refresh')
 	}
 
 	if (props.autoLoad) {
-		console.log(123);
 		refresh()
 	}
+	defineExpose({
+	  refresh,
+		search
+	})
 </script>
 
 <style scoped>

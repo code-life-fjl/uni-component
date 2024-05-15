@@ -75,6 +75,8 @@
 |  list           | 列表插槽  |  list：接口返回的列表数据 |
 |  empty           | 无数据的页面展示插槽  |  - |
 |  error           | 接口报错时页面展示的插槽（分为第一次调用接口报错跟非第一次接口报错）  |  list：接口返回的列表数据 |
-| errorShowText    |  错误时的文本展示 | | errorShowText：文本数据，reload：列表加载接口，由用于重新加载列表。
+| errorShowText    |  错误时的文本展示 | errorShowText：文本数据，reload：列表加载接口，由用于重新加载列表。
+
+> 注意：若想要在组件外部使用search（查询）或refresh（刷新）方法，可以使用ref进行调用，并将调用方法放在`nextTick`内部调用。
 
 > 若有问题可联系作者：微信号：fjl_code_life

@@ -1,10 +1,10 @@
 {
-  "id": "cl-scroll-view",
-  "displayName": "cl-scroll-view",
-  "version": "1.0.5",
-  "description": "cl-scroll-view",
+  "id": "cl-nav-bar",
+  "displayName": "cl-nav-bar",
+  "version": "1.0.1",
+  "description": "cl-nav-bar",
   "keywords": [
-    "cl-scroll-view"
+    "cl-nav-bar"
 ],
   "repository": "",
   "engines": {
@@ -64,14 +64,14 @@
         },
         "小程序": {
           "微信": "y",
-          "阿里": "u",
-          "百度": "u",
-          "字节跳动": "u",
-          "QQ": "u",
-          "钉钉": "u",
-          "快手": "u",
-          "飞书": "u",
-          "京东": "u"
+          "阿里": "y",
+          "百度": "y",
+          "字节跳动": "y",
+          "QQ": "y",
+          "钉钉": "y",
+          "快手": "y",
+          "飞书": "y",
+          "京东": "y"
         },
         "快应用": {
           "华为": "u",

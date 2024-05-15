@@ -1,0 +1,1 @@
+<uni-nav-bar wx:if="{{c}}" class="cl-nav-bar" bindclickLeft="{{a}}" bindclickright="{{b}}" u-i="07e7d45e-0" bind:__l="__l" u-p="{{c}}"></uni-nav-bar>

@@ -15,6 +15,10 @@ const _sfc_main = {
       {
         componentName: "cl-select",
         componentPath: "/pages/componentPage/cl-select/index"
+      },
+      {
+        componentName: "cl-nav-bar",
+        componentPath: "/pages/componentPage/cl-nav-bar/index"
       }
     ]);
     const toPage = (url) => {

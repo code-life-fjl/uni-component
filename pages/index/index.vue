@@ -20,6 +20,10 @@
 	{
 		componentName: 'cl-select',
 		componentPath: '/pages/componentPage/cl-select/index'
+	},
+	{
+		componentName: 'cl-nav-bar',
+		componentPath: '/pages/componentPage/cl-nav-bar/index'
 	}])
 	const pickerSubmit = (val, curData) => {
 		console.log(val, curData);

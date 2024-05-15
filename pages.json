@@ -23,6 +23,13 @@
 			"style": {
 				"navigationBarTitleText": "cl-select"
 			}
+		},
+		{
+			"path" : "pages/componentPage/cl-nav-bar/index",	
+			"style": {
+				"navigationBarTitleText": "我是自定义标题",
+				"navigationStyle": "custom"
+			}
 		}
 	],
 	"globalStyle": {
