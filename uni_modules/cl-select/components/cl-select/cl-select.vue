@@ -155,7 +155,7 @@
 		if (isSelected.value) {
 			curSelectLabel.value = curSelect.value[props.labelField]
 		} else {
-			showPlaceholder.value = props.placeholder
+			// showPlaceholder.value = props.placeholder
 		}
 		emits('blur')
 	}

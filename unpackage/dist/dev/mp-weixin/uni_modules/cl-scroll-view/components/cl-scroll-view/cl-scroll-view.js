@@ -92,7 +92,7 @@ const _sfc_main = {
       default: () => ({})
     }
   },
-  setup(__props) {
+  setup(__props, { expose: __expose }) {
     const props = __props;
     const mergeEmptyConfig = common_vendor.computed(() => {
       if (!props.emptyShowConfig) {
@@ -147,7 +147,7 @@ const _sfc_main = {
     const screenTop = common_vendor.ref(0);
     const screenOldTop = common_vendor.ref(0);
     const loadMoreStatus = common_vendor.ref("loading");
-    const getList = async (type) => {
+    const search = async (type) => {
       if (mergeLoadToastConfig.value) {
         common_vendor.index.showLoading(mergeLoadToastConfig.value);
       }
@@ -194,7 +194,7 @@ const _sfc_main = {
         }
       } catch (error) {
         isRefresh.value = false;
-        if (list.length === 0) {
+        if (list.value.length === 0) {
           loadMoreStatus.value = "noDataLoadError";
         } else {
           loadMoreStatus.value = "loadError";
@@ -219,7 +219,7 @@ const _sfc_main = {
     const bootmScroll = () => {
       if (!isEnd.value) {
         props.params[props.pageNumField]++;
-        getList();
+        search();
       }
     };
     const refresh = () => {
@@ -227,12 +227,15 @@ const _sfc_main = {
       props.params[props.pageNumField] = 1;
       backTop();
       list.value = [];
-      getList("refresh");
+      search("refresh");
     };
     if (props.autoLoad) {
-      console.log(123);
       refresh();
     }
+    __expose({
+      refresh,
+      search
+    });
     return (_ctx, _cache) => {
       return common_vendor.e({
         a: common_vendor.r("list", {
@@ -265,17 +268,17 @@ const _sfc_main = {
         m: mergeErrorConfig.value.text
       }, mergeErrorConfig.value.text ? {
         n: common_vendor.t(mergeErrorConfig.value.text),
-        o: common_vendor.o(getList),
+        o: common_vendor.o(search),
         p: common_vendor.r("errorShowText", {
-          reload: getList,
+          reload: search,
           errorShowText: mergeErrorConfig.value.text
         }),
-        q: common_vendor.o(getList)
+        q: common_vendor.o(search)
       } : {}) : {
         r: common_vendor.t(mergeErrorConfig.value.text),
-        s: common_vendor.o(getList),
+        s: common_vendor.o(search),
         t: common_vendor.r("errorShowText", {
-          reload: getList,
+          reload: search,
           errorShowText: mergeErrorConfig.value.text
         })
       }) : {}, {

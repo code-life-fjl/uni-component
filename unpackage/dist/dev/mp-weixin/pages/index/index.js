@@ -1,8 +1,23 @@
 "use strict";
 const common_vendor = require("../../common/vendor.js");
+if (!Math) {
+  comboxObj();
+}
+const comboxObj = () => "./uni-comboxObj.js";
 const _sfc_main = {
   __name: "index",
   setup(__props) {
+    const candidates = common_vendor.ref([
+      {
+        label: 1,
+        value: 111
+      },
+      {
+        label: 2,
+        value: 2222
+      }
+    ]);
+    const city = common_vendor.ref("");
     const pageList = common_vendor.ref([
       {
         componentName: "cl-select-picker",
@@ -34,6 +49,13 @@ const _sfc_main = {
             b: index,
             c: common_vendor.o(($event) => toPage(item.componentPath), index)
           };
+        }),
+        b: common_vendor.o(($event) => city.value = $event),
+        c: common_vendor.p({
+          label: "label",
+          value: "value",
+          candidates: candidates.value,
+          modelValue: city.value
         })
       };
     };

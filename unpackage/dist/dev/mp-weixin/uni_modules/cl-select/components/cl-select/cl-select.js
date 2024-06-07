@@ -118,8 +118,6 @@ const _sfc_main = {
     const blurHandle = () => {
       if (isSelected.value) {
         curSelectLabel.value = curSelect.value[props.labelField];
-      } else {
-        showPlaceholder.value = props.placeholder;
       }
       emits("blur");
     };
