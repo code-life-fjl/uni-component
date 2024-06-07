@@ -2,25 +2,13 @@
 	<view class="content">
 		<button class="button" v-for="(item, index) in pageList" :key="index"
 			@click="toPage(item.componentPath)">{{item.componentName}}</button>
-
 	</view>
-	<comboxObj label="label" value="value" :candidates="candidates" v-model="city"></comboxObj>
 </template>
 
 <script setup>
-	import comboxObj from './uni-comboxObj.vue'
 	import {
 		ref,
 	} from 'vue'
-	const candidates = ref([{
-			label: 1,
-			value: 111
-		},
-		{
-			label: 2,
-			value: 2222
-		}
-	])
 	const city = ref('')
 	const pageList = ref([{
 			componentName: 'cl-select-picker',
