@@ -180,7 +180,6 @@ const stringifySymbol = (v, i = "") => {
   var _a;
   return isSymbol(v) ? `Symbol(${(_a = v.description) != null ? _a : i})` : v;
 };
-const LINEFEED = "\n";
 const SLOT_DEFAULT_NAME = "d";
 const ON_SHOW = "onShow";
 const ON_HIDE = "onHide";
@@ -634,10 +633,12 @@ function getDefaultLocale() {
 }
 function initVueI18n(locale, messages = {}, fallbackLocale, watcher) {
   if (typeof locale !== "string") {
-    [locale, messages] = [
+    const options = [
       messages,
       locale
     ];
+    locale = options[0];
+    messages = options[1];
   }
   if (typeof locale !== "string") {
     locale = getDefaultLocale();
@@ -861,7 +862,7 @@ function getApiCallbacks(args) {
   }
   return apiCallbacks;
 }
-function normalizeErrMsg$1(errMsg, name) {
+function normalizeErrMsg(errMsg, name) {
   if (!errMsg || errMsg.indexOf(":fail") === -1) {
     return name + ":ok";
   }
@@ -878,7 +879,7 @@ function createAsyncApiCallback(name, args = {}, { beforeAll, beforeSuccess } = 
   const callbackId = invokeCallbackId++;
   addInvokeCallback(callbackId, name, (res) => {
     res = res || {};
-    res.errMsg = normalizeErrMsg$1(res.errMsg, name);
+    res.errMsg = normalizeErrMsg(res.errMsg, name);
     isFunction(beforeAll) && beforeAll(res);
     if (res.errMsg === name + ":ok") {
       isFunction(beforeSuccess) && beforeSuccess(res, args);
@@ -1010,7 +1011,7 @@ function promisify$1(name, fn) {
 }
 function formatApiArgs(args, options) {
   const params = args[0];
-  if (!options || !isPlainObject(options.formatArgs) && isPlainObject(params)) {
+  if (!options || !options.formatArgs || !isPlainObject(options.formatArgs) && isPlainObject(params)) {
     return;
   }
   const formatArgs = options.formatArgs;
@@ -1057,12 +1058,12 @@ function beforeInvokeApi(name, args, protocol, options) {
     return errMsg;
   }
 }
-function normalizeErrMsg(errMsg) {
+function parseErrMsg(errMsg) {
   if (!errMsg || isString(errMsg)) {
     return errMsg;
   }
   if (errMsg.stack) {
-    console.error(errMsg.message + LINEFEED + errMsg.stack);
+    console.error(errMsg.message + "\n" + errMsg.stack);
     return errMsg.message;
   }
   return errMsg;
@@ -1076,7 +1077,7 @@ function wrapperTaskApi(name, fn, protocol, options) {
     }
     return fn(args, {
       resolve: (res) => invokeSuccess(id, name, res),
-      reject: (errMsg2, errRes) => invokeFail(id, name, normalizeErrMsg(errMsg2), errRes)
+      reject: (errMsg2, errRes) => invokeFail(id, name, parseErrMsg(errMsg2), errRes)
     });
   };
 }
@@ -1538,8 +1539,8 @@ function populateParameters(fromRes, toRes) {
     appVersion: "1.0.0",
     appVersionCode: "100",
     appLanguage: getAppLanguage(hostLanguage),
-    uniCompileVersion: "4.15",
-    uniRuntimeVersion: "4.15",
+    uniCompileVersion: "4.24",
+    uniRuntimeVersion: "4.24",
     uniPlatform: "mp-weixin",
     deviceBrand,
     deviceModel: model,
@@ -4794,6 +4795,9 @@ function exposeSetupStateOnRenderContext(instance) {
     }
   });
 }
+function useSlots() {
+  return getContext().slots;
+}
 function useAttrs() {
   return getContext().attrs;
 }
@@ -7539,7 +7543,7 @@ function initDefaultProps(options, isBehavior = false) {
     };
   }
   if (options.behaviors) {
-    if (options.behaviors.includes("__GLOBAL__://form-field")) {
+    if (options.behaviors.includes("wx://form-field")) {
       if (!options.properties || !options.properties.name) {
         properties.name = {
           type: null,
@@ -7710,7 +7714,7 @@ function initBehaviors(vueOptions) {
   const behaviors = [];
   if (isArray(vueBehaviors)) {
     vueBehaviors.forEach((behavior) => {
-      behaviors.push(behavior.replace("uni://", "__GLOBAL__://"));
+      behaviors.push(behavior.replace("uni://", "wx://"));
       if (behavior === "uni://form-field") {
         if (isArray(vueProps)) {
           vueProps.push("name");
@@ -7996,5 +8000,6 @@ exports.sr = sr;
 exports.t = t;
 exports.unref = unref;
 exports.useAttrs = useAttrs;
+exports.useSlots = useSlots;
 exports.w = w;
 exports.watch = watch;

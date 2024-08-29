@@ -69,10 +69,12 @@ const _sfc_main = {
       selectValue.value = void 0;
       emit("clear");
     };
+    const isEmpty = (val) => {
+      return val === "" || val === null || val === void 0;
+    };
     const submit = (e) => {
       const idx = Number(e.detail.value);
       const item = dataList.value[idx];
-      console.log(item, "item", props, item[props.valueFiled]);
       const value = item ? item[props.valueFiled] : void 0;
       const label = item ? item[props.labelFiled] : void 0;
       console.log(value, "valuevalue");
@@ -89,8 +91,13 @@ const _sfc_main = {
     const cancel = () => {
       emit("cancel");
     };
+    const pickValue = common_vendor.ref(0);
     const dataShow = (list, val) => {
-      const curData = list.find((item) => item[props.valueFiled] === val);
+      const idx = list.findIndex((item) => item[props.valueFiled] === val);
+      if (idx > -1) {
+        pickValue.value = idx;
+      }
+      const curData = list[idx];
       if (curData) {
         selectText.value = curData[props.labelFiled];
         selectValue.value = curData[props.valueFiled];
@@ -137,18 +144,15 @@ const _sfc_main = {
     common_vendor.watch(
       () => props.modelValue,
       (newV) => {
-        console.log(newV, "newVnewV");
         if (isEmpty(newV)) {
           selectText.value = void 0;
           selectValue.value = void 0;
         } else {
           dataShow(dataList.value, newV);
         }
-      }
+      },
+      { immediate: true }
     );
-    const isEmpty = (val) => {
-      return val === "" || val === null || val === void 0;
-    };
     return (_ctx, _cache) => {
       return common_vendor.e({
         a: isEmpty(selectText.value)
@@ -177,11 +181,12 @@ const _sfc_main = {
         j: dataList.value,
         k: __props.labelFiled,
         l: __props.disabled,
-        m: common_vendor.o(submit),
-        n: common_vendor.o(cancel)
+        m: pickValue.value,
+        n: common_vendor.o(submit),
+        o: common_vendor.o(cancel)
       });
     };
   }
 };
-const Component = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__scopeId", "data-v-7036e199"], ["__file", "E:/code/uniapp/uni-app-components/uni_modules/cl-select-picker/components/cl-select-picker/cl-select-picker.vue"]]);
+const Component = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__scopeId", "data-v-7036e199"]]);
 wx.createComponent(Component);

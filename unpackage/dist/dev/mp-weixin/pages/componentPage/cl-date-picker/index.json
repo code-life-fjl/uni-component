@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "时间选择器",
+  "usingComponents": {
+    "cl-date-picker": "../../../uni_modules/cl-date-picker/components/cl-date-picker/cl-date-picker"
+  }
+}

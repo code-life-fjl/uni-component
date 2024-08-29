@@ -1,6 +1,4 @@
 {
   "navigationBarTitleText": "uni-app",
-  "usingComponents": {
-    "combox-obj": "./uni-comboxObj"
-  }
+  "usingComponents": {}
 }

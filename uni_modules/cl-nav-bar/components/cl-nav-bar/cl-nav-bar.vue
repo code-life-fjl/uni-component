@@ -1,6 +1,12 @@
 <template>
 	<uni-nav-bar class="cl-nav-bar" v-bind="$attrs" :border="border" :statusBar="statusBar" :fixed="fixed"
 		:leftIcon="leftIcon" :title="getCurrentPageTitle()" @clickLeft="clickLeft" @clickright="clickright">
+		<template v-if="leftSoltVisible" #left>
+			<slot name="left"></slot>
+		</template>
+		<template v-if="rightSoltVisible" #right>
+			<slot name="right"></slot>
+		</template>
 	</uni-nav-bar>
 </template>
 <script setup>
@@ -9,7 +15,9 @@
 		onMounted,
 		getCurrentInstance,
 		useAttrs,
-		useSlots
+		useSlots,
+		computed,
+		ref
 	} from 'vue'
 	import {
 		onReady
@@ -44,6 +52,17 @@
 	})
 	const $attrs = useAttrs()
 	const emits = defineEmits(['getHeight'])
+	
+	const leftSoltVisible = computed(() => {
+		return useSlots().left
+	})
+	const rightSoltVisible = computed(() => {
+		return useSlots().right
+	})
+	const centerSoltVisible = computed(() => {
+		return useSlots().default
+	})
+	
 	onReady(() => {
 		// vue3获取组件实例
 		const pageInstace = getCurrentInstance()

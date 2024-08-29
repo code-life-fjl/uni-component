@@ -18,7 +18,7 @@
     }
   },
   "compileType": "miniprogram",
-  "libVersion": "3.4.3",
+  "libVersion": "3.5.1",
   "appid": "wx2299b96512ccb465",
   "projectname": "code_life_components",
   "condition": {

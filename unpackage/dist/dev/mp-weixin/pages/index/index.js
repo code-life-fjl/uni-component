@@ -1,23 +1,9 @@
 "use strict";
 const common_vendor = require("../../common/vendor.js");
-if (!Math) {
-  comboxObj();
-}
-const comboxObj = () => "./uni-comboxObj.js";
 const _sfc_main = {
   __name: "index",
   setup(__props) {
-    const candidates = common_vendor.ref([
-      {
-        label: 1,
-        value: 111
-      },
-      {
-        label: 2,
-        value: 2222
-      }
-    ]);
-    const city = common_vendor.ref("");
+    common_vendor.ref("");
     const pageList = common_vendor.ref([
       {
         componentName: "cl-select-picker",
@@ -34,6 +20,10 @@ const _sfc_main = {
       {
         componentName: "cl-nav-bar",
         componentPath: "/pages/componentPage/cl-nav-bar/index"
+      },
+      {
+        componentName: "cl-date-picker",
+        componentPath: "/pages/componentPage/cl-date-picker/index"
       }
     ]);
     const toPage = (url) => {
@@ -49,17 +39,10 @@ const _sfc_main = {
             b: index,
             c: common_vendor.o(($event) => toPage(item.componentPath), index)
           };
-        }),
-        b: common_vendor.o(($event) => city.value = $event),
-        c: common_vendor.p({
-          label: "label",
-          value: "value",
-          candidates: candidates.value,
-          modelValue: city.value
         })
       };
     };
   }
 };
-const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__scopeId", "data-v-1cf27b2a"], ["__file", "E:/code/uniapp/uni-app-components/pages/index/index.vue"]]);
+const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__scopeId", "data-v-1cf27b2a"]]);
 wx.createPage(MiniProgramPage);

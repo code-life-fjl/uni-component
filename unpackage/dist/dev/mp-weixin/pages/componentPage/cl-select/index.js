@@ -29,5 +29,5 @@ const _sfc_main = {
     };
   }
 };
-const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__scopeId", "data-v-ad7d568c"], ["__file", "E:/code/uniapp/uni-app-components/pages/componentPage/cl-select/index.vue"]]);
+const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__scopeId", "data-v-ad7d568c"]]);
 wx.createPage(MiniProgramPage);

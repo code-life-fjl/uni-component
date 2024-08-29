@@ -136,10 +136,13 @@ const _sfc_main = {
       if (!props.loadToastConfig) {
         return false;
       }
-      return Object.assign({
-        title: "加载中",
-        mask: true
-      }, props.loadToastConfig);
+      return Object.assign(
+        {
+          title: "加载中",
+          mask: true
+        },
+        props.loadToastConfig
+      );
     });
     const list = common_vendor.ref([]);
     const isEnd = common_vendor.ref(false);
@@ -193,7 +196,9 @@ const _sfc_main = {
           }
         }
       } catch (error) {
-        isRefresh.value = false;
+        common_vendor.nextTick$1(() => {
+          isRefresh.value = false;
+        });
         if (list.value.length === 0) {
           loadMoreStatus.value = "noDataLoadError";
         } else {
@@ -293,5 +298,5 @@ const _sfc_main = {
     };
   }
 };
-const Component = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__scopeId", "data-v-77892465"], ["__file", "E:/code/uniapp/uni-app-components/uni_modules/cl-scroll-view/components/cl-scroll-view/cl-scroll-view.vue"]]);
+const Component = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__scopeId", "data-v-77892465"]]);
 wx.createComponent(Component);

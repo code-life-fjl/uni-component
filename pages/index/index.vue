@@ -25,6 +25,10 @@
 		{
 			componentName: 'cl-nav-bar',
 			componentPath: '/pages/componentPage/cl-nav-bar/index'
+		},
+		{
+			componentName: 'cl-date-picker',
+			componentPath: '/pages/componentPage/cl-date-picker/index'
 		}
 	])
 	const pickerSubmit = (val, curData) => {

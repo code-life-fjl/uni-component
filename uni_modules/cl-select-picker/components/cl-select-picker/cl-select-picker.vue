@@ -3,6 +3,7 @@
     :range="dataList"
     :range-key="labelFiled"
     :disabled="disabled"
+		:value="pickValue"
     @change="submit"
     @cancel="cancel"
   >
@@ -82,11 +83,13 @@ const clearhanlder = () => {
   selectValue.value = undefined
   emit('clear')
 }
+const isEmpty = (val) => {
+  return val === '' || val === null || val === undefined
+}
 
 const submit = (e) => {
   const idx = Number(e.detail.value)
   const item = dataList.value[idx]
-	console.log(item, 'item', props, item[props.valueFiled]);
   const value = item ? item[props.valueFiled] : undefined
   const label = item ? item[props.labelFiled] : undefined
 	console.log(value, 'valuevalue');
@@ -107,9 +110,14 @@ const cancel = () => {
   emit('cancel')
 }
 
+const pickValue = ref(0)
 // 数据回显
 const dataShow = (list, val) => {
-  const curData = list.find((item) => item[props.valueFiled] === val)
+  const idx = list.findIndex((item) => item[props.valueFiled] === val)
+	if (idx > -1) {
+		pickValue.value = idx
+	}
+	const curData = list[idx]
   if (curData) {
     selectText.value = curData[props.labelFiled]
     selectValue.value = curData[props.valueFiled]
@@ -161,19 +169,16 @@ watch(
 watch(
   () => props.modelValue,
   (newV) => {
-		console.log(newV, 'newVnewV');
     if (isEmpty(newV)) {
       selectText.value = undefined
       selectValue.value = undefined
     } else {
       dataShow(dataList.value, newV)
     }
-  }
+  },{immediate: true}
 )
 
-const isEmpty = (val) => {
-  return val === '' || val === null || val === undefined
-}
+
 </script>
 
 <style scoped>

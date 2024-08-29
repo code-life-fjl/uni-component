@@ -31,6 +31,12 @@ const pages = [
       navigationBarTitleText: "我是自定义标题",
       navigationStyle: "custom"
     }
+  },
+  {
+    path: "pages/componentPage/cl-date-picker/index",
+    style: {
+      navigationBarTitleText: "时间选择器"
+    }
   }
 ];
 const globalStyle = {
@@ -88,6 +94,15 @@ const _sfc_main = {
     const props = __props;
     const $attrs = common_vendor.useAttrs();
     const emits = __emit;
+    const leftSoltVisible = common_vendor.computed(() => {
+      return common_vendor.useSlots().left;
+    });
+    const rightSoltVisible = common_vendor.computed(() => {
+      return common_vendor.useSlots().right;
+    });
+    common_vendor.computed(() => {
+      return common_vendor.useSlots().default;
+    });
     common_vendor.onReady(() => {
       const pageInstace = common_vendor.getCurrentInstance();
       const query = common_vendor.index.createSelectorQuery().in(pageInstace == null ? void 0 : pageInstace.proxy);
@@ -138,10 +153,14 @@ const _sfc_main = {
       }
     };
     return (_ctx, _cache) => {
-      return {
-        a: common_vendor.o(clickLeft),
-        b: common_vendor.o(clickright),
-        c: common_vendor.p({
+      return common_vendor.e({
+        a: leftSoltVisible.value
+      }, leftSoltVisible.value ? {} : {}, {
+        b: rightSoltVisible.value
+      }, rightSoltVisible.value ? {} : {}, {
+        c: common_vendor.o(clickLeft),
+        d: common_vendor.o(clickright),
+        e: common_vendor.p({
           ...common_vendor.unref($attrs),
           border: __props.border,
           statusBar: __props.statusBar,
@@ -149,9 +168,8 @@ const _sfc_main = {
           leftIcon: __props.leftIcon,
           title: getCurrentPageTitle()
         })
-      };
+      });
     };
   }
 };
-const Component = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__file", "E:/code/uniapp/uni-app-components/uni_modules/cl-nav-bar/components/cl-nav-bar/cl-nav-bar.vue"]]);
-wx.createComponent(Component);
+wx.createComponent(_sfc_main);

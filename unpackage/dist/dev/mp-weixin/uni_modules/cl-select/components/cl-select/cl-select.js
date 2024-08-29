@@ -223,5 +223,5 @@ const _sfc_main = {
     };
   }
 };
-const Component = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__scopeId", "data-v-4bd33685"], ["__file", "E:/code/uniapp/uni-app-components/uni_modules/cl-select/components/cl-select/cl-select.vue"]]);
+const Component = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__scopeId", "data-v-4bd33685"]]);
 wx.createComponent(Component);

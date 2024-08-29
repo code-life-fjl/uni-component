@@ -8,6 +8,13 @@
     "miniprogram": {
       "list": [
         {
+          "name": "cl-radio",
+          "pathName": "pages/componentPage/cl-radio/index",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
           "name": "cl-nav-bar",
           "pathName": "pages/componentPage/cl-nav-bar/index",
           "query": "",

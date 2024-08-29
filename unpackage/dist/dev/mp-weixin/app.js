@@ -7,6 +7,7 @@ if (!Math) {
   "./pages/componentPage/cl-scroll-view/index.js";
   "./pages/componentPage/cl-select/index.js";
   "./pages/componentPage/cl-nav-bar/index.js";
+  "./pages/componentPage/cl-date-picker/index.js";
 }
 const _sfc_main = {
   onLaunch: function() {
@@ -19,9 +20,8 @@ const _sfc_main = {
     console.log("App Hide");
   }
 };
-const App = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__file", "E:/code/uniapp/uni-app-components/App.vue"]]);
 function createApp() {
-  const app = common_vendor.createSSRApp(App);
+  const app = common_vendor.createSSRApp(_sfc_main);
   return {
     app
   };

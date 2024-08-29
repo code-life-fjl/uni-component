@@ -30,6 +30,12 @@
 				"navigationBarTitleText": "我是自定义标题",
 				"navigationStyle": "custom"
 			}
+		},
+		{
+			"path" : "pages/componentPage/cl-date-picker/index",	
+			"style": {
+				"navigationBarTitleText": "时间选择器"
+			}
 		}
 	],
 	"globalStyle": {

@@ -46,6 +46,60 @@ if (uni.restoreGlobal) {
     !vue.isInSSRComponentSetup && vue.injectHook(lifecycle, hook, target);
   };
   const onReady = /* @__PURE__ */ createHook(ON_READY);
+  const _export_sfc = (sfc, props) => {
+    const target = sfc.__vccOpts || sfc;
+    for (const [key, val] of props) {
+      target[key] = val;
+    }
+    return target;
+  };
+  const _sfc_main$g = {
+    __name: "index",
+    setup(__props) {
+      vue.ref("");
+      const pageList = vue.ref([
+        {
+          componentName: "cl-select-picker",
+          componentPath: "/pages/componentPage/cl-select-picker/index"
+        },
+        {
+          componentName: "cl-scroll-view",
+          componentPath: "/pages/componentPage/cl-scroll-view/index"
+        },
+        {
+          componentName: "cl-select",
+          componentPath: "/pages/componentPage/cl-select/index"
+        },
+        {
+          componentName: "cl-nav-bar",
+          componentPath: "/pages/componentPage/cl-nav-bar/index"
+        }
+      ]);
+      const toPage = (url) => {
+        uni.navigateTo({
+          url
+        });
+      };
+      return (_ctx, _cache) => {
+        return vue.openBlock(), vue.createElementBlock("view", { class: "content" }, [
+          (vue.openBlock(true), vue.createElementBlock(
+            vue.Fragment,
+            null,
+            vue.renderList(pageList.value, (item, index) => {
+              return vue.openBlock(), vue.createElementBlock("button", {
+                class: "button",
+                key: index,
+                onClick: ($event) => toPage(item.componentPath)
+              }, vue.toDisplayString(item.componentName), 9, ["onClick"]);
+            }),
+            128
+            /* KEYED_FRAGMENT */
+          ))
+        ]);
+      };
+    }
+  };
+  const PagesIndexIndex = /* @__PURE__ */ _export_sfc(_sfc_main$g, [["__scopeId", "data-v-1cf27b2a"], ["__file", "E:/code/uniapp/uni-app-components/pages/index/index.vue"]]);
   const fontData = [
     {
       "font_class": "arrow-down",
@@ -692,18 +746,11 @@ if (uni.restoreGlobal) {
       "unicode": ""
     }
   ];
-  const _export_sfc = (sfc, props) => {
-    const target = sfc.__vccOpts || sfc;
-    for (const [key, val] of props) {
-      target[key] = val;
-    }
-    return target;
-  };
   const getVal$1 = (val) => {
     const reg = /^[0-9]*$/g;
     return typeof val === "number" || reg.test(val) ? val + "px" : val;
   };
-  const _sfc_main$h = {
+  const _sfc_main$f = {
     name: "UniIcons",
     emits: ["click"],
     props: {
@@ -757,7 +804,7 @@ if (uni.restoreGlobal) {
       }
     }
   };
-  function _sfc_render$8(_ctx, _cache, $props, $setup, $data, $options) {
+  function _sfc_render$7(_ctx, _cache, $props, $setup, $data, $options) {
     return vue.openBlock(), vue.createElementBlock(
       "text",
       {
@@ -772,247 +819,7 @@ if (uni.restoreGlobal) {
       /* CLASS, STYLE */
     );
   }
-  const __easycom_0$6 = /* @__PURE__ */ _export_sfc(_sfc_main$h, [["render", _sfc_render$8], ["__scopeId", "data-v-d31e1c47"], ["__file", "E:/code/uniapp/uni-app-components/uni_modules/uni-icons/components/uni-icons/uni-icons.vue"]]);
-  const _sfc_main$g = {
-    name: "uniCombox",
-    emits: ["input", "update:modelValue"],
-    props: {
-      border: {
-        type: Boolean,
-        default: true
-      },
-      label: {
-        type: String,
-        default: "label"
-      },
-      labelWidth: {
-        type: String,
-        default: "auto"
-      },
-      placeholder: {
-        type: String,
-        default: "请选择或输入"
-      },
-      candidates: {
-        type: Array,
-        default() {
-          return [];
-        }
-      },
-      emptyTips: {
-        type: String,
-        default: "无匹配项"
-      },
-      modelValue: {
-        type: [String, Number],
-        default: ""
-      }
-    },
-    data() {
-      return {
-        showSelector: false,
-        inputVal: ""
-      };
-    },
-    computed: {
-      labelStyle() {
-        if (this.labelWidth === "auto") {
-          return "";
-        }
-        return `width: ${this.labelWidth}`;
-      },
-      filterCandidates() {
-        return this.candidates;
-      },
-      filterCandidatesLength() {
-        return this.filterCandidates.length;
-      }
-    },
-    watch: {
-      modelValue: {
-        handler(newVal) {
-          this.inputVal = newVal;
-        },
-        immediate: true
-      }
-    },
-    methods: {
-      toggleSelector() {
-        this.showSelector = !this.showSelector;
-      },
-      onFocus() {
-        this.showSelector = true;
-      },
-      onBlur() {
-        setTimeout(() => {
-          this.showSelector = false;
-        }, 153);
-      },
-      onSelectorClick(item) {
-        this.inputVal = item[this.label];
-        this.showSelector = false;
-        this.$emit("input", this.inputVal);
-        this.$emit("update:modelValue", item[this.label]);
-        this.$emit("select", item);
-      },
-      onInput() {
-        setTimeout(() => {
-          this.$emit("input", this.inputVal);
-          this.$emit("update:modelValue", this.inputVal);
-        });
-      }
-    }
-  };
-  function _sfc_render$7(_ctx, _cache, $props, $setup, $data, $options) {
-    const _component_uni_icons = resolveEasycom(vue.resolveDynamicComponent("uni-icons"), __easycom_0$6);
-    return vue.openBlock(), vue.createElementBlock(
-      "view",
-      {
-        class: vue.normalizeClass(["uni-combox", $props.border ? "" : "uni-combox__no-border"])
-      },
-      [
-        vue.createElementVNode("view", { class: "uni-combox__input-box" }, [
-          vue.withDirectives(vue.createElementVNode("input", {
-            class: "uni-combox__input",
-            type: "text",
-            placeholder: $props.placeholder,
-            "placeholder-class": "uni-combox__input-plac",
-            "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => $data.inputVal = $event),
-            onInput: _cache[1] || (_cache[1] = (...args) => $options.onInput && $options.onInput(...args)),
-            onFocus: _cache[2] || (_cache[2] = (...args) => $options.onFocus && $options.onFocus(...args)),
-            onBlur: _cache[3] || (_cache[3] = (...args) => $options.onBlur && $options.onBlur(...args))
-          }, null, 40, ["placeholder"]), [
-            [vue.vModelText, $data.inputVal]
-          ]),
-          vue.createVNode(_component_uni_icons, {
-            type: $data.showSelector ? "top" : "bottom",
-            size: "14",
-            color: "#999",
-            onClick: $options.toggleSelector
-          }, null, 8, ["type", "onClick"])
-        ]),
-        $data.showSelector ? (vue.openBlock(), vue.createElementBlock("view", {
-          key: 0,
-          class: "uni-combox__selector"
-        }, [
-          vue.createElementVNode("view", { class: "uni-popper__arrow" }),
-          vue.createElementVNode("scroll-view", {
-            "scroll-y": "true",
-            class: "uni-combox__selector-scroll"
-          }, [
-            $options.filterCandidatesLength === 0 ? (vue.openBlock(), vue.createElementBlock("view", {
-              key: 0,
-              class: "uni-combox__selector-empty"
-            }, [
-              vue.createElementVNode(
-                "text",
-                null,
-                vue.toDisplayString($props.emptyTips),
-                1
-                /* TEXT */
-              )
-            ])) : vue.createCommentVNode("v-if", true),
-            (vue.openBlock(true), vue.createElementBlock(
-              vue.Fragment,
-              null,
-              vue.renderList($options.filterCandidates, (item, index) => {
-                return vue.openBlock(), vue.createElementBlock("view", {
-                  class: "uni-combox__selector-item",
-                  key: index,
-                  onClick: ($event) => $options.onSelectorClick(item)
-                }, [
-                  vue.createElementVNode(
-                    "text",
-                    null,
-                    vue.toDisplayString(item[$props.label]),
-                    1
-                    /* TEXT */
-                  )
-                ], 8, ["onClick"]);
-              }),
-              128
-              /* KEYED_FRAGMENT */
-            ))
-          ])
-        ])) : vue.createCommentVNode("v-if", true)
-      ],
-      2
-      /* CLASS */
-    );
-  }
-  const comboxObj = /* @__PURE__ */ _export_sfc(_sfc_main$g, [["render", _sfc_render$7], ["__scopeId", "data-v-b739a9c4"], ["__file", "E:/code/uniapp/uni-app-components/pages/index/uni-comboxObj.vue"]]);
-  const _sfc_main$f = {
-    __name: "index",
-    setup(__props) {
-      const candidates = vue.ref([
-        {
-          label: 1,
-          value: 111
-        },
-        {
-          label: 2,
-          value: 2222
-        }
-      ]);
-      const city = vue.ref("");
-      const pageList = vue.ref([
-        {
-          componentName: "cl-select-picker",
-          componentPath: "/pages/componentPage/cl-select-picker/index"
-        },
-        {
-          componentName: "cl-scroll-view",
-          componentPath: "/pages/componentPage/cl-scroll-view/index"
-        },
-        {
-          componentName: "cl-select",
-          componentPath: "/pages/componentPage/cl-select/index"
-        },
-        {
-          componentName: "cl-nav-bar",
-          componentPath: "/pages/componentPage/cl-nav-bar/index"
-        }
-      ]);
-      const toPage = (url) => {
-        uni.navigateTo({
-          url
-        });
-      };
-      return (_ctx, _cache) => {
-        return vue.openBlock(), vue.createElementBlock(
-          vue.Fragment,
-          null,
-          [
-            vue.createElementVNode("view", { class: "content" }, [
-              (vue.openBlock(true), vue.createElementBlock(
-                vue.Fragment,
-                null,
-                vue.renderList(pageList.value, (item, index) => {
-                  return vue.openBlock(), vue.createElementBlock("button", {
-                    class: "button",
-                    key: index,
-                    onClick: ($event) => toPage(item.componentPath)
-                  }, vue.toDisplayString(item.componentName), 9, ["onClick"]);
-                }),
-                128
-                /* KEYED_FRAGMENT */
-              ))
-            ]),
-            vue.createVNode(comboxObj, {
-              label: "label",
-              value: "value",
-              candidates: candidates.value,
-              modelValue: city.value,
-              "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => city.value = $event)
-            }, null, 8, ["candidates", "modelValue"])
-          ],
-          64
-          /* STABLE_FRAGMENT */
-        );
-      };
-    }
-  };
-  const PagesIndexIndex = /* @__PURE__ */ _export_sfc(_sfc_main$f, [["__scopeId", "data-v-1cf27b2a"], ["__file", "E:/code/uniapp/uni-app-components/pages/index/index.vue"]]);
+  const __easycom_0$6 = /* @__PURE__ */ _export_sfc(_sfc_main$f, [["render", _sfc_render$7], ["__scopeId", "data-v-d31e1c47"], ["__file", "E:/code/uniapp/uni-app-components/uni_modules/uni-icons/components/uni-icons/uni-icons.vue"]]);
   const noDataValue = "#codeLife_noData#";
   const _sfc_main$e = {
     __name: "cl-select-picker",
@@ -3155,10 +2962,13 @@ if (uni.restoreGlobal) {
         if (!props.loadToastConfig) {
           return false;
         }
-        return Object.assign({
-          title: "加载中",
-          mask: true
-        }, props.loadToastConfig);
+        return Object.assign(
+          {
+            title: "加载中",
+            mask: true
+          },
+          props.loadToastConfig
+        );
       });
       const list = vue.ref([]);
       const isEnd = vue.ref(false);
@@ -3212,7 +3022,9 @@ if (uni.restoreGlobal) {
             }
           }
         } catch (error) {
-          isRefresh.value = false;
+          vue.nextTick(() => {
+            isRefresh.value = false;
+          });
           if (list.value.length === 0) {
             loadMoreStatus.value = "noDataLoadError";
           } else {
