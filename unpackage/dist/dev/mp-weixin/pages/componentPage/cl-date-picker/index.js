@@ -11,34 +11,17 @@ if (!Math) {
 const _sfc_main = {
   __name: "index",
   setup(__props) {
-    common_vendor.ref([
-      {
-        label: "单选1",
-        value: "1"
-      },
-      {
-        label: "单选2",
-        value: "2"
-      },
-      {
-        label: "单选3",
-        value: "3"
-      }
-    ]);
-    const value = common_vendor.ref("2024-12-12 11:05:20");
+    const value = common_vendor.ref("");
     const datePickerRef = common_vendor.ref();
-    const show = () => {
-      datePickerRef.value.open();
-    };
     return (_ctx, _cache) => {
       return {
-        a: common_vendor.o(show),
-        b: common_vendor.sr(datePickerRef, "fc709b23-0", {
+        a: common_vendor.sr(datePickerRef, "fc709b23-0", {
           "k": "datePickerRef"
         }),
-        c: common_vendor.o(($event) => value.value = $event),
-        d: common_vendor.p({
-          dateType: "YYYY-MM-DD hh:mm:ss",
+        b: common_vendor.o(($event) => value.value = $event),
+        c: common_vendor.p({
+          isNow: true,
+          dateType: "hh:mm:ss",
           modelValue: value.value
         })
       };

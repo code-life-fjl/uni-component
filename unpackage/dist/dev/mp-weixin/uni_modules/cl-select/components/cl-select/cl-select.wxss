@@ -27,6 +27,7 @@
 		transform: rotate(45deg);
 }
 .icons.data-v-4bd33685 {
+		position: relative;
 		margin-right: 5px;
 }
 .select_item.data-v-4bd33685 {

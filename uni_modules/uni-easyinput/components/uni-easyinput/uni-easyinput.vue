@@ -27,7 +27,7 @@
 				:maxlength="inputMaxlength" :focus="focused" :autoHeight="autoHeight" :cursor-spacing="cursorSpacing"
 				:adjust-position="adjustPosition" @input="onInput" @blur="_Blur" @focus="_Focus" @confirm="onConfirm"
 				@keyboardheightchange="onkeyboardheightchange"></textarea>
-			<input v-else :type="type === 'password' ? 'text' : type" class="uni-easyinput__content-input" :style="inputStyle"
+			<input style="pointer-events: none;" v-else :type="type === 'password' ? 'text' : type" class="uni-easyinput__content-input" :style="inputStyle"
 				:name="name" :value="val" :password="!showPassword && type === 'password'" :placeholder="placeholder"
 				:placeholderStyle="placeholderStyle" placeholder-class="uni-easyinput__placeholder-class" :disabled="disabled"
 				:maxlength="inputMaxlength" :focus="focused" :confirmType="confirmType" :cursor-spacing="cursorSpacing"
@@ -48,7 +48,7 @@
 			<template v-else>
 				<uni-icons v-if="clearable && isVal && !disabled && type !== 'textarea'" class="content-clear-icon"
 					:class="{ 'is-textarea-icon': type === 'textarea' }" type="clear" :size="clearSize"
-					:color="msg ? '#dd524d' : focusShow ? primaryColor : '#c0c4cc'" @click="onClear"></uni-icons>
+					:color="msg ? '#dd524d' : focusShow ? primaryColor : '#c0c4cc'" @click.capture="onClear"></uni-icons>
 			</template>
 			<slot name="right"></slot>
 		</view>

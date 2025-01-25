@@ -10,17 +10,7 @@ if (!Math) {
   _easycom_cl_nav_bar();
 }
 function _sfc_render(_ctx, _cache) {
-  return {
-    a: common_vendor.o(() => {
-    }),
-    b: common_vendor.o(() => {
-    }),
-    c: common_vendor.p({
-      ["left-text"]: "返回",
-      ["right-text"]: "设置",
-      title: "标题"
-    })
-  };
+  return {};
 }
 const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render]]);
 wx.createPage(MiniProgramPage);

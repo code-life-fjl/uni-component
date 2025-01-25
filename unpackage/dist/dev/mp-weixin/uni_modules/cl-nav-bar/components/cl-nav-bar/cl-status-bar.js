@@ -1,7 +1,7 @@
 "use strict";
 const common_vendor = require("../../../../common/vendor.js");
 const _sfc_main = {
-  name: "UniStatusBar",
+  name: "ClStatusBar",
   data() {
     return {
       statusBarHeight: common_vendor.index.getSystemInfoSync().statusBarHeight + "px"

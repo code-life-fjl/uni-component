@@ -1,197 +1,215 @@
 <template>
+	<view class="input_box" :class="{disabled, hideBorder}">
+		<view class="input_ele" :class="`input ${!modelValue && 'placeholder'}`" @click.stop="handleOpen">
+			{{ modelValue || placeholder }}
+		</view>
+		<uni-icons class="clear_icon" v-if="modelValue" type="clear" :size="24" color="#c0c4cc"
+			@click="handleClear"></uni-icons>
+		<uni-icons class="clear_icon" v-else type="bottom" :size="20" color="#c0c4cc"></uni-icons>
+	</view>
 	<uni-popup type="bottom" ref="popupRef">
 		<view class="btn_box">
 			<text @click="cancal">取消</text>
-			{{dateVal}}
-			<text class="submit" @click="submit">确认</text>
+			<text class="submit" @click="handleSubmit">确认</text>
 		</view>
 		<picker-view class="picker-view" :value="dateVal" @change="dateChange" mask-class="mask_class">
-			<picker-view-column v-if="dateType.includes('YYYY')">
-				<view class="item" v-for="(item,index) in dateListMap['YYYY']" :key="index">{{item}}年</view>
-			</picker-view-column>
-			<picker-view-column v-if="dateType.includes('MM')">
-				<view class="item" v-for="(item,index) in dateListMap['MM']" :key="index">{{item}}月</view>
-			</picker-view-column>
-			<picker-view-column v-if="dateType.includes('DD')">
-				<view class="item" v-for="(item,index) in dateListMap['DD']" :key="index">{{item}}日</view>
-			</picker-view-column>
-			<picker-view-column v-if="dateType.includes('hh')">
-				<view class="item" v-for="(item,index) in dateListMap['hh']" :key="index">{{item}}</view>
-			</picker-view-column>
-			<picker-view-column v-if="dateType.includes('mm')">
-				<view class="item" v-for="(item,index) in dateListMap['mm']" :key="index">{{item}}</view>
-			</picker-view-column>
-			<picker-view-column v-if="dateType.includes('ss')">
-				<view class="item" v-for="(item,index) in dateListMap['ss']" :key="index">{{item}}</view>
+			<picker-view-column v-for="(item, index) in dateOptionList" :key="index">
+				<view class="item" v-for="(itm, idx) in item.options" :key="idx">
+					{{ itm }}
+					{{ dateLabelMap[item.type] }}
+				</view>
 			</picker-view-column>
 		</picker-view>
 	</uni-popup>
-
 </template>
 <script setup>
 	import {
+		computed,
 		nextTick,
 		reactive,
 		ref,
 		watch
 	} from 'vue'
+	import {
+		onLoad
+	} from '@dcloudio/uni-app'
 	const props = defineProps({
 		dateType: {
 			type: String,
-			default: 'YYYY-MM-DD hh-mm-ss'
+			default: 'YYYY-MM-DD',
 		},
 		modelValue: {
 			type: String,
-			default: ''
+			default: '',
+		},
+		placeholder: {
+			type: String,
+			default: '请选择',
+		},
+		disabled: {
+			type: Boolean,
+			default: false,
+		},
+		// 隐藏border
+		hideBorder: {
+			type: Boolean,
+			default: false,
+		},
+		// 年份下拉选项
+		yearOptions: {
+			type: Array,
+			default: () => ([])
+		},
+		// 打开弹窗默认选中当前时间
+		isNow: {
+			type: Boolean,
+			default: true
 		}
 	})
 
 	const emits = defineEmits(['update:modelValue', 'cancel', 'submit'])
 	const popupRef = ref()
-
-	const showList = ref([])
-	const visible = ref(true)
-	const dateListMap = reactive({
-		YYYY: [],
-		MM: [],
-		DD: [],
-		hh: [],
-		mm: [],
-		ss: [],
-	})
-	const years = ref([])
-	const months = ref([])
-	const days = ref([])
-	const hours = ref([])
-	const minutes = ref([])
-	const seconds = ref([])
+	const dateOptionList = ref([])
+	// 存储的时间下拉值，也就是选项的下标
 	const dateVal = ref([])
+	const dateLabelMap = {
+		YYYY: '年',
+		MM: '月',
+		DD: '日',
+		hh: '时',
+		mm: '分',
+		ss: '秒',
+	}
 	const dateTypeMap = [{
 			type: 'YYYY',
-			regExp: /^\d{4}$/
+			regExp: /^\d{4}$/,
 		},
 		{
 			type: 'YYYY-MM',
-			regExp: /^\d{4}-\d{2}$/
-		}, {
+			regExp: /^\d{4}-\d{2}$/,
+		},
+		{
 			type: 'YYYY-MM-DD',
-			regExp: /^\d{4}-\d{2}-\d{2}/
+			regExp: /^\d{4}-\d{2}-\d{2}/,
 		},
 		{
-			type: 'YYYY-MM-DD hh',
-			regExp: /^\d{4}-\d{2}-\d{2} \d{2}$/
+			type: 'YYYY-MM-DD HH',
+			regExp: /^\d{4}-\d{2}-\d{2} \d{2}$/,
 		},
 		{
-			type: 'YYYY-MM-DD hh:mm',
-			regExp: /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}$/
+			type: 'YYYY-MM-DD HH:mm',
+			regExp: /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}$/,
 		},
 		{
-			type: 'YYYY-MM-DD hh:mm:ss',
-			regExp: /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/
-		}
+			type: 'YYYY-MM-DD HH:mm:ss',
+			regExp: /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/,
+		},
 	]
-
-	const createDateList = () => {
-		const date = new Date()
-		if (props.dateType.includes('YYYY')) {
-			for (let i = 1990; i <= 2050; i++) {
-				dateListMap.YYYY.push(i + '')
-			}
-		}
-		if (props.dateType.includes('MM')) {
-			for (let i = 1; i <= 12; i++) {
-				if (i <= 9) {
-					dateListMap.MM.push('0' + i)
-				} else {
-					dateListMap.MM.push(i + '')
-				}
-			}
-		}
-		if (props.dateType.includes('DD')) {
-			for (let i = 1; i <= 31; i++) {
-				if (i <= 9) {
-					dateListMap.DD.push('0' + i)
-				} else {
-					dateListMap.DD.push(i + '')
-				}
-			}
-		}
-		if (props.dateType.includes('hh')) {
-			for (let i = 0; i <= 11; i++) {
-				if (i <= 9) {
-					dateListMap.hh.push('0' + i)
-				} else {
-					dateListMap.hh.push(i + '')
-				}
-			}
-		}
-		if (props.dateType.includes('mm')) {
-			for (let i = 0; i <= 59; i++) {
-				if (i <= 9) {
-					dateListMap.mm.push('0' + i)
-				} else {
-					dateListMap.mm.push(i + '')
-				}
-			}
-		}
-		if (props.dateType.includes('ss')) {
-			for (let i = 0; i <= 59; i++) {
-				if (i <= 9) {
-					dateListMap.ss.push('0' + i)
-				} else {
-					dateListMap.ss.push(i + '')
-				}
-			}
+	const isEmpty = (val) => {
+		return val === null || val === '' || val === undefined
+	}
+	// 补0的函数
+	const supplementZero = (num) => {
+		return num >= 10 ? num + '' : '0' + num
+	}
+	// 获取当前时间对象
+	const getNowDate = () => {
+		const now = new Date();
+		const YYYY = now.getFullYear() + '';
+		const MM = supplementZero(now.getMonth() + 1); // 月份从 0 开始，需要加 1
+		const DD = supplementZero(now.getDate())
+		const hh = supplementZero(now.getHours())
+		const mm = supplementZero(now.getMinutes())
+		const ss = supplementZero(now.getSeconds())
+		return {
+			YYYY,
+			MM,
+			DD,
+			hh,
+			mm,
+			ss
 		}
 	}
-	// 回显时间
-	// dateList为切割的时间数组，例如['2024', '12', '12']
-	const showDate = (dateList) => {
-		dateVal.value = []
-		// 拿到与时间数组格式一致的格式列表，例如['YYYY', 'MM']
-		const dateTypeList = props.dateType.split(/[-,:, ]/)
-		console.log(dateTypeList, 'dateTypeList');
-		dateTypeList.forEach((item, index) => {
+
+	// 获取时间类型列表
+	const dateFormatList = computed(() => {
+		const regex = /(YYYY|MM|DD|hh|mm|ss)/g;
+		const matches = props.dateType.match(regex);
+		return matches || [];
+	})
+	// 获取时间值列表
+	const dataValList = computed(() => {
+		const regex = /(\d{4}|\d{2}|\d{2}|\d{2}|\d{2}|\d{2})/g;
+		const matches = props.modelValue.match(regex);
+		return matches || [];
+	})
+	const getDateValList = (str) => {
+		const regex = /(\d{4}|\d{2}|\d{2}|\d{2}|\d{2}|\d{2})/g;
+		const matches = props.modelValue.match(regex);
+		return matches || [];
+	}
+	// 创建时间选项
+	const createDateOptions = () => {
+		dateOptionList.value = []
+		const date = new Date()
+		if (dateFormatList.value.length === 0) {
+			throw new Error('传入的时间格式无法识别到有效值，有效值包含：YYYY,MM,DD,hh,mm,ss')
+			return false
+		}
+		dateFormatList.value.forEach((item, index) => {
+			let options = []
+			// 设置年份选项
 			if (item === 'YYYY') {
-				const curYearIdx = dateListMap[item].findIndex(item => item == dateList[index])
-				dateVal.value[index] = curYearIdx
+				if (props.yearOptions.length === 0) {
+					for (let i = 1990; i <= 2050; i++) {
+						options.push(i + '')
+					}
+				} else {
+					for (let i = 1990; i <= 2050; i++) {
+						options = props.yearOptions
+					}
+				}
 			}
+			// 设置月份选项
 			if (item === 'MM') {
-				const curMonthIdx = dateListMap[item].findIndex(item => item === dateList[index])
-				dateVal.value[index] = curMonthIdx
+				for (let i = 1; i <= 12; i++) {
+					options.push(supplementZero(i))
+				}
 			}
+			// 设置天数选项
 			if (item === 'DD') {
-				const curDayIdx = dateListMap[item].findIndex(item => item === dateList[index])
-				dateVal.value[index] = curDayIdx
+				for (let i = 1; i <= 31; i++) {
+					options.push(supplementZero(i))
+				}
 			}
+			// 设置小时选项
 			if (item === 'hh') {
-				const curHourIdx = dateListMap[item].findIndex(item => item === dateList[index])
-				console.log(curHourIdx, 'curHourIdx');
-				dateVal.value[index] = curHourIdx
+				for (let i = 0; i <= 23; i++) {
+					options.push(supplementZero(i))
+				}
 			}
-			if (item === 'mm') {
-				const curMinuteIdx = dateListMap[item].findIndex(item => item === dateList[index])
-				dateVal.value[index] = curMinuteIdx
+			// 设置分钟秒钟选项
+			if (item === 'mm' || item === 'ss') {
+				for (let i = 0; i <= 59; i++) {
+					options.push(supplementZero(i))
+				}
 			}
-			if (item === 'ss') {
-				const curSecondIdx = dateListMap[item].findIndex(item => item === dateList[index])
-				dateVal.value[index] = curSecondIdx
-			}
+			dateOptionList.value.push({
+				type: item,
+				options
+			})
 		})
 	}
-	// 获取当前月份的日期
-	// const getCurDateDays = (year, month) => {
-	// 	days.value = []
-	// 	if (props.dateType.includes('YYYY-MM-DD')) {
-	// 		const [year, month] = dateVal.value
-	// 		if (year && month) {
-	// 			const dayNum = new Date(years.value[year], months.value[month], 0).getDate()
-	// 			for (let i = 1; i <= dayNum; i++) {
-	// 				days.value.push(i)
-	// 			}
-	// 		}
-	// 	}
-	// }
+
+	// 获取对应下表进行时间回显
+	const showDate = () => {
+		dateVal.value = []
+		dateFormatList.value.forEach((item, index) => {
+			const curOption = dateOptionList.value.find(itm => itm.type === item)
+			const curData = curOption.options.findIndex(itm => itm === dataValList.value[index])
+			dateVal.value.push(curData)
+		})
+	}
 	const dateChange = ({
 		detail
 	}) => {
@@ -203,54 +221,96 @@
 		popupRef.value.close()
 	}
 	// 提交按钮
-	const submit = () => {
-		const resDate = props.dateType.replace(/YYYY/g, dateListMap.YYYY[dateVal.value[0]])
-			.replace(/MM/g, dateListMap.MM[dateVal.value[1]])
-			.replace(/DD/g, dateListMap.DD[dateVal.value[2]])
-			.replace(/hh/g, dateListMap.hh[dateVal.value[3]])
-			.replace(/mm/g, dateListMap.mm[dateVal.value[4]])
-			.replace(/ss/g, dateListMap.ss[dateVal.value[5]]);
-		console.log(resDate, 'resDate');
-		emits('submit', resDate)
-		emits('update:modelValue', resDate)
+	const handleSubmit = () => {
+		let str = props.dateType
+		dateFormatList.value.forEach((item, index) => {
+			const reg = new RegExp(item)
+			const curOption = dateOptionList.value.find(itm => itm.type === item)
+			const curData = curOption.options[dateVal.value[index]]
+			str = str.replace(reg, curData)
+		})
+		console.log(str, 'str');
+		emits('submit', str)
+		emits('update:modelValue', str)
 		popupRef.value.close()
 	}
 	// 打开弹窗
-	const open = () => {
-		const idx = dateTypeMap.findIndex(item => item.type === props.dateType)
-		if (idx < 0) {
-			console.error('传入时间格式有误，支持：' + dateTypeMap.map(item => item.type))
-			return
-		}
-		createDateList()
-		const curType = dateTypeMap[idx]['type']
-		const curRegExp = dateTypeMap[idx]['regExp']
-		if (!props.modelValue) {
-			dateVal.value = []
-		} else {
-			if (curRegExp.test(props.modelValue)) {
-				const valList = props.modelValue.split(/[-,:, ]/)
-				nextTick(() => showDate(valList))
+	const handleOpen = () => {
+		if (isEmpty(props.modelValue)) {
+			if (props.isNow) {
+				let nowDateIdxList = []
+				const nowDateMap = getNowDate()
+				dateFormatList.value.forEach(item => {
+					const curOption = dateOptionList.value.find(itm => itm.type === item)
+					let curIdx = curOption.options.findIndex(itm => itm === nowDateMap[item])
+					console.log(curIdx, curOption, nowDateMap[item]);
+					nowDateIdxList.push(curIdx)
+				})
+				dateVal.value = nowDateIdxList
 			} else {
-				console.error('传入的时间值与定义的时间格式不匹配')
-				return
+				dateVal.value = []
 			}
+		} else {
+			nextTick(() => showDate())
 		}
 		popupRef.value.open()
 	}
+
+	onLoad(() => {
+		createDateOptions()
+	})
 	// 关闭弹窗
 	const close = () => {
 		popupRef.value.close()
 	}
 	defineExpose({
 		close,
-		open
+		open: handleOpen,
 	})
+	// 清除所选数据
+	const handleClear = () => {
+		emits('update:modelValue', '')
+	}
 </script>
+<!-- 这里没有使用任何css编译器，方便在其他环境使用 -->
 <style scoped>
+	.input_box {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		border: 1px solid #dcdfe6;
+		background-color: #fff;
+		border-radius: 4px;
+	}
+
+	.hideBorder {
+		border: none !important;
+	}
+
+	.input_box>.input_ele {
+		flex: 1;
+		padding: 0 10px;
+		display: flex;
+		align-items: center;
+		min-height: 35px;
+		word-break: break-all;
+		color: #333;
+		font-size: 14px;
+	}
+
+	.input_box>.placeholder {
+		color: #999;
+		font-size: 12px;
+	}
+
+	.clear_icon {
+		margin: 0 5px;
+	}
+
 	.picker-view {
 		width: 100%;
 		height: 500rpx;
+		background-color: #fff;
 	}
 
 	.btn_box {
@@ -266,11 +326,20 @@
 		color: #007aff;
 	}
 
-
 	.item {
 		flex: 1;
 		line-height: 70rpx;
 		text-align: center;
 		font-size: 26rpx;
+	}
+
+	.uni-easyinput__content {
+		pointer-events: none;
+		background-color: #007aff;
+	}
+
+	.disabled {
+		background-color: #F7F6F6;
+		pointer-events: none;
 	}
 </style>

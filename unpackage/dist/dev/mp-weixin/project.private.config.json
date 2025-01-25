@@ -8,6 +8,20 @@
     "miniprogram": {
       "list": [
         {
+          "name": "弹出多选组件",
+          "pathName": "pages/componentPage/cl-more-select-picker/index",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "cl-date-picker",
+          "pathName": "pages/componentPage/cl-date-picker/index",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
           "name": "cl-radio",
           "pathName": "pages/componentPage/cl-radio/index",
           "query": "",

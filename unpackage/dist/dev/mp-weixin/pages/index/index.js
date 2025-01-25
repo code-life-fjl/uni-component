@@ -39,7 +39,8 @@ const _sfc_main = {
             b: index,
             c: common_vendor.o(($event) => toPage(item.componentPath), index)
           };
-        })
+        }),
+        b: _ctx.demo
       };
     };
   }

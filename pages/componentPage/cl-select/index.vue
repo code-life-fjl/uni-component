@@ -1,5 +1,6 @@
 <template>
 	<view class="content">
+		<text>模仿uni-data-select做的可搜索下拉框，可直接回显数据，并定位到对应的数据项</text>
 		<cl-select :options="options" v-model="value"></cl-select>
 	</view>
 </template>
@@ -8,11 +9,13 @@
 	import {
 		ref
 	} from 'vue'
-	const value = ref()
-	const options = Array.from({length: 100}, (_, index) => {
+	const value = ref('value50')
+	const options = Array.from({
+		length: 100
+	}, (_, index) => {
 		return {
 			label: `我是展示的值${index}`,
-			value: `我是选中的值${index}`
+			value: `value${index}`
 		}
 	})
 </script>

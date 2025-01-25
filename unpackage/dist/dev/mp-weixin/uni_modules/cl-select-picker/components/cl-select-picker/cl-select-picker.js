@@ -1,12 +1,12 @@
 "use strict";
 const common_vendor = require("../../../../common/vendor.js");
 if (!Array) {
-  const _easycom_uni_icons2 = common_vendor.resolveComponent("uni-icons");
-  _easycom_uni_icons2();
+  const _easycom_uni_easyinput2 = common_vendor.resolveComponent("uni-easyinput");
+  _easycom_uni_easyinput2();
 }
-const _easycom_uni_icons = () => "../../../uni-icons/components/uni-icons/uni-icons.js";
+const _easycom_uni_easyinput = () => "../../../uni-easyinput/components/uni-easyinput/uni-easyinput.js";
 if (!Math) {
-  _easycom_uni_icons();
+  _easycom_uni_easyinput();
 }
 const noDataValue = "#codeLife_noData#";
 const _sfc_main = {
@@ -22,7 +22,7 @@ const _sfc_main = {
       type: String,
       default: "请选择"
     },
-    // 当列表没有数据的时候是否新增一条"暂无数据"用来提示用户
+    // 是否隐藏暂无数据
     hideEmptyText: {
       type: Boolean,
       default: false
@@ -51,10 +51,14 @@ const _sfc_main = {
       type: [String, Number],
       default: void 0
     },
-    // 
+    //
     emptyText: {
       type: String,
       default: "暂无数据"
+    },
+    placeholderStyle: {
+      type: Object,
+      default: () => ({})
     }
   },
   emits: ["update:modelValue", "submit", "clear", "cancel"],
@@ -64,10 +68,15 @@ const _sfc_main = {
     const dataList = common_vendor.ref([]);
     const selectText = common_vendor.ref(void 0);
     const selectValue = common_vendor.ref(void 0);
-    const clearhanlder = () => {
+    const pickerDisabled = common_vendor.ref(false);
+    const handleClear = () => {
+      pickerDisabled.value = true;
       selectText.value = void 0;
       selectValue.value = void 0;
       emit("clear");
+      setTimeout(() => {
+        pickerDisabled.value = false;
+      });
     };
     const isEmpty = (val) => {
       return val === "" || val === null || val === void 0;
@@ -77,7 +86,6 @@ const _sfc_main = {
       const item = dataList.value[idx];
       const value = item ? item[props.valueFiled] : void 0;
       const label = item ? item[props.labelFiled] : void 0;
-      console.log(value, "valuevalue");
       if (props.hideEmptyText && dataList.value.length === 0 || value === noDataValue) {
         selectText.value = void 0;
         selectValue.value = void 0;
@@ -106,16 +114,19 @@ const _sfc_main = {
         selectValue.value = void 0;
       }
     };
+    const isShowClearIcon = common_vendor.computed(() => {
+      if (!isEmpty(selectValue.value) && !props.disabled) {
+        return true;
+      }
+    });
     common_vendor.watch(
       () => props.options,
       (newV) => {
         if (newV.length === 0 && !props.hideEmptyText) {
-          dataList.value = [
-            {
-              [props.labelFiled]: props.emptyText,
-              [props.valueFiled]: noDataValue
-            }
-          ];
+          dataList.value = [{
+            [props.labelFiled]: props.emptyText,
+            [props.valueFiled]: noDataValue
+          }];
         } else {
           dataList.value = props.options.map((item) => {
             if (typeof item !== "object") {
@@ -151,40 +162,28 @@ const _sfc_main = {
           dataShow(dataList.value, newV);
         }
       },
-      { immediate: true }
+      {
+        immediate: true
+      }
     );
     return (_ctx, _cache) => {
-      return common_vendor.e({
-        a: isEmpty(selectText.value)
-      }, isEmpty(selectText.value) ? {
-        b: common_vendor.t(__props.placeholder)
-      } : {
-        c: common_vendor.t(selectText.value)
-      }, {
-        d: isEmpty(selectValue.value) || __props.disabled
-      }, isEmpty(selectValue.value) || __props.disabled ? {
-        e: common_vendor.p({
-          type: "bottom",
-          size: "14",
-          color: "#999"
-        })
-      } : {
-        f: common_vendor.p({
-          type: "clear",
-          size: "24",
-          color: "#C1C6CF"
+      return {
+        a: common_vendor.o(handleClear),
+        b: common_vendor.o(($event) => selectText.value = $event),
+        c: common_vendor.p({
+          disabled: __props.disabled,
+          placeholder: __props.placeholder,
+          clearable: isShowClearIcon.value,
+          suffixIcon: !isShowClearIcon.value && "bottom",
+          modelValue: selectText.value
         }),
-        g: common_vendor.o(clearhanlder)
-      }, {
-        h: __props.hideBorder ? 1 : "",
-        i: __props.disabled ? 1 : "",
-        j: dataList.value,
-        k: __props.labelFiled,
-        l: __props.disabled,
-        m: pickValue.value,
-        n: common_vendor.o(submit),
-        o: common_vendor.o(cancel)
-      });
+        d: dataList.value,
+        e: __props.labelFiled,
+        f: pickValue.value,
+        g: common_vendor.o(submit),
+        h: common_vendor.o(cancel),
+        i: __props.disabled || pickerDisabled.value
+      };
     };
   }
 };

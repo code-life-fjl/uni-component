@@ -4,7 +4,7 @@
 			基础使用
 		</view>
 		<cl-select-picker style="width: 340px;" v-model="formData.picker" :options="options" @cancal="cancal" @clear="clear"
-			@submit="pickerSubmit">
+			@submit="pickerSubmit" disabled>
 		</cl-select-picker>
 		<view style="margin-top: 50rpx;">
 			<view class="section_title">
@@ -12,8 +12,10 @@
 			</view>
 			<uni-forms :modelValue="formData" ref="formRef" label-width="150rpx">
 				<uni-forms-item label="表单测试" name="picker1" :rules="[{required: true, errorMessage: '表单测试不能为空'}]" required>
-					<cl-select-picker v-model="formData.picker1" :options="options"></cl-select-picker>
+					<cl-select-picker v-model="formData.picker1"  :options="options"></cl-select-picker>
+					<uni-easyinput placeholder="请输入" ></uni-easyinput>
 				</uni-forms-item>
+				{{formData.picker1}}
 				<button @click="formSubmit">表单提交</button>
 			</uni-forms>
 		</view>
@@ -26,10 +28,11 @@
 		reactive
 	} from 'vue'
 	const formData = reactive({
-		picker: 'value3',
-		picker1: ''
+		picker: 'value2',
+		picker1: 4
 	})
-	const options = ref([{
+	const options = ref([
+		{
 			label: '我是展示的值1',
 			value: 'value1'
 		},

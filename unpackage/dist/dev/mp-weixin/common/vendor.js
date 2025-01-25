@@ -1539,8 +1539,8 @@ function populateParameters(fromRes, toRes) {
     appVersion: "1.0.0",
     appVersionCode: "100",
     appLanguage: getAppLanguage(hostLanguage),
-    uniCompileVersion: "4.24",
-    uniRuntimeVersion: "4.24",
+    uniCompileVersion: "4.29",
+    uniRuntimeVersion: "4.29",
     uniPlatform: "mp-weixin",
     deviceBrand,
     deviceModel: model,
@@ -4795,19 +4795,6 @@ function exposeSetupStateOnRenderContext(instance) {
     }
   });
 }
-function useSlots() {
-  return getContext().slots;
-}
-function useAttrs() {
-  return getContext().attrs;
-}
-function getContext() {
-  const i = getCurrentInstance();
-  if (!i) {
-    warn$1(`useContext() called without active instance.`);
-  }
-  return i.setupContext || (i.setupContext = createSetupContext(i));
-}
 function normalizePropsOrEmits(props) {
   return isArray(props) ? props.reduce(
     (normalized, p2) => (normalized[p2] = null, normalized),
@@ -7977,19 +7964,18 @@ const createSubpackageApp = initCreateSubpackageApp();
 const createHook = (lifecycle) => (hook, target = getCurrentInstance()) => {
   !isInSSRComponentSetup && injectHook(lifecycle, hook, target);
 };
-const onReady = /* @__PURE__ */ createHook(ON_READY);
+const onLoad = /* @__PURE__ */ createHook(ON_LOAD);
 exports._export_sfc = _export_sfc;
 exports.computed = computed;
 exports.createSSRApp = createSSRApp;
 exports.e = e;
 exports.f = f;
-exports.getCurrentInstance = getCurrentInstance;
 exports.index = index;
 exports.initVueI18n = initVueI18n;
 exports.n = n;
 exports.nextTick$1 = nextTick$1;
 exports.o = o;
-exports.onReady = onReady;
+exports.onLoad = onLoad;
 exports.p = p;
 exports.r = r;
 exports.reactive = reactive;
@@ -7999,7 +7985,5 @@ exports.s = s;
 exports.sr = sr;
 exports.t = t;
 exports.unref = unref;
-exports.useAttrs = useAttrs;
-exports.useSlots = useSlots;
 exports.w = w;
 exports.watch = watch;

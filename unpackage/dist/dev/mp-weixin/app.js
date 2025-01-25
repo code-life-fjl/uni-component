@@ -8,6 +8,7 @@ if (!Math) {
   "./pages/componentPage/cl-select/index.js";
   "./pages/componentPage/cl-nav-bar/index.js";
   "./pages/componentPage/cl-date-picker/index.js";
+  "./pages/componentPage/cl-more-select-picker/index.js";
 }
 const _sfc_main = {
   onLaunch: function() {

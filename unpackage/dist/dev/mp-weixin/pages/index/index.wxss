@@ -5,3 +5,4 @@
 .content>.button.data-v-1cf27b2a {
 		margin-bottom: 20rpx;
 }
+.table.data-v-1cf27b2a,.td.data-v-1cf27b2a {box-sizing: border-box;border: 1px solid #dadada;}

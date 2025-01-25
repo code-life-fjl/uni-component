@@ -36,6 +36,12 @@
 			"style": {
 				"navigationBarTitleText": "时间选择器"
 			}
+		},
+		{
+			"path" : "pages/componentPage/cl-more-select-picker/index",	
+			"style": {
+				"navigationBarTitleText": "弹出多选组件"
+			}
 		}
 	],
 	"globalStyle": {

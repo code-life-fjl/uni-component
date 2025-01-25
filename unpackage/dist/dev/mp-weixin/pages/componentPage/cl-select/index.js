@@ -11,11 +11,13 @@ if (!Math) {
 const _sfc_main = {
   __name: "index",
   setup(__props) {
-    const value = common_vendor.ref();
-    const options = Array.from({ length: 100 }, (_, index) => {
+    const value = common_vendor.ref("value50");
+    const options = Array.from({
+      length: 100
+    }, (_, index) => {
       return {
         label: `我是展示的值${index}`,
-        value: `我是选中的值${index}`
+        value: `value${index}`
       };
     });
     return (_ctx, _cache) => {

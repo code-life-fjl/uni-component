@@ -3,6 +3,7 @@
 		<button class="button" v-for="(item, index) in pageList" :key="index"
 			@click="toPage(item.componentPath)">{{item.componentName}}</button>
 	</view>
+	<rich-text :nodes="demo"></rich-text>
 </template>
 
 <script setup>
@@ -51,4 +52,5 @@
 	.content>.button {
 		margin-bottom: 20rpx;
 	}
+	.table,.td {box-sizing: border-box;border: 1px solid #dadada;}
 </style>

@@ -1,7 +1,9 @@
 <template>
 	<view class="content">
-		<button @click="show">展示</button>
-		<cl-date-picker v-model="value" ref="datePickerRef" dateType="YYYY-MM-DD hh:mm:ss"></cl-date-picker>
+		<view class="">
+			使用picker-view和picker-view-column封装的时间选择器，支持年月日时分秒各种形式的组合搭配。
+		</view>
+		<cl-date-picker v-model="value" ref="datePickerRef" isNow dateType="hh:mm:ss"></cl-date-picker>
 	</view>
 </template>
 
@@ -9,21 +11,7 @@
 	import {
 		ref
 	} from 'vue'
-	const options = ref([
-		{
-			label: '单选1',
-			value: '1'
-		},
-		{
-			label: '单选2',
-			value: '2'
-		},
-		{
-			label: '单选3',
-			value: '3'
-		},
-	])
-	const value = ref('2024-12-12 11:05:20')
+	const value = ref('')
 	const datePickerRef = ref()
 	const show = () => {
 		datePickerRef.value.open()

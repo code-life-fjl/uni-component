@@ -118,6 +118,8 @@ const _sfc_main = {
     const blurHandle = () => {
       if (isSelected.value) {
         curSelectLabel.value = curSelect.value[props.labelField];
+      } else {
+        curSelectLabel.value = void 0;
       }
       emits("blur");
     };
@@ -134,12 +136,6 @@ const _sfc_main = {
           showPlaceholder.value = props.placeholder;
           scrollIntoView.value = void 0;
         }
-      } else {
-        if (isSelected.value) {
-          showPlaceholder.value = props.placeholder;
-        } else {
-          curSelectLabel.value = curSelect.value[props.labelField];
-        }
       }
     });
     common_vendor.watch(() => curSelect.value, (val) => {
@@ -152,17 +148,25 @@ const _sfc_main = {
         curSelectValue.value = val[props.valueField];
       }
     });
-    const isEmpty = (val) => {
-      return val === "" || val === void 0 || val === null;
-    };
-    common_vendor.watch(() => props.options, (newList) => {
-      if (newList.length > 0 && !isEmpty(props.modelValue)) {
-        console.log(newList, props.modelValue);
-        const data = newList.find((item) => item[props.valueField] === props.modelValue);
+    const setCurSelect = () => {
+      if (props.options.length > 0 && !isEmpty(props.modelValue)) {
+        const data = props.options.find((item) => item[props.valueField] === props.modelValue);
         if (data) {
           curSelect.value = data;
         }
       }
+    };
+    const isEmpty = (val) => {
+      return val === "" || val === void 0 || val === null;
+    };
+    common_vendor.watch(() => props.options, (newList) => {
+      setCurSelect();
+    }, {
+      immediate: true,
+      deep: true
+    });
+    common_vendor.watch(() => props.modelValue, (newList) => {
+      setCurSelect();
     }, {
       immediate: true,
       deep: true
@@ -172,8 +176,8 @@ const _sfc_main = {
     };
     return (_ctx, _cache) => {
       return common_vendor.e({
-        a: !isSelected.value
-      }, !isSelected.value ? {
+        a: !isSelected.value || visible.value
+      }, !isSelected.value || visible.value ? {
         b: common_vendor.p({
           type: visible.value ? "top" : "bottom",
           size: "14"
@@ -182,7 +186,8 @@ const _sfc_main = {
         c: common_vendor.o(clearHandle),
         d: common_vendor.p({
           type: "clear",
-          size: "20"
+          size: "24",
+          color: "#c0c4cc"
         })
       }, {
         e: common_vendor.o(focusHandle),

@@ -31,7 +31,7 @@ if (uni.restoreGlobal) {
 }
 (function(vue) {
   "use strict";
-  const ON_READY = "onReady";
+  const ON_LOAD = "onLoad";
   function formatAppLog(type, filename, ...args) {
     if (uni.__log__) {
       uni.__log__(type, filename, ...args);
@@ -45,7 +45,7 @@ if (uni.restoreGlobal) {
   const createHook = (lifecycle) => (hook, target = vue.getCurrentInstance()) => {
     !vue.isInSSRComponentSetup && vue.injectHook(lifecycle, hook, target);
   };
-  const onReady = /* @__PURE__ */ createHook(ON_READY);
+  const onLoad = /* @__PURE__ */ createHook(ON_LOAD);
   const _export_sfc = (sfc, props) => {
     const target = sfc.__vccOpts || sfc;
     for (const [key, val] of props) {
@@ -53,10 +53,11 @@ if (uni.restoreGlobal) {
     }
     return target;
   };
-  const _sfc_main$g = {
+  const _sfc_main$l = {
     __name: "index",
-    setup(__props) {
-      vue.ref("");
+    setup(__props, { expose: __expose }) {
+      __expose();
+      const city = vue.ref("");
       const pageList = vue.ref([
         {
           componentName: "cl-select-picker",
@@ -73,33 +74,52 @@ if (uni.restoreGlobal) {
         {
           componentName: "cl-nav-bar",
           componentPath: "/pages/componentPage/cl-nav-bar/index"
+        },
+        {
+          componentName: "cl-date-picker",
+          componentPath: "/pages/componentPage/cl-date-picker/index"
         }
       ]);
+      const pickerSubmit = (val, curData) => {
+        formatAppLog("log", "at pages/index/index.vue:36", val, curData);
+      };
       const toPage = (url) => {
         uni.navigateTo({
           url
         });
       };
-      return (_ctx, _cache) => {
-        return vue.openBlock(), vue.createElementBlock("view", { class: "content" }, [
+      const __returned__ = { city, pageList, pickerSubmit, toPage, ref: vue.ref };
+      Object.defineProperty(__returned__, "__isScriptSetup", { enumerable: false, value: true });
+      return __returned__;
+    }
+  };
+  function _sfc_render$k(_ctx, _cache, $props, $setup, $data, $options) {
+    return vue.openBlock(), vue.createElementBlock(
+      vue.Fragment,
+      null,
+      [
+        vue.createElementVNode("view", { class: "content" }, [
           (vue.openBlock(true), vue.createElementBlock(
             vue.Fragment,
             null,
-            vue.renderList(pageList.value, (item, index) => {
+            vue.renderList($setup.pageList, (item, index) => {
               return vue.openBlock(), vue.createElementBlock("button", {
                 class: "button",
                 key: index,
-                onClick: ($event) => toPage(item.componentPath)
+                onClick: ($event) => $setup.toPage(item.componentPath)
               }, vue.toDisplayString(item.componentName), 9, ["onClick"]);
             }),
             128
             /* KEYED_FRAGMENT */
           ))
-        ]);
-      };
-    }
-  };
-  const PagesIndexIndex = /* @__PURE__ */ _export_sfc(_sfc_main$g, [["__scopeId", "data-v-1cf27b2a"], ["__file", "E:/code/uniapp/uni-app-components/pages/index/index.vue"]]);
+        ]),
+        vue.createElementVNode("rich-text", { nodes: _ctx.demo }, null, 8, ["nodes"])
+      ],
+      64
+      /* STABLE_FRAGMENT */
+    );
+  }
+  const PagesIndexIndex = /* @__PURE__ */ _export_sfc(_sfc_main$l, [["render", _sfc_render$k], ["__scopeId", "data-v-1cf27b2a"], ["__file", "E:/code/uniapp/uni-app-components/pages/index/index.vue"]]);
   const fontData = [
     {
       "font_class": "arrow-down",
@@ -750,7 +770,7 @@ if (uni.restoreGlobal) {
     const reg = /^[0-9]*$/g;
     return typeof val === "number" || reg.test(val) ? val + "px" : val;
   };
-  const _sfc_main$f = {
+  const _sfc_main$k = {
     name: "UniIcons",
     emits: ["click"],
     props: {
@@ -804,7 +824,7 @@ if (uni.restoreGlobal) {
       }
     }
   };
-  function _sfc_render$7(_ctx, _cache, $props, $setup, $data, $options) {
+  function _sfc_render$j(_ctx, _cache, $props, $setup, $data, $options) {
     return vue.openBlock(), vue.createElementBlock(
       "text",
       {
@@ -819,9 +839,502 @@ if (uni.restoreGlobal) {
       /* CLASS, STYLE */
     );
   }
-  const __easycom_0$6 = /* @__PURE__ */ _export_sfc(_sfc_main$f, [["render", _sfc_render$7], ["__scopeId", "data-v-d31e1c47"], ["__file", "E:/code/uniapp/uni-app-components/uni_modules/uni-icons/components/uni-icons/uni-icons.vue"]]);
+  const __easycom_0$8 = /* @__PURE__ */ _export_sfc(_sfc_main$k, [["render", _sfc_render$j], ["__scopeId", "data-v-d31e1c47"], ["__file", "E:/code/uniapp/uni-app-components/uni_modules/uni-icons/components/uni-icons/uni-icons.vue"]]);
+  function obj2strClass(obj) {
+    let classess = "";
+    for (let key in obj) {
+      const val = obj[key];
+      if (val) {
+        classess += `${key} `;
+      }
+    }
+    return classess;
+  }
+  function obj2strStyle(obj) {
+    let style = "";
+    for (let key in obj) {
+      const val = obj[key];
+      style += `${key}:${val};`;
+    }
+    return style;
+  }
+  const _sfc_main$j = {
+    name: "uni-easyinput",
+    emits: [
+      "click",
+      "iconClick",
+      "update:modelValue",
+      "input",
+      "focus",
+      "blur",
+      "confirm",
+      "clear",
+      "eyes",
+      "change",
+      "keyboardheightchange"
+    ],
+    model: {
+      prop: "modelValue",
+      event: "update:modelValue"
+    },
+    options: {
+      virtualHost: true
+    },
+    inject: {
+      form: {
+        from: "uniForm",
+        default: null
+      },
+      formItem: {
+        from: "uniFormItem",
+        default: null
+      }
+    },
+    props: {
+      name: String,
+      value: [Number, String],
+      modelValue: [Number, String],
+      type: {
+        type: String,
+        default: "text"
+      },
+      clearable: {
+        type: Boolean,
+        default: true
+      },
+      autoHeight: {
+        type: Boolean,
+        default: false
+      },
+      placeholder: {
+        type: String,
+        default: " "
+      },
+      placeholderStyle: String,
+      focus: {
+        type: Boolean,
+        default: false
+      },
+      disabled: {
+        type: Boolean,
+        default: false
+      },
+      maxlength: {
+        type: [Number, String],
+        default: 140
+      },
+      confirmType: {
+        type: String,
+        default: "done"
+      },
+      clearSize: {
+        type: [Number, String],
+        default: 24
+      },
+      inputBorder: {
+        type: Boolean,
+        default: true
+      },
+      prefixIcon: {
+        type: String,
+        default: ""
+      },
+      suffixIcon: {
+        type: String,
+        default: ""
+      },
+      trim: {
+        type: [Boolean, String],
+        default: false
+      },
+      cursorSpacing: {
+        type: Number,
+        default: 0
+      },
+      passwordIcon: {
+        type: Boolean,
+        default: true
+      },
+      adjustPosition: {
+        type: Boolean,
+        default: true
+      },
+      primaryColor: {
+        type: String,
+        default: "#2979ff"
+      },
+      styles: {
+        type: Object,
+        default() {
+          return {
+            color: "#333",
+            backgroundColor: "#fff",
+            disableColor: "#F7F6F6",
+            borderColor: "#e5e5e5"
+          };
+        }
+      },
+      errorMessage: {
+        type: [String, Boolean],
+        default: ""
+      }
+    },
+    data() {
+      return {
+        focused: false,
+        val: "",
+        showMsg: "",
+        border: false,
+        isFirstBorder: false,
+        showClearIcon: false,
+        showPassword: false,
+        focusShow: false,
+        localMsg: "",
+        isEnter: false
+        // 用于判断当前是否是使用回车操作
+      };
+    },
+    computed: {
+      // 输入框内是否有值
+      isVal() {
+        const val = this.val;
+        if (val || val === 0) {
+          return true;
+        }
+        return false;
+      },
+      msg() {
+        return this.localMsg || this.errorMessage;
+      },
+      // 因为uniapp的input组件的maxlength组件必须要数值，这里转为数值，用户可以传入字符串数值
+      inputMaxlength() {
+        return Number(this.maxlength);
+      },
+      // 处理外层样式的style
+      boxStyle() {
+        return `color:${this.inputBorder && this.msg ? "#e43d33" : this.styles.color};`;
+      },
+      // input 内容的类和样式处理
+      inputContentClass() {
+        return obj2strClass({
+          "is-input-border": this.inputBorder,
+          "is-input-error-border": this.inputBorder && this.msg,
+          "is-textarea": this.type === "textarea",
+          "is-disabled": this.disabled,
+          "is-focused": this.focusShow
+        });
+      },
+      inputContentStyle() {
+        const focusColor = this.focusShow ? this.primaryColor : this.styles.borderColor;
+        const borderColor = this.inputBorder && this.msg ? "#dd524d" : focusColor;
+        return obj2strStyle({
+          "border-color": borderColor || "#e5e5e5",
+          "background-color": this.disabled ? this.styles.disableColor : this.styles.backgroundColor
+        });
+      },
+      // input右侧样式
+      inputStyle() {
+        const paddingRight = this.type === "password" || this.clearable || this.prefixIcon ? "" : "10px";
+        return obj2strStyle({
+          "padding-right": paddingRight,
+          "padding-left": this.prefixIcon ? "" : "10px"
+        });
+      }
+    },
+    watch: {
+      value(newVal) {
+        this.val = newVal;
+      },
+      modelValue(newVal) {
+        this.val = newVal;
+      },
+      focus(newVal) {
+        this.$nextTick(() => {
+          this.focused = this.focus;
+          this.focusShow = this.focus;
+        });
+      }
+    },
+    created() {
+      this.init();
+      if (this.form && this.formItem) {
+        this.$watch("formItem.errMsg", (newVal) => {
+          this.localMsg = newVal;
+        });
+      }
+    },
+    mounted() {
+      this.$nextTick(() => {
+        this.focused = this.focus;
+        this.focusShow = this.focus;
+      });
+    },
+    methods: {
+      /**
+       * 初始化变量值
+       */
+      init() {
+        if (this.value || this.value === 0) {
+          this.val = this.value;
+        } else if (this.modelValue || this.modelValue === 0 || this.modelValue === "") {
+          this.val = this.modelValue;
+        } else {
+          this.val = null;
+        }
+      },
+      /**
+       * 点击图标时触发
+       * @param {Object} type
+       */
+      onClickIcon(type) {
+        this.$emit("iconClick", type);
+      },
+      /**
+       * 显示隐藏内容，密码框时生效
+       */
+      onEyes() {
+        this.showPassword = !this.showPassword;
+        this.$emit("eyes", this.showPassword);
+      },
+      /**
+       * 输入时触发
+       * @param {Object} event
+       */
+      onInput(event) {
+        let value = event.detail.value;
+        if (this.trim) {
+          if (typeof this.trim === "boolean" && this.trim) {
+            value = this.trimStr(value);
+          }
+          if (typeof this.trim === "string") {
+            value = this.trimStr(value, this.trim);
+          }
+        }
+        if (this.errMsg)
+          this.errMsg = "";
+        this.val = value;
+        this.$emit("input", value);
+        this.$emit("update:modelValue", value);
+      },
+      /**
+       * 外部调用方法
+       * 获取焦点时触发
+       * @param {Object} event
+       */
+      onFocus() {
+        this.$nextTick(() => {
+          this.focused = true;
+        });
+        this.$emit("focus", null);
+      },
+      _Focus(event) {
+        this.focusShow = true;
+        this.$emit("focus", event);
+      },
+      /**
+       * 外部调用方法
+       * 失去焦点时触发
+       * @param {Object} event
+       */
+      onBlur() {
+        this.focused = false;
+        this.$emit("blur", null);
+      },
+      _Blur(event) {
+        event.detail.value;
+        this.focusShow = false;
+        this.$emit("blur", event);
+        if (this.isEnter === false) {
+          this.$emit("change", this.val);
+        }
+        if (this.form && this.formItem) {
+          const { validateTrigger } = this.form;
+          if (validateTrigger === "blur") {
+            this.formItem.onFieldChange();
+          }
+        }
+      },
+      /**
+       * 按下键盘的发送键
+       * @param {Object} e
+       */
+      onConfirm(e) {
+        this.$emit("confirm", this.val);
+        this.isEnter = true;
+        this.$emit("change", this.val);
+        this.$nextTick(() => {
+          this.isEnter = false;
+        });
+      },
+      /**
+       * 清理内容
+       * @param {Object} event
+       */
+      onClear(event) {
+        this.val = "";
+        this.$emit("input", "");
+        this.$emit("update:modelValue", "");
+        this.$emit("clear");
+      },
+      /**
+       * 键盘高度发生变化的时候触发此事件
+       * 兼容性：微信小程序2.7.0+、App 3.1.0+
+       * @param {Object} event
+       */
+      onkeyboardheightchange(event) {
+        this.$emit("keyboardheightchange", event);
+      },
+      /**
+       * 去除空格
+       */
+      trimStr(str, pos = "both") {
+        if (pos === "both") {
+          return str.trim();
+        } else if (pos === "left") {
+          return str.trimLeft();
+        } else if (pos === "right") {
+          return str.trimRight();
+        } else if (pos === "start") {
+          return str.trimStart();
+        } else if (pos === "end") {
+          return str.trimEnd();
+        } else if (pos === "all") {
+          return str.replace(/\s+/g, "");
+        } else if (pos === "none") {
+          return str;
+        }
+        return str;
+      }
+    }
+  };
+  function _sfc_render$i(_ctx, _cache, $props, $setup, $data, $options) {
+    const _component_uni_icons = resolveEasycom(vue.resolveDynamicComponent("uni-icons"), __easycom_0$8);
+    return vue.openBlock(), vue.createElementBlock(
+      "view",
+      {
+        class: vue.normalizeClass(["uni-easyinput", { "uni-easyinput-error": $options.msg }]),
+        style: vue.normalizeStyle($options.boxStyle)
+      },
+      [
+        vue.createElementVNode(
+          "view",
+          {
+            class: vue.normalizeClass(["uni-easyinput__content", $options.inputContentClass]),
+            style: vue.normalizeStyle($options.inputContentStyle)
+          },
+          [
+            $props.prefixIcon ? (vue.openBlock(), vue.createBlock(_component_uni_icons, {
+              key: 0,
+              class: "content-clear-icon",
+              type: $props.prefixIcon,
+              color: "#c0c4cc",
+              onClick: _cache[0] || (_cache[0] = ($event) => $options.onClickIcon("prefix")),
+              size: "22"
+            }, null, 8, ["type"])) : vue.createCommentVNode("v-if", true),
+            vue.renderSlot(_ctx.$slots, "left", {}, void 0, true),
+            $props.type === "textarea" ? (vue.openBlock(), vue.createElementBlock("textarea", {
+              key: 1,
+              class: vue.normalizeClass(["uni-easyinput__content-textarea", { "input-padding": $props.inputBorder }]),
+              name: $props.name,
+              value: $data.val,
+              placeholder: $props.placeholder,
+              placeholderStyle: $props.placeholderStyle,
+              disabled: $props.disabled,
+              "placeholder-class": "uni-easyinput__placeholder-class",
+              maxlength: $options.inputMaxlength,
+              focus: $data.focused,
+              autoHeight: $props.autoHeight,
+              "cursor-spacing": $props.cursorSpacing,
+              "adjust-position": $props.adjustPosition,
+              onInput: _cache[1] || (_cache[1] = (...args) => $options.onInput && $options.onInput(...args)),
+              onBlur: _cache[2] || (_cache[2] = (...args) => $options._Blur && $options._Blur(...args)),
+              onFocus: _cache[3] || (_cache[3] = (...args) => $options._Focus && $options._Focus(...args)),
+              onConfirm: _cache[4] || (_cache[4] = (...args) => $options.onConfirm && $options.onConfirm(...args)),
+              onKeyboardheightchange: _cache[5] || (_cache[5] = (...args) => $options.onkeyboardheightchange && $options.onkeyboardheightchange(...args))
+            }, null, 42, ["name", "value", "placeholder", "placeholderStyle", "disabled", "maxlength", "focus", "autoHeight", "cursor-spacing", "adjust-position"])) : (vue.openBlock(), vue.createElementBlock("input", {
+              key: 2,
+              style: vue.normalizeStyle([{ "pointer-events": "none" }, $options.inputStyle]),
+              type: $props.type === "password" ? "text" : $props.type,
+              class: "uni-easyinput__content-input",
+              name: $props.name,
+              value: $data.val,
+              password: !$data.showPassword && $props.type === "password",
+              placeholder: $props.placeholder,
+              placeholderStyle: $props.placeholderStyle,
+              "placeholder-class": "uni-easyinput__placeholder-class",
+              disabled: $props.disabled,
+              maxlength: $options.inputMaxlength,
+              focus: $data.focused,
+              confirmType: $props.confirmType,
+              "cursor-spacing": $props.cursorSpacing,
+              "adjust-position": $props.adjustPosition,
+              onFocus: _cache[6] || (_cache[6] = (...args) => $options._Focus && $options._Focus(...args)),
+              onBlur: _cache[7] || (_cache[7] = (...args) => $options._Blur && $options._Blur(...args)),
+              onInput: _cache[8] || (_cache[8] = (...args) => $options.onInput && $options.onInput(...args)),
+              onConfirm: _cache[9] || (_cache[9] = (...args) => $options.onConfirm && $options.onConfirm(...args)),
+              onKeyboardheightchange: _cache[10] || (_cache[10] = (...args) => $options.onkeyboardheightchange && $options.onkeyboardheightchange(...args))
+            }, null, 44, ["type", "name", "value", "password", "placeholder", "placeholderStyle", "disabled", "maxlength", "focus", "confirmType", "cursor-spacing", "adjust-position"])),
+            $props.type === "password" && $props.passwordIcon ? (vue.openBlock(), vue.createElementBlock(
+              vue.Fragment,
+              { key: 3 },
+              [
+                vue.createCommentVNode(" 开启密码时显示小眼睛 "),
+                $options.isVal ? (vue.openBlock(), vue.createBlock(_component_uni_icons, {
+                  key: 0,
+                  class: vue.normalizeClass(["content-clear-icon", { "is-textarea-icon": $props.type === "textarea" }]),
+                  type: $data.showPassword ? "eye-slash-filled" : "eye-filled",
+                  size: 22,
+                  color: $data.focusShow ? $props.primaryColor : "#c0c4cc",
+                  onClick: $options.onEyes
+                }, null, 8, ["class", "type", "color", "onClick"])) : vue.createCommentVNode("v-if", true)
+              ],
+              64
+              /* STABLE_FRAGMENT */
+            )) : vue.createCommentVNode("v-if", true),
+            $props.suffixIcon ? (vue.openBlock(), vue.createElementBlock(
+              vue.Fragment,
+              { key: 4 },
+              [
+                $props.suffixIcon ? (vue.openBlock(), vue.createBlock(_component_uni_icons, {
+                  key: 0,
+                  class: "content-clear-icon",
+                  type: $props.suffixIcon,
+                  color: "#c0c4cc",
+                  onClick: _cache[11] || (_cache[11] = ($event) => $options.onClickIcon("suffix")),
+                  size: "22"
+                }, null, 8, ["type"])) : vue.createCommentVNode("v-if", true)
+              ],
+              64
+              /* STABLE_FRAGMENT */
+            )) : (vue.openBlock(), vue.createElementBlock(
+              vue.Fragment,
+              { key: 5 },
+              [
+                $props.clearable && $options.isVal && !$props.disabled && $props.type !== "textarea" ? (vue.openBlock(), vue.createBlock(_component_uni_icons, {
+                  key: 0,
+                  class: vue.normalizeClass(["content-clear-icon", { "is-textarea-icon": $props.type === "textarea" }]),
+                  type: "clear",
+                  size: $props.clearSize,
+                  color: $options.msg ? "#dd524d" : $data.focusShow ? $props.primaryColor : "#c0c4cc",
+                  onClickCapture: $options.onClear
+                }, null, 8, ["class", "size", "color", "onClickCapture"])) : vue.createCommentVNode("v-if", true)
+              ],
+              64
+              /* STABLE_FRAGMENT */
+            )),
+            vue.renderSlot(_ctx.$slots, "right", {}, void 0, true)
+          ],
+          6
+          /* CLASS, STYLE */
+        )
+      ],
+      6
+      /* CLASS, STYLE */
+    );
+  }
+  const __easycom_1$1 = /* @__PURE__ */ _export_sfc(_sfc_main$j, [["render", _sfc_render$i], ["__scopeId", "data-v-09fd5285"], ["__file", "E:/code/uniapp/uni-app-components/uni_modules/uni-easyinput/components/uni-easyinput/uni-easyinput.vue"]]);
   const noDataValue = "#codeLife_noData#";
-  const _sfc_main$e = {
+  const _sfc_main$i = {
     __name: "cl-select-picker",
     props: {
       // 数据列表
@@ -834,7 +1347,7 @@ if (uni.restoreGlobal) {
         type: String,
         default: "请选择"
       },
-      // 当列表没有数据的时候是否新增一条"暂无数据"用来提示用户
+      // 是否隐藏暂无数据
       hideEmptyText: {
         type: Boolean,
         default: false
@@ -863,31 +1376,42 @@ if (uni.restoreGlobal) {
         type: [String, Number],
         default: void 0
       },
-      // 
+      //
       emptyText: {
         type: String,
         default: "暂无数据"
+      },
+      placeholderStyle: {
+        type: Object,
+        default: () => ({})
       }
     },
     emits: ["update:modelValue", "submit", "clear", "cancel"],
-    setup(__props, { emit: __emit }) {
+    setup(__props, { expose: __expose, emit: __emit }) {
+      __expose();
       const emit = __emit;
       const props = __props;
       const dataList = vue.ref([]);
       const selectText = vue.ref(void 0);
       const selectValue = vue.ref(void 0);
-      const clearhanlder = () => {
+      const pickerDisabled = vue.ref(false);
+      const handleClear = () => {
+        pickerDisabled.value = true;
         selectText.value = void 0;
         selectValue.value = void 0;
         emit("clear");
+        setTimeout(() => {
+          pickerDisabled.value = false;
+        });
+      };
+      const isEmpty = (val) => {
+        return val === "" || val === null || val === void 0;
       };
       const submit = (e) => {
         const idx = Number(e.detail.value);
         const item = dataList.value[idx];
-        formatAppLog("log", "at uni_modules/cl-select-picker/components/cl-select-picker/cl-select-picker.vue:89", item, "item", props, item[props.valueFiled]);
         const value = item ? item[props.valueFiled] : void 0;
         const label = item ? item[props.labelFiled] : void 0;
-        formatAppLog("log", "at uni_modules/cl-select-picker/components/cl-select-picker/cl-select-picker.vue:92", value, "valuevalue");
         if (props.hideEmptyText && dataList.value.length === 0 || value === noDataValue) {
           selectText.value = void 0;
           selectValue.value = void 0;
@@ -901,8 +1425,13 @@ if (uni.restoreGlobal) {
       const cancel = () => {
         emit("cancel");
       };
+      const pickValue = vue.ref(0);
       const dataShow = (list, val) => {
-        const curData = list.find((item) => item[props.valueFiled] === val);
+        const idx = list.findIndex((item) => item[props.valueFiled] === val);
+        if (idx > -1) {
+          pickValue.value = idx;
+        }
+        const curData = list[idx];
         if (curData) {
           selectText.value = curData[props.labelFiled];
           selectValue.value = curData[props.valueFiled];
@@ -911,16 +1440,19 @@ if (uni.restoreGlobal) {
           selectValue.value = void 0;
         }
       };
+      const isShowClearIcon = vue.computed(() => {
+        if (!isEmpty(selectValue.value) && !props.disabled) {
+          return true;
+        }
+      });
       vue.watch(
         () => props.options,
         (newV) => {
           if (newV.length === 0 && !props.hideEmptyText) {
-            dataList.value = [
-              {
-                [props.labelFiled]: props.emptyText,
-                [props.valueFiled]: noDataValue
-              }
-            ];
+            dataList.value = [{
+              [props.labelFiled]: props.emptyText,
+              [props.valueFiled]: noDataValue
+            }];
           } else {
             dataList.value = props.options.map((item) => {
               if (typeof item !== "object") {
@@ -949,78 +1481,45 @@ if (uni.restoreGlobal) {
       vue.watch(
         () => props.modelValue,
         (newV) => {
-          formatAppLog("log", "at uni_modules/cl-select-picker/components/cl-select-picker/cl-select-picker.vue:164", newV, "newVnewV");
           if (isEmpty(newV)) {
             selectText.value = void 0;
             selectValue.value = void 0;
           } else {
             dataShow(dataList.value, newV);
           }
+        },
+        {
+          immediate: true
         }
       );
-      const isEmpty = (val) => {
-        return val === "" || val === null || val === void 0;
-      };
-      return (_ctx, _cache) => {
-        const _component_uni_icons = resolveEasycom(vue.resolveDynamicComponent("uni-icons"), __easycom_0$6);
-        return vue.openBlock(), vue.createElementBlock("picker", {
-          range: dataList.value,
-          "range-key": __props.labelFiled,
-          disabled: __props.disabled,
-          onChange: submit,
-          onCancel: cancel
-        }, [
-          vue.createElementVNode(
-            "view",
-            {
-              class: vue.normalizeClass(["uni_input", { hideBorder: __props.hideBorder, disabled: __props.disabled }])
-            },
-            [
-              isEmpty(selectText.value) ? (vue.openBlock(), vue.createElementBlock(
-                "text",
-                {
-                  key: 0,
-                  class: "placeholder"
-                },
-                vue.toDisplayString(__props.placeholder),
-                1
-                /* TEXT */
-              )) : (vue.openBlock(), vue.createElementBlock(
-                "text",
-                {
-                  key: 1,
-                  class: "show_text"
-                },
-                vue.toDisplayString(selectText.value),
-                1
-                /* TEXT */
-              )),
-              isEmpty(selectValue.value) || __props.disabled ? (vue.openBlock(), vue.createElementBlock("view", { key: 2 }, [
-                vue.createVNode(_component_uni_icons, {
-                  type: "bottom",
-                  size: "14",
-                  color: "#999"
-                })
-              ])) : (vue.openBlock(), vue.createElementBlock("view", {
-                key: 3,
-                onClick: vue.withModifiers(clearhanlder, ["stop"])
-              }, [
-                vue.createVNode(_component_uni_icons, {
-                  type: "clear",
-                  size: "24",
-                  color: "#C1C6CF"
-                })
-              ]))
-            ],
-            2
-            /* CLASS */
-          )
-        ], 40, ["range", "range-key", "disabled"]);
-      };
+      const __returned__ = { emit, props, dataList, selectText, selectValue, noDataValue, pickerDisabled, handleClear, isEmpty, submit, cancel, pickValue, dataShow, isShowClearIcon, watch: vue.watch, ref: vue.ref, computed: vue.computed, nextTick: vue.nextTick };
+      Object.defineProperty(__returned__, "__isScriptSetup", { enumerable: false, value: true });
+      return __returned__;
     }
   };
-  const __easycom_0$5 = /* @__PURE__ */ _export_sfc(_sfc_main$e, [["__scopeId", "data-v-7036e199"], ["__file", "E:/code/uniapp/uni-app-components/uni_modules/cl-select-picker/components/cl-select-picker/cl-select-picker.vue"]]);
-  const _sfc_main$d = {
+  function _sfc_render$h(_ctx, _cache, $props, $setup, $data, $options) {
+    const _component_uni_easyinput = resolveEasycom(vue.resolveDynamicComponent("uni-easyinput"), __easycom_1$1);
+    return vue.openBlock(), vue.createElementBlock("picker", {
+      range: $setup.dataList,
+      "range-key": $props.labelFiled,
+      value: $setup.pickValue,
+      onChange: $setup.submit,
+      onCancel: $setup.cancel,
+      disabled: $props.disabled || $setup.pickerDisabled
+    }, [
+      vue.createVNode(_component_uni_easyinput, {
+        disabled: $props.disabled,
+        modelValue: $setup.selectText,
+        "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => $setup.selectText = $event),
+        placeholder: $props.placeholder,
+        clearable: $setup.isShowClearIcon,
+        suffixIcon: !$setup.isShowClearIcon && "bottom",
+        onClear: $setup.handleClear
+      }, null, 8, ["disabled", "modelValue", "placeholder", "clearable", "suffixIcon"])
+    ], 40, ["range", "range-key", "value", "disabled"]);
+  }
+  const __easycom_0$7 = /* @__PURE__ */ _export_sfc(_sfc_main$i, [["render", _sfc_render$h], ["__scopeId", "data-v-7036e199"], ["__file", "E:/code/uniapp/uni-app-components/uni_modules/cl-select-picker/components/cl-select-picker/cl-select-picker.vue"]]);
+  const _sfc_main$h = {
     name: "uniFormsItem",
     options: {
       virtualHost: true
@@ -1352,7 +1851,7 @@ if (uni.restoreGlobal) {
       }
     }
   };
-  function _sfc_render$6(_ctx, _cache, $props, $setup, $data, $options) {
+  function _sfc_render$g(_ctx, _cache, $props, $setup, $data, $options) {
     return vue.openBlock(), vue.createElementBlock(
       "view",
       {
@@ -1408,7 +1907,7 @@ if (uni.restoreGlobal) {
       /* CLASS */
     );
   }
-  const __easycom_1$1 = /* @__PURE__ */ _export_sfc(_sfc_main$d, [["render", _sfc_render$6], ["__scopeId", "data-v-462874dd"], ["__file", "E:/code/uniapp/uni-app-components/uni_modules/uni-forms/components/uni-forms-item/uni-forms-item.vue"]]);
+  const __easycom_2 = /* @__PURE__ */ _export_sfc(_sfc_main$h, [["render", _sfc_render$g], ["__scopeId", "data-v-462874dd"], ["__file", "E:/code/uniapp/uni-app-components/uni_modules/uni-forms/components/uni-forms-item/uni-forms-item.vue"]]);
   var pattern = {
     email: /^\S+?@\S+?\.\S+?$/,
     idcard: /^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/,
@@ -1972,7 +2471,7 @@ if (uni.restoreGlobal) {
       return false;
     }
   };
-  const _sfc_main$c = {
+  const _sfc_main$g = {
     name: "uniForms",
     emits: ["validate", "submit"],
     options: {
@@ -2269,20 +2768,21 @@ if (uni.restoreGlobal) {
       _isEqual: isEqual
     }
   };
-  function _sfc_render$5(_ctx, _cache, $props, $setup, $data, $options) {
+  function _sfc_render$f(_ctx, _cache, $props, $setup, $data, $options) {
     return vue.openBlock(), vue.createElementBlock("view", { class: "uni-forms" }, [
       vue.createElementVNode("form", null, [
         vue.renderSlot(_ctx.$slots, "default", {}, void 0, true)
       ])
     ]);
   }
-  const __easycom_2 = /* @__PURE__ */ _export_sfc(_sfc_main$c, [["render", _sfc_render$5], ["__scopeId", "data-v-9a1e3c32"], ["__file", "E:/code/uniapp/uni-app-components/uni_modules/uni-forms/components/uni-forms/uni-forms.vue"]]);
-  const _sfc_main$b = {
+  const __easycom_3 = /* @__PURE__ */ _export_sfc(_sfc_main$g, [["render", _sfc_render$f], ["__scopeId", "data-v-9a1e3c32"], ["__file", "E:/code/uniapp/uni-app-components/uni_modules/uni-forms/components/uni-forms/uni-forms.vue"]]);
+  const _sfc_main$f = {
     __name: "index",
-    setup(__props) {
+    setup(__props, { expose: __expose }) {
+      __expose();
       const formData = vue.reactive({
-        picker: "value3",
-        picker1: ""
+        picker: "value2",
+        picker1: 4
       });
       const options = vue.ref([
         {
@@ -2300,70 +2800,80 @@ if (uni.restoreGlobal) {
         4
       ]);
       const pickerSubmit = (val, curData) => {
-        formatAppLog("log", "at pages/componentPage/cl-select-picker/index.vue:47", val, curData);
+        formatAppLog("log", "at pages/componentPage/cl-select-picker/index.vue:50", val, curData);
       };
       const clear = () => {
-        formatAppLog("log", "at pages/componentPage/cl-select-picker/index.vue:50", "点击了清除按钮！");
+        formatAppLog("log", "at pages/componentPage/cl-select-picker/index.vue:53", "点击了清除按钮！");
       };
       const cancal = () => {
-        formatAppLog("log", "at pages/componentPage/cl-select-picker/index.vue:53", "点击了取消按钮！");
+        formatAppLog("log", "at pages/componentPage/cl-select-picker/index.vue:56", "点击了取消按钮！");
       };
       const formRef = vue.ref();
       const formSubmit = async () => {
-        formatAppLog("log", "at pages/componentPage/cl-select-picker/index.vue:57", formRef.value, "formRef");
+        formatAppLog("log", "at pages/componentPage/cl-select-picker/index.vue:60", formRef.value, "formRef");
         await formRef.value.validate();
       };
-      return (_ctx, _cache) => {
-        const _component_cl_select_picker = resolveEasycom(vue.resolveDynamicComponent("cl-select-picker"), __easycom_0$5);
-        const _component_uni_forms_item = resolveEasycom(vue.resolveDynamicComponent("uni-forms-item"), __easycom_1$1);
-        const _component_uni_forms = resolveEasycom(vue.resolveDynamicComponent("uni-forms"), __easycom_2);
-        return vue.openBlock(), vue.createElementBlock("view", { class: "content" }, [
-          vue.createElementVNode("view", { class: "section_title" }, " 基础使用 "),
-          vue.createVNode(_component_cl_select_picker, {
-            style: { "width": "340px" },
-            modelValue: formData.picker,
-            "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => formData.picker = $event),
-            options: options.value,
-            onCancal: cancal,
-            onClear: clear,
-            onSubmit: pickerSubmit
-          }, null, 8, ["modelValue", "options"]),
-          vue.createElementVNode("view", { style: { "margin-top": "50rpx" } }, [
-            vue.createElementVNode("view", { class: "section_title" }, " 配合uni-forms使用 "),
-            vue.createVNode(_component_uni_forms, {
-              modelValue: formData,
-              ref_key: "formRef",
-              ref: formRef,
-              "label-width": "150rpx"
+      const __returned__ = { formData, options, pickerSubmit, clear, cancal, formRef, formSubmit, ref: vue.ref, reactive: vue.reactive };
+      Object.defineProperty(__returned__, "__isScriptSetup", { enumerable: false, value: true });
+      return __returned__;
+    }
+  };
+  function _sfc_render$e(_ctx, _cache, $props, $setup, $data, $options) {
+    const _component_cl_select_picker = resolveEasycom(vue.resolveDynamicComponent("cl-select-picker"), __easycom_0$7);
+    const _component_uni_easyinput = resolveEasycom(vue.resolveDynamicComponent("uni-easyinput"), __easycom_1$1);
+    const _component_uni_forms_item = resolveEasycom(vue.resolveDynamicComponent("uni-forms-item"), __easycom_2);
+    const _component_uni_forms = resolveEasycom(vue.resolveDynamicComponent("uni-forms"), __easycom_3);
+    return vue.openBlock(), vue.createElementBlock("view", { class: "content" }, [
+      vue.createElementVNode("view", { class: "section_title" }, " 基础使用 "),
+      vue.createVNode(_component_cl_select_picker, {
+        style: { "width": "340px" },
+        modelValue: $setup.formData.picker,
+        "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => $setup.formData.picker = $event),
+        options: $setup.options,
+        onCancal: $setup.cancal,
+        onClear: $setup.clear,
+        onSubmit: $setup.pickerSubmit,
+        disabled: ""
+      }, null, 8, ["modelValue", "options"]),
+      vue.createElementVNode("view", { style: { "margin-top": "50rpx" } }, [
+        vue.createElementVNode("view", { class: "section_title" }, " 配合uni-forms使用 "),
+        vue.createVNode(_component_uni_forms, {
+          modelValue: $setup.formData,
+          ref: "formRef",
+          "label-width": "150rpx"
+        }, {
+          default: vue.withCtx(() => [
+            vue.createVNode(_component_uni_forms_item, {
+              label: "表单测试",
+              name: "picker1",
+              rules: [{ required: true, errorMessage: "表单测试不能为空" }],
+              required: ""
             }, {
               default: vue.withCtx(() => [
-                vue.createVNode(_component_uni_forms_item, {
-                  label: "表单测试",
-                  name: "picker1",
-                  rules: [{ required: true, errorMessage: "表单测试不能为空" }],
-                  required: ""
-                }, {
-                  default: vue.withCtx(() => [
-                    vue.createVNode(_component_cl_select_picker, {
-                      modelValue: formData.picker1,
-                      "onUpdate:modelValue": _cache[1] || (_cache[1] = ($event) => formData.picker1 = $event),
-                      options: options.value
-                    }, null, 8, ["modelValue", "options"])
-                  ]),
-                  _: 1
-                  /* STABLE */
-                }),
-                vue.createElementVNode("button", { onClick: formSubmit }, "表单提交")
+                vue.createVNode(_component_cl_select_picker, {
+                  modelValue: $setup.formData.picker1,
+                  "onUpdate:modelValue": _cache[1] || (_cache[1] = ($event) => $setup.formData.picker1 = $event),
+                  options: $setup.options
+                }, null, 8, ["modelValue", "options"]),
+                vue.createVNode(_component_uni_easyinput, { placeholder: "请输入" })
               ]),
               _: 1
               /* STABLE */
-            }, 8, ["modelValue"])
-          ])
-        ]);
-      };
-    }
-  };
-  const PagesComponentPageClSelectPickerIndex = /* @__PURE__ */ _export_sfc(_sfc_main$b, [["__scopeId", "data-v-17f399f1"], ["__file", "E:/code/uniapp/uni-app-components/pages/componentPage/cl-select-picker/index.vue"]]);
+            }),
+            vue.createTextVNode(
+              " " + vue.toDisplayString($setup.formData.picker1) + " ",
+              1
+              /* TEXT */
+            ),
+            vue.createElementVNode("button", { onClick: $setup.formSubmit }, "表单提交")
+          ]),
+          _: 1
+          /* STABLE */
+        }, 8, ["modelValue"])
+      ])
+    ]);
+  }
+  const PagesComponentPageClSelectPickerIndex = /* @__PURE__ */ _export_sfc(_sfc_main$f, [["render", _sfc_render$e], ["__scopeId", "data-v-17f399f1"], ["__file", "E:/code/uniapp/uni-app-components/pages/componentPage/cl-select-picker/index.vue"]]);
   const isObject = (val) => val !== null && typeof val === "object";
   const defaultDelimiters = ["{", "}"];
   class BaseFormatter {
@@ -2588,10 +3098,12 @@ if (uni.restoreGlobal) {
   }
   function initVueI18n(locale, messages2 = {}, fallbackLocale, watcher) {
     if (typeof locale !== "string") {
-      [locale, messages2] = [
+      const options = [
         messages2,
         locale
       ];
+      locale = options[0];
+      messages2 = options[1];
     }
     if (typeof locale !== "string") {
       locale = getDefaultLocale();
@@ -2675,7 +3187,7 @@ if (uni.restoreGlobal) {
   const {
     t
   } = initVueI18n(messages);
-  const _sfc_main$a = {
+  const _sfc_main$e = {
     name: "UniLoadMore",
     emits: ["clickLoadMore"],
     props: {
@@ -2757,7 +3269,7 @@ if (uni.restoreGlobal) {
       }
     }
   };
-  function _sfc_render$4(_ctx, _cache, $props, $setup, $data, $options) {
+  function _sfc_render$d(_ctx, _cache, $props, $setup, $data, $options) {
     return vue.openBlock(), vue.createElementBlock("view", {
       class: "uni-load-more",
       onClick: _cache[0] || (_cache[0] = (...args) => $options.onClick && $options.onClick(...args))
@@ -2832,10 +3344,10 @@ if (uni.restoreGlobal) {
       )) : vue.createCommentVNode("v-if", true)
     ]);
   }
-  const __easycom_0$4 = /* @__PURE__ */ _export_sfc(_sfc_main$a, [["render", _sfc_render$4], ["__scopeId", "data-v-9245e42c"], ["__file", "E:/code/uniapp/uni-app-components/uni_modules/uni-load-more/components/uni-load-more/uni-load-more.vue"]]);
+  const __easycom_0$6 = /* @__PURE__ */ _export_sfc(_sfc_main$e, [["render", _sfc_render$d], ["__scopeId", "data-v-9245e42c"], ["__file", "E:/code/uniapp/uni-app-components/uni_modules/uni-load-more/components/uni-load-more/uni-load-more.vue"]]);
   const listEmpty = "/assets/listEmpty.e9586bdd.png";
   const listError = "/assets/listError.f7acceb9.png";
-  const _sfc_main$9 = {
+  const _sfc_main$d = {
     __name: "cl-scroll-view",
     props: {
       // 距底部/右边多远时（单位px），触发 scrolltolower 事件
@@ -3067,111 +3579,119 @@ if (uni.restoreGlobal) {
         refresh,
         search
       });
-      return (_ctx, _cache) => {
-        const _component_uni_load_more = resolveEasycom(vue.resolveDynamicComponent("uni-load-more"), __easycom_0$4);
-        return vue.openBlock(), vue.createElementBlock(
-          vue.Fragment,
-          null,
-          [
-            vue.createCommentVNode(' <uni-load-more status="loading" /> '),
-            vue.createElementVNode("scroll-view", {
-              style: { "height": "100%" },
-              "scroll-y": true,
-              "refresher-enabled": "",
-              "scroll-top": screenTop.value,
-              "refresher-triggered": isRefresh.value,
-              "lower-threshold": __props.lowerThreshold,
-              onScroll: scrollView,
-              onScrolltolower: bootmScroll,
-              onRefresherrefresh: refresherrefresh
-            }, [
-              vue.renderSlot(_ctx.$slots, "list", { list: list.value }, void 0, true),
-              ["loading", "noMore", "more"].includes(loadMoreStatus.value) ? (vue.openBlock(), vue.createBlock(_component_uni_load_more, {
-                key: 0,
-                status: loadMoreStatus.value
-              }, null, 8, ["status"])) : vue.createCommentVNode("v-if", true),
-              loadMoreStatus.value === "noData" && mergeEmptyConfig.value ? vue.renderSlot(_ctx.$slots, "empty", { key: 1 }, () => [
-                vue.createElementVNode("view", { class: "error_empty_box" }, [
-                  mergeEmptyConfig.value.imgSrc ? (vue.openBlock(), vue.createElementBlock("image", {
-                    key: 0,
-                    class: "image",
-                    src: mergeEmptyConfig.value.imgSrc,
-                    mode: "aspectFit"
-                  }, null, 8, ["src"])) : vue.createCommentVNode("v-if", true),
-                  mergeEmptyConfig.value.text ? (vue.openBlock(), vue.createElementBlock(
-                    "text",
-                    { key: 1 },
-                    vue.toDisplayString(mergeEmptyConfig.value.text),
-                    1
-                    /* TEXT */
-                  )) : vue.createCommentVNode("v-if", true)
-                ])
-              ], true) : vue.createCommentVNode("v-if", true),
-              ["noDataLoadError", "loadError"].includes(loadMoreStatus.value) && mergeErrorConfig.value ? vue.renderSlot(_ctx.$slots, "error", { key: 2 }, () => [
-                loadMoreStatus.value === "noDataLoadError" ? (vue.openBlock(), vue.createElementBlock("view", {
-                  key: 0,
-                  class: "error_empty_box"
-                }, [
-                  mergeErrorConfig.value.imgSrc ? (vue.openBlock(), vue.createElementBlock("image", {
-                    key: 0,
-                    class: "image",
-                    src: mergeErrorConfig.value.imgSrc,
-                    mode: "widthFix"
-                  }, null, 8, ["src"])) : vue.createCommentVNode("v-if", true),
-                  mergeErrorConfig.value.text ? (vue.openBlock(), vue.createElementBlock("text", {
-                    key: 1,
-                    class: "reload_btn",
-                    onClick: search
-                  }, [
-                    vue.renderSlot(_ctx.$slots, "errorShowText", {
-                      reload: search,
-                      errorShowText: mergeErrorConfig.value.text
-                    }, () => [
-                      vue.createElementVNode(
-                        "text",
-                        {
-                          class: "reload_btn",
-                          onClick: search
-                        },
-                        vue.toDisplayString(mergeErrorConfig.value.text),
-                        1
-                        /* TEXT */
-                      )
-                    ], true)
-                  ])) : vue.createCommentVNode("v-if", true)
-                ])) : (vue.openBlock(), vue.createElementBlock("view", {
-                  key: 1,
-                  class: "error_data_box"
-                }, [
-                  vue.renderSlot(_ctx.$slots, "errorShowText", {
-                    reload: search,
-                    errorShowText: mergeErrorConfig.value.text
-                  }, () => [
-                    vue.createElementVNode(
-                      "text",
-                      {
-                        class: "reload_btn",
-                        onClick: search
-                      },
-                      vue.toDisplayString(mergeErrorConfig.value.text),
-                      1
-                      /* TEXT */
-                    )
-                  ], true)
-                ]))
-              ], true) : vue.createCommentVNode("v-if", true)
-            ], 40, ["scroll-top", "refresher-triggered", "refresher-enabled", "lower-threshold"])
-          ],
-          2112
-          /* STABLE_FRAGMENT, DEV_ROOT_FRAGMENT */
-        );
-      };
+      const __returned__ = { props, mergeEmptyConfig, mergeErrorConfig, mergeErrorToastConfig, mergeLoadToastConfig, list, isEnd, isRefresh, screenTop, screenOldTop, loadMoreStatus, search, refresherrefresh, scrollView, backTop, bootmScroll, refresh, ref: vue.ref, nextTick: vue.nextTick, computed: vue.computed, isRef: vue.isRef, get listEmpty() {
+        return listEmpty;
+      }, get listError() {
+        return listError;
+      } };
+      Object.defineProperty(__returned__, "__isScriptSetup", { enumerable: false, value: true });
+      return __returned__;
     }
   };
-  const __easycom_0$3 = /* @__PURE__ */ _export_sfc(_sfc_main$9, [["__scopeId", "data-v-77892465"], ["__file", "E:/code/uniapp/uni-app-components/uni_modules/cl-scroll-view/components/cl-scroll-view/cl-scroll-view.vue"]]);
-  const _sfc_main$8 = {
+  function _sfc_render$c(_ctx, _cache, $props, $setup, $data, $options) {
+    const _component_uni_load_more = resolveEasycom(vue.resolveDynamicComponent("uni-load-more"), __easycom_0$6);
+    return vue.openBlock(), vue.createElementBlock(
+      vue.Fragment,
+      null,
+      [
+        vue.createCommentVNode(' <uni-load-more status="loading" /> '),
+        vue.createElementVNode("scroll-view", {
+          style: { "height": "100%" },
+          "scroll-y": true,
+          "refresher-enabled": "",
+          "scroll-top": $setup.screenTop,
+          "refresher-triggered": $setup.isRefresh,
+          "lower-threshold": $props.lowerThreshold,
+          onScroll: $setup.scrollView,
+          onScrolltolower: $setup.bootmScroll,
+          onRefresherrefresh: $setup.refresherrefresh
+        }, [
+          vue.renderSlot(_ctx.$slots, "list", { list: $setup.list }, void 0, true),
+          ["loading", "noMore", "more"].includes($setup.loadMoreStatus) ? (vue.openBlock(), vue.createBlock(_component_uni_load_more, {
+            key: 0,
+            status: $setup.loadMoreStatus
+          }, null, 8, ["status"])) : vue.createCommentVNode("v-if", true),
+          $setup.loadMoreStatus === "noData" && $setup.mergeEmptyConfig ? vue.renderSlot(_ctx.$slots, "empty", { key: 1 }, () => [
+            vue.createElementVNode("view", { class: "error_empty_box" }, [
+              $setup.mergeEmptyConfig.imgSrc ? (vue.openBlock(), vue.createElementBlock("image", {
+                key: 0,
+                class: "image",
+                src: $setup.mergeEmptyConfig.imgSrc,
+                mode: "aspectFit"
+              }, null, 8, ["src"])) : vue.createCommentVNode("v-if", true),
+              $setup.mergeEmptyConfig.text ? (vue.openBlock(), vue.createElementBlock(
+                "text",
+                { key: 1 },
+                vue.toDisplayString($setup.mergeEmptyConfig.text),
+                1
+                /* TEXT */
+              )) : vue.createCommentVNode("v-if", true)
+            ])
+          ], true) : vue.createCommentVNode("v-if", true),
+          ["noDataLoadError", "loadError"].includes($setup.loadMoreStatus) && $setup.mergeErrorConfig ? vue.renderSlot(_ctx.$slots, "error", { key: 2 }, () => [
+            $setup.loadMoreStatus === "noDataLoadError" ? (vue.openBlock(), vue.createElementBlock("view", {
+              key: 0,
+              class: "error_empty_box"
+            }, [
+              $setup.mergeErrorConfig.imgSrc ? (vue.openBlock(), vue.createElementBlock("image", {
+                key: 0,
+                class: "image",
+                src: $setup.mergeErrorConfig.imgSrc,
+                mode: "widthFix"
+              }, null, 8, ["src"])) : vue.createCommentVNode("v-if", true),
+              $setup.mergeErrorConfig.text ? (vue.openBlock(), vue.createElementBlock("text", {
+                key: 1,
+                class: "reload_btn",
+                onClick: $setup.search
+              }, [
+                vue.renderSlot(_ctx.$slots, "errorShowText", {
+                  reload: $setup.search,
+                  errorShowText: $setup.mergeErrorConfig.text
+                }, () => [
+                  vue.createElementVNode(
+                    "text",
+                    {
+                      class: "reload_btn",
+                      onClick: $setup.search
+                    },
+                    vue.toDisplayString($setup.mergeErrorConfig.text),
+                    1
+                    /* TEXT */
+                  )
+                ], true)
+              ])) : vue.createCommentVNode("v-if", true)
+            ])) : (vue.openBlock(), vue.createElementBlock("view", {
+              key: 1,
+              class: "error_data_box"
+            }, [
+              vue.renderSlot(_ctx.$slots, "errorShowText", {
+                reload: $setup.search,
+                errorShowText: $setup.mergeErrorConfig.text
+              }, () => [
+                vue.createElementVNode(
+                  "text",
+                  {
+                    class: "reload_btn",
+                    onClick: $setup.search
+                  },
+                  vue.toDisplayString($setup.mergeErrorConfig.text),
+                  1
+                  /* TEXT */
+                )
+              ], true)
+            ]))
+          ], true) : vue.createCommentVNode("v-if", true)
+        ], 40, ["scroll-top", "refresher-triggered", "refresher-enabled", "lower-threshold"])
+      ],
+      2112
+      /* STABLE_FRAGMENT, DEV_ROOT_FRAGMENT */
+    );
+  }
+  const __easycom_0$5 = /* @__PURE__ */ _export_sfc(_sfc_main$d, [["render", _sfc_render$c], ["__scopeId", "data-v-77892465"], ["__file", "E:/code/uniapp/uni-app-components/uni_modules/cl-scroll-view/components/cl-scroll-view/cl-scroll-view.vue"]]);
+  const _sfc_main$c = {
     __name: "index",
-    setup(__props) {
+    setup(__props, { expose: __expose }) {
+      __expose();
       const searchParams = vue.reactive({
         pageSize: 10,
         pageNum: 1
@@ -3260,747 +3780,257 @@ if (uni.restoreGlobal) {
       const afterHook = (list) => {
         return list.map((item) => `我是处理过的返回值${item}`);
       };
-      return (_ctx, _cache) => {
-        const _component_cl_scroll_view = resolveEasycom(vue.resolveDynamicComponent("cl-scroll-view"), __easycom_0$3);
-        return vue.openBlock(), vue.createElementBlock("view", { class: "content" }, [
-          vue.createElementVNode("view", { class: "section_title" }, " 基本使用 "),
-          vue.createElementVNode("view", { style: { "height": "600rpx", "border": "1px solid gainsboro" } }, [
-            vue.createVNode(_component_cl_scroll_view, {
-              apiFun,
-              params: searchParams
-            }, {
-              list: vue.withCtx(({ list }) => [
-                vue.createElementVNode("view", { class: "list_box" }, [
-                  (vue.openBlock(true), vue.createElementBlock(
-                    vue.Fragment,
-                    null,
-                    vue.renderList(list, (item) => {
-                      return vue.openBlock(), vue.createElementBlock(
-                        "view",
-                        {
-                          key: item,
-                          class: "item"
-                        },
-                        vue.toDisplayString(item),
-                        1
-                        /* TEXT */
-                      );
-                    }),
-                    128
-                    /* KEYED_FRAGMENT */
-                  ))
-                ])
-              ]),
-              _: 1
-              /* STABLE */
-            }, 8, ["params"])
-          ]),
-          vue.createElementVNode("view", { class: "section_title" }, " 隐藏loading弹窗，并对请求参数（永远请求pageNum等于10的数据）和接口返回值进行二次处理（将结果包装为“我是处理过的返回值n”） "),
-          vue.createElementVNode("view", { style: { "height": "600rpx", "border": "1px solid gainsboro" } }, [
-            vue.createVNode(_component_cl_scroll_view, {
-              apiFun: apiFun1,
-              params: searchParams1,
-              loadToastConfig: false,
-              beforeHook,
-              afterHook
-            }, {
-              list: vue.withCtx(({ list }) => [
-                vue.createElementVNode("view", { class: "list_box" }, [
-                  (vue.openBlock(true), vue.createElementBlock(
-                    vue.Fragment,
-                    null,
-                    vue.renderList(list, (item) => {
-                      return vue.openBlock(), vue.createElementBlock(
-                        "view",
-                        {
-                          key: item,
-                          class: "item"
-                        },
-                        vue.toDisplayString(item),
-                        1
-                        /* TEXT */
-                      );
-                    }),
-                    128
-                    /* KEYED_FRAGMENT */
-                  ))
-                ])
-              ]),
-              _: 1
-              /* STABLE */
-            }, 8, ["params"])
-          ]),
-          vue.createElementVNode("view", { class: "section_title" }, " 无数据页面 "),
-          vue.createElementVNode("view", { style: { "height": "800rpx", "border": "1px solid gainsboro" } }, [
-            vue.createVNode(_component_cl_scroll_view, {
-              apiFun: apiFun2,
-              params: searchParams2
-            }, {
-              list: vue.withCtx(({ list }) => [
-                vue.createElementVNode("view", { class: "list_box" }, [
-                  (vue.openBlock(true), vue.createElementBlock(
-                    vue.Fragment,
-                    null,
-                    vue.renderList(list, (item) => {
-                      return vue.openBlock(), vue.createElementBlock(
-                        "view",
-                        {
-                          key: item,
-                          class: "item"
-                        },
-                        vue.toDisplayString(item),
-                        1
-                        /* TEXT */
-                      );
-                    }),
-                    128
-                    /* KEYED_FRAGMENT */
-                  ))
-                ])
-              ]),
-              _: 1
-              /* STABLE */
-            }, 8, ["params"])
-          ]),
-          vue.createElementVNode("view", { class: "section_title" }, " 自定义无数据页面 "),
-          vue.createElementVNode("view", { style: { "height": "800rpx", "border": "1px solid gainsboro" } }, [
-            vue.createVNode(_component_cl_scroll_view, {
-              apiFun: apiFun2,
-              params: searchParams2,
-              emptyShowConfig: { text: "好像没有拿到数据哇", imgSrc: "/static/logo.png" }
-            }, {
-              list: vue.withCtx(({ list }) => [
-                vue.createElementVNode("view", { class: "list_box" }, [
-                  (vue.openBlock(true), vue.createElementBlock(
-                    vue.Fragment,
-                    null,
-                    vue.renderList(list, (item) => {
-                      return vue.openBlock(), vue.createElementBlock(
-                        "view",
-                        {
-                          key: item,
-                          class: "item"
-                        },
-                        vue.toDisplayString(item),
-                        1
-                        /* TEXT */
-                      );
-                    }),
-                    128
-                    /* KEYED_FRAGMENT */
-                  ))
-                ])
-              ]),
-              _: 1
-              /* STABLE */
-            }, 8, ["params", "emptyShowConfig"])
-          ]),
-          vue.createElementVNode("view", { class: "section_title" }, " 使用插槽控制自定义无数据页面 "),
-          vue.createElementVNode("view", { style: { "height": "800rpx", "border": "1px solid gainsboro" } }, [
-            vue.createVNode(_component_cl_scroll_view, {
-              apiFun: apiFun2,
-              params: searchParams2,
-              emptyShowConfig: { text: "好像没有拿到数据哇", imgSrc: "/static/logo.png" }
-            }, {
-              list: vue.withCtx(({ list }) => [
-                list.length > 0 ? (vue.openBlock(), vue.createElementBlock("view", {
-                  key: 0,
-                  class: "list_box"
-                }, [
-                  (vue.openBlock(true), vue.createElementBlock(
-                    vue.Fragment,
-                    null,
-                    vue.renderList(list, (item) => {
-                      return vue.openBlock(), vue.createElementBlock(
-                        "view",
-                        {
-                          key: item,
-                          class: "item"
-                        },
-                        vue.toDisplayString(item),
-                        1
-                        /* TEXT */
-                      );
-                    }),
-                    128
-                    /* KEYED_FRAGMENT */
-                  ))
-                ])) : vue.createCommentVNode("v-if", true)
-              ]),
-              empty: vue.withCtx(() => [
-                vue.createElementVNode("view", { style: { "height": "100%", "background-color": "aquamarine" } }, "我是无数据页面，你可以任意设置")
-              ]),
-              _: 1
-              /* STABLE */
-            }, 8, ["params", "emptyShowConfig"])
-          ]),
-          vue.createElementVNode("view", { class: "section_title" }, " 显示第一次加载直接失败的状态 "),
-          vue.createElementVNode("view", { style: { "height": "800rpx", "border": "1px solid gainsboro" } }, [
-            vue.createVNode(_component_cl_scroll_view, {
-              apiFun: apiFun3,
-              params: searchParams3
-            }, {
-              list: vue.withCtx(({ list }) => [
-                vue.createElementVNode("view", { class: "list_box" }, [
-                  (vue.openBlock(true), vue.createElementBlock(
-                    vue.Fragment,
-                    null,
-                    vue.renderList(list, (item) => {
-                      return vue.openBlock(), vue.createElementBlock(
-                        "view",
-                        {
-                          key: item,
-                          class: "item"
-                        },
-                        vue.toDisplayString(item),
-                        1
-                        /* TEXT */
-                      );
-                    }),
-                    128
-                    /* KEYED_FRAGMENT */
-                  ))
-                ])
-              ]),
-              _: 1
-              /* STABLE */
-            }, 8, ["params"])
-          ]),
-          vue.createElementVNode("view", { class: "section_title" }, " 显示非第一次加载失败的状态，使用messageField字段控制提示信息，使用errorToastConfig隐藏弹窗图标，使用errorShowConfig配置错误时展示的文本 "),
-          vue.createElementVNode("view", { style: { "height": "800rpx", "border": "1px solid gainsboro" } }, [
-            vue.createVNode(_component_cl_scroll_view, {
-              apiFun: apiFun4,
-              params: searchParams4,
-              hideLoad: "",
-              messageField: "message",
-              errorToastConfig: { icon: "none" },
-              errorShowConfig: { text: "好像没有拿到数据哇", imgSrc: "/static/logo.png" }
-            }, {
-              list: vue.withCtx(({ list }) => [
-                vue.createElementVNode("view", { class: "list_box" }, [
-                  (vue.openBlock(true), vue.createElementBlock(
-                    vue.Fragment,
-                    null,
-                    vue.renderList(list, (item) => {
-                      return vue.openBlock(), vue.createElementBlock(
-                        "view",
-                        {
-                          key: item,
-                          class: "item"
-                        },
-                        vue.toDisplayString(item),
-                        1
-                        /* TEXT */
-                      );
-                    }),
-                    128
-                    /* KEYED_FRAGMENT */
-                  ))
-                ])
-              ]),
-              _: 1
-              /* STABLE */
-            }, 8, ["params", "errorShowConfig"])
-          ])
-        ]);
-      };
+      const __returned__ = { searchParams, searchParams1, searchParams2, searchParams3, searchParams4, apiFun, apiFun1, apiFun2, apiFun3, apiFun4, beforeHook, afterHook, reactive: vue.reactive, ref: vue.ref };
+      Object.defineProperty(__returned__, "__isScriptSetup", { enumerable: false, value: true });
+      return __returned__;
     }
   };
-  const PagesComponentPageClScrollViewIndex = /* @__PURE__ */ _export_sfc(_sfc_main$8, [["__scopeId", "data-v-a70f1c9b"], ["__file", "E:/code/uniapp/uni-app-components/pages/componentPage/cl-scroll-view/index.vue"]]);
-  function obj2strClass(obj) {
-    let classess = "";
-    for (let key in obj) {
-      const val = obj[key];
-      if (val) {
-        classess += `${key} `;
-      }
-    }
-    return classess;
-  }
-  function obj2strStyle(obj) {
-    let style = "";
-    for (let key in obj) {
-      const val = obj[key];
-      style += `${key}:${val};`;
-    }
-    return style;
-  }
-  const _sfc_main$7 = {
-    name: "uni-easyinput",
-    emits: [
-      "click",
-      "iconClick",
-      "update:modelValue",
-      "input",
-      "focus",
-      "blur",
-      "confirm",
-      "clear",
-      "eyes",
-      "change",
-      "keyboardheightchange"
-    ],
-    model: {
-      prop: "modelValue",
-      event: "update:modelValue"
-    },
-    options: {
-      virtualHost: true
-    },
-    inject: {
-      form: {
-        from: "uniForm",
-        default: null
-      },
-      formItem: {
-        from: "uniFormItem",
-        default: null
-      }
-    },
-    props: {
-      name: String,
-      value: [Number, String],
-      modelValue: [Number, String],
-      type: {
-        type: String,
-        default: "text"
-      },
-      clearable: {
-        type: Boolean,
-        default: true
-      },
-      autoHeight: {
-        type: Boolean,
-        default: false
-      },
-      placeholder: {
-        type: String,
-        default: " "
-      },
-      placeholderStyle: String,
-      focus: {
-        type: Boolean,
-        default: false
-      },
-      disabled: {
-        type: Boolean,
-        default: false
-      },
-      maxlength: {
-        type: [Number, String],
-        default: 140
-      },
-      confirmType: {
-        type: String,
-        default: "done"
-      },
-      clearSize: {
-        type: [Number, String],
-        default: 24
-      },
-      inputBorder: {
-        type: Boolean,
-        default: true
-      },
-      prefixIcon: {
-        type: String,
-        default: ""
-      },
-      suffixIcon: {
-        type: String,
-        default: ""
-      },
-      trim: {
-        type: [Boolean, String],
-        default: false
-      },
-      cursorSpacing: {
-        type: Number,
-        default: 0
-      },
-      passwordIcon: {
-        type: Boolean,
-        default: true
-      },
-      adjustPosition: {
-        type: Boolean,
-        default: true
-      },
-      primaryColor: {
-        type: String,
-        default: "#2979ff"
-      },
-      styles: {
-        type: Object,
-        default() {
-          return {
-            color: "#333",
-            backgroundColor: "#fff",
-            disableColor: "#F7F6F6",
-            borderColor: "#e5e5e5"
-          };
-        }
-      },
-      errorMessage: {
-        type: [String, Boolean],
-        default: ""
-      }
-    },
-    data() {
-      return {
-        focused: false,
-        val: "",
-        showMsg: "",
-        border: false,
-        isFirstBorder: false,
-        showClearIcon: false,
-        showPassword: false,
-        focusShow: false,
-        localMsg: "",
-        isEnter: false
-        // 用于判断当前是否是使用回车操作
-      };
-    },
-    computed: {
-      // 输入框内是否有值
-      isVal() {
-        const val = this.val;
-        if (val || val === 0) {
-          return true;
-        }
-        return false;
-      },
-      msg() {
-        return this.localMsg || this.errorMessage;
-      },
-      // 因为uniapp的input组件的maxlength组件必须要数值，这里转为数值，用户可以传入字符串数值
-      inputMaxlength() {
-        return Number(this.maxlength);
-      },
-      // 处理外层样式的style
-      boxStyle() {
-        return `color:${this.inputBorder && this.msg ? "#e43d33" : this.styles.color};`;
-      },
-      // input 内容的类和样式处理
-      inputContentClass() {
-        return obj2strClass({
-          "is-input-border": this.inputBorder,
-          "is-input-error-border": this.inputBorder && this.msg,
-          "is-textarea": this.type === "textarea",
-          "is-disabled": this.disabled,
-          "is-focused": this.focusShow
-        });
-      },
-      inputContentStyle() {
-        const focusColor = this.focusShow ? this.primaryColor : this.styles.borderColor;
-        const borderColor = this.inputBorder && this.msg ? "#dd524d" : focusColor;
-        return obj2strStyle({
-          "border-color": borderColor || "#e5e5e5",
-          "background-color": this.disabled ? this.styles.disableColor : this.styles.backgroundColor
-        });
-      },
-      // input右侧样式
-      inputStyle() {
-        const paddingRight = this.type === "password" || this.clearable || this.prefixIcon ? "" : "10px";
-        return obj2strStyle({
-          "padding-right": paddingRight,
-          "padding-left": this.prefixIcon ? "" : "10px"
-        });
-      }
-    },
-    watch: {
-      value(newVal) {
-        this.val = newVal;
-      },
-      modelValue(newVal) {
-        this.val = newVal;
-      },
-      focus(newVal) {
-        this.$nextTick(() => {
-          this.focused = this.focus;
-          this.focusShow = this.focus;
-        });
-      }
-    },
-    created() {
-      this.init();
-      if (this.form && this.formItem) {
-        this.$watch("formItem.errMsg", (newVal) => {
-          this.localMsg = newVal;
-        });
-      }
-    },
-    mounted() {
-      this.$nextTick(() => {
-        this.focused = this.focus;
-        this.focusShow = this.focus;
-      });
-    },
-    methods: {
-      /**
-       * 初始化变量值
-       */
-      init() {
-        if (this.value || this.value === 0) {
-          this.val = this.value;
-        } else if (this.modelValue || this.modelValue === 0 || this.modelValue === "") {
-          this.val = this.modelValue;
-        } else {
-          this.val = null;
-        }
-      },
-      /**
-       * 点击图标时触发
-       * @param {Object} type
-       */
-      onClickIcon(type) {
-        this.$emit("iconClick", type);
-      },
-      /**
-       * 显示隐藏内容，密码框时生效
-       */
-      onEyes() {
-        this.showPassword = !this.showPassword;
-        this.$emit("eyes", this.showPassword);
-      },
-      /**
-       * 输入时触发
-       * @param {Object} event
-       */
-      onInput(event) {
-        let value = event.detail.value;
-        if (this.trim) {
-          if (typeof this.trim === "boolean" && this.trim) {
-            value = this.trimStr(value);
-          }
-          if (typeof this.trim === "string") {
-            value = this.trimStr(value, this.trim);
-          }
-        }
-        if (this.errMsg)
-          this.errMsg = "";
-        this.val = value;
-        this.$emit("input", value);
-        this.$emit("update:modelValue", value);
-      },
-      /**
-       * 外部调用方法
-       * 获取焦点时触发
-       * @param {Object} event
-       */
-      onFocus() {
-        this.$nextTick(() => {
-          this.focused = true;
-        });
-        this.$emit("focus", null);
-      },
-      _Focus(event) {
-        this.focusShow = true;
-        this.$emit("focus", event);
-      },
-      /**
-       * 外部调用方法
-       * 失去焦点时触发
-       * @param {Object} event
-       */
-      onBlur() {
-        this.focused = false;
-        this.$emit("blur", null);
-      },
-      _Blur(event) {
-        event.detail.value;
-        this.focusShow = false;
-        this.$emit("blur", event);
-        if (this.isEnter === false) {
-          this.$emit("change", this.val);
-        }
-        if (this.form && this.formItem) {
-          const { validateTrigger } = this.form;
-          if (validateTrigger === "blur") {
-            this.formItem.onFieldChange();
-          }
-        }
-      },
-      /**
-       * 按下键盘的发送键
-       * @param {Object} e
-       */
-      onConfirm(e) {
-        this.$emit("confirm", this.val);
-        this.isEnter = true;
-        this.$emit("change", this.val);
-        this.$nextTick(() => {
-          this.isEnter = false;
-        });
-      },
-      /**
-       * 清理内容
-       * @param {Object} event
-       */
-      onClear(event) {
-        this.val = "";
-        this.$emit("input", "");
-        this.$emit("update:modelValue", "");
-        this.$emit("clear");
-      },
-      /**
-       * 键盘高度发生变化的时候触发此事件
-       * 兼容性：微信小程序2.7.0+、App 3.1.0+
-       * @param {Object} event
-       */
-      onkeyboardheightchange(event) {
-        this.$emit("keyboardheightchange", event);
-      },
-      /**
-       * 去除空格
-       */
-      trimStr(str, pos = "both") {
-        if (pos === "both") {
-          return str.trim();
-        } else if (pos === "left") {
-          return str.trimLeft();
-        } else if (pos === "right") {
-          return str.trimRight();
-        } else if (pos === "start") {
-          return str.trimStart();
-        } else if (pos === "end") {
-          return str.trimEnd();
-        } else if (pos === "all") {
-          return str.replace(/\s+/g, "");
-        } else if (pos === "none") {
-          return str;
-        }
-        return str;
-      }
-    }
-  };
-  function _sfc_render$3(_ctx, _cache, $props, $setup, $data, $options) {
-    const _component_uni_icons = resolveEasycom(vue.resolveDynamicComponent("uni-icons"), __easycom_0$6);
-    return vue.openBlock(), vue.createElementBlock(
-      "view",
-      {
-        class: vue.normalizeClass(["uni-easyinput", { "uni-easyinput-error": $options.msg }]),
-        style: vue.normalizeStyle($options.boxStyle)
-      },
-      [
-        vue.createElementVNode(
-          "view",
-          {
-            class: vue.normalizeClass(["uni-easyinput__content", $options.inputContentClass]),
-            style: vue.normalizeStyle($options.inputContentStyle)
-          },
-          [
-            $props.prefixIcon ? (vue.openBlock(), vue.createBlock(_component_uni_icons, {
+  function _sfc_render$b(_ctx, _cache, $props, $setup, $data, $options) {
+    const _component_cl_scroll_view = resolveEasycom(vue.resolveDynamicComponent("cl-scroll-view"), __easycom_0$5);
+    return vue.openBlock(), vue.createElementBlock("view", { class: "content" }, [
+      vue.createElementVNode("view", { class: "section_title" }, " 基本使用 "),
+      vue.createElementVNode("view", { style: { "height": "600rpx", "border": "1px solid gainsboro" } }, [
+        vue.createVNode(_component_cl_scroll_view, {
+          apiFun: $setup.apiFun,
+          params: $setup.searchParams
+        }, {
+          list: vue.withCtx(({ list }) => [
+            vue.createElementVNode("view", { class: "list_box" }, [
+              (vue.openBlock(true), vue.createElementBlock(
+                vue.Fragment,
+                null,
+                vue.renderList(list, (item) => {
+                  return vue.openBlock(), vue.createElementBlock(
+                    "view",
+                    {
+                      key: item,
+                      class: "item"
+                    },
+                    vue.toDisplayString(item),
+                    1
+                    /* TEXT */
+                  );
+                }),
+                128
+                /* KEYED_FRAGMENT */
+              ))
+            ])
+          ]),
+          _: 1
+          /* STABLE */
+        }, 8, ["params"])
+      ]),
+      vue.createElementVNode("view", { class: "section_title" }, " 隐藏loading弹窗，并对请求参数（永远请求pageNum等于10的数据）和接口返回值进行二次处理（将结果包装为“我是处理过的返回值n”） "),
+      vue.createElementVNode("view", { style: { "height": "600rpx", "border": "1px solid gainsboro" } }, [
+        vue.createVNode(_component_cl_scroll_view, {
+          apiFun: $setup.apiFun1,
+          params: $setup.searchParams1,
+          loadToastConfig: false,
+          beforeHook: $setup.beforeHook,
+          afterHook: $setup.afterHook
+        }, {
+          list: vue.withCtx(({ list }) => [
+            vue.createElementVNode("view", { class: "list_box" }, [
+              (vue.openBlock(true), vue.createElementBlock(
+                vue.Fragment,
+                null,
+                vue.renderList(list, (item) => {
+                  return vue.openBlock(), vue.createElementBlock(
+                    "view",
+                    {
+                      key: item,
+                      class: "item"
+                    },
+                    vue.toDisplayString(item),
+                    1
+                    /* TEXT */
+                  );
+                }),
+                128
+                /* KEYED_FRAGMENT */
+              ))
+            ])
+          ]),
+          _: 1
+          /* STABLE */
+        }, 8, ["params"])
+      ]),
+      vue.createElementVNode("view", { class: "section_title" }, " 无数据页面 "),
+      vue.createElementVNode("view", { style: { "height": "800rpx", "border": "1px solid gainsboro" } }, [
+        vue.createVNode(_component_cl_scroll_view, {
+          apiFun: $setup.apiFun2,
+          params: $setup.searchParams2
+        }, {
+          list: vue.withCtx(({ list }) => [
+            vue.createElementVNode("view", { class: "list_box" }, [
+              (vue.openBlock(true), vue.createElementBlock(
+                vue.Fragment,
+                null,
+                vue.renderList(list, (item) => {
+                  return vue.openBlock(), vue.createElementBlock(
+                    "view",
+                    {
+                      key: item,
+                      class: "item"
+                    },
+                    vue.toDisplayString(item),
+                    1
+                    /* TEXT */
+                  );
+                }),
+                128
+                /* KEYED_FRAGMENT */
+              ))
+            ])
+          ]),
+          _: 1
+          /* STABLE */
+        }, 8, ["params"])
+      ]),
+      vue.createElementVNode("view", { class: "section_title" }, " 自定义无数据页面 "),
+      vue.createElementVNode("view", { style: { "height": "800rpx", "border": "1px solid gainsboro" } }, [
+        vue.createVNode(_component_cl_scroll_view, {
+          apiFun: $setup.apiFun2,
+          params: $setup.searchParams2,
+          emptyShowConfig: { text: "好像没有拿到数据哇", imgSrc: "/static/logo.png" }
+        }, {
+          list: vue.withCtx(({ list }) => [
+            vue.createElementVNode("view", { class: "list_box" }, [
+              (vue.openBlock(true), vue.createElementBlock(
+                vue.Fragment,
+                null,
+                vue.renderList(list, (item) => {
+                  return vue.openBlock(), vue.createElementBlock(
+                    "view",
+                    {
+                      key: item,
+                      class: "item"
+                    },
+                    vue.toDisplayString(item),
+                    1
+                    /* TEXT */
+                  );
+                }),
+                128
+                /* KEYED_FRAGMENT */
+              ))
+            ])
+          ]),
+          _: 1
+          /* STABLE */
+        }, 8, ["params", "emptyShowConfig"])
+      ]),
+      vue.createElementVNode("view", { class: "section_title" }, " 使用插槽控制自定义无数据页面 "),
+      vue.createElementVNode("view", { style: { "height": "800rpx", "border": "1px solid gainsboro" } }, [
+        vue.createVNode(_component_cl_scroll_view, {
+          apiFun: $setup.apiFun2,
+          params: $setup.searchParams2,
+          emptyShowConfig: { text: "好像没有拿到数据哇", imgSrc: "/static/logo.png" }
+        }, {
+          list: vue.withCtx(({ list }) => [
+            list.length > 0 ? (vue.openBlock(), vue.createElementBlock("view", {
               key: 0,
-              class: "content-clear-icon",
-              type: $props.prefixIcon,
-              color: "#c0c4cc",
-              onClick: _cache[0] || (_cache[0] = ($event) => $options.onClickIcon("prefix")),
-              size: "22"
-            }, null, 8, ["type"])) : vue.createCommentVNode("v-if", true),
-            vue.renderSlot(_ctx.$slots, "left", {}, void 0, true),
-            $props.type === "textarea" ? (vue.openBlock(), vue.createElementBlock("textarea", {
-              key: 1,
-              class: vue.normalizeClass(["uni-easyinput__content-textarea", { "input-padding": $props.inputBorder }]),
-              name: $props.name,
-              value: $data.val,
-              placeholder: $props.placeholder,
-              placeholderStyle: $props.placeholderStyle,
-              disabled: $props.disabled,
-              "placeholder-class": "uni-easyinput__placeholder-class",
-              maxlength: $options.inputMaxlength,
-              focus: $data.focused,
-              autoHeight: $props.autoHeight,
-              "cursor-spacing": $props.cursorSpacing,
-              "adjust-position": $props.adjustPosition,
-              onInput: _cache[1] || (_cache[1] = (...args) => $options.onInput && $options.onInput(...args)),
-              onBlur: _cache[2] || (_cache[2] = (...args) => $options._Blur && $options._Blur(...args)),
-              onFocus: _cache[3] || (_cache[3] = (...args) => $options._Focus && $options._Focus(...args)),
-              onConfirm: _cache[4] || (_cache[4] = (...args) => $options.onConfirm && $options.onConfirm(...args)),
-              onKeyboardheightchange: _cache[5] || (_cache[5] = (...args) => $options.onkeyboardheightchange && $options.onkeyboardheightchange(...args))
-            }, null, 42, ["name", "value", "placeholder", "placeholderStyle", "disabled", "maxlength", "focus", "autoHeight", "cursor-spacing", "adjust-position"])) : (vue.openBlock(), vue.createElementBlock("input", {
-              key: 2,
-              type: $props.type === "password" ? "text" : $props.type,
-              class: "uni-easyinput__content-input",
-              style: vue.normalizeStyle($options.inputStyle),
-              name: $props.name,
-              value: $data.val,
-              password: !$data.showPassword && $props.type === "password",
-              placeholder: $props.placeholder,
-              placeholderStyle: $props.placeholderStyle,
-              "placeholder-class": "uni-easyinput__placeholder-class",
-              disabled: $props.disabled,
-              maxlength: $options.inputMaxlength,
-              focus: $data.focused,
-              confirmType: $props.confirmType,
-              "cursor-spacing": $props.cursorSpacing,
-              "adjust-position": $props.adjustPosition,
-              onFocus: _cache[6] || (_cache[6] = (...args) => $options._Focus && $options._Focus(...args)),
-              onBlur: _cache[7] || (_cache[7] = (...args) => $options._Blur && $options._Blur(...args)),
-              onInput: _cache[8] || (_cache[8] = (...args) => $options.onInput && $options.onInput(...args)),
-              onConfirm: _cache[9] || (_cache[9] = (...args) => $options.onConfirm && $options.onConfirm(...args)),
-              onKeyboardheightchange: _cache[10] || (_cache[10] = (...args) => $options.onkeyboardheightchange && $options.onkeyboardheightchange(...args))
-            }, null, 44, ["type", "name", "value", "password", "placeholder", "placeholderStyle", "disabled", "maxlength", "focus", "confirmType", "cursor-spacing", "adjust-position"])),
-            $props.type === "password" && $props.passwordIcon ? (vue.openBlock(), vue.createElementBlock(
-              vue.Fragment,
-              { key: 3 },
-              [
-                vue.createCommentVNode(" 开启密码时显示小眼睛 "),
-                $options.isVal ? (vue.openBlock(), vue.createBlock(_component_uni_icons, {
-                  key: 0,
-                  class: vue.normalizeClass(["content-clear-icon", { "is-textarea-icon": $props.type === "textarea" }]),
-                  type: $data.showPassword ? "eye-slash-filled" : "eye-filled",
-                  size: 22,
-                  color: $data.focusShow ? $props.primaryColor : "#c0c4cc",
-                  onClick: $options.onEyes
-                }, null, 8, ["class", "type", "color", "onClick"])) : vue.createCommentVNode("v-if", true)
-              ],
-              64
-              /* STABLE_FRAGMENT */
-            )) : vue.createCommentVNode("v-if", true),
-            $props.suffixIcon ? (vue.openBlock(), vue.createElementBlock(
-              vue.Fragment,
-              { key: 4 },
-              [
-                $props.suffixIcon ? (vue.openBlock(), vue.createBlock(_component_uni_icons, {
-                  key: 0,
-                  class: "content-clear-icon",
-                  type: $props.suffixIcon,
-                  color: "#c0c4cc",
-                  onClick: _cache[11] || (_cache[11] = ($event) => $options.onClickIcon("suffix")),
-                  size: "22"
-                }, null, 8, ["type"])) : vue.createCommentVNode("v-if", true)
-              ],
-              64
-              /* STABLE_FRAGMENT */
-            )) : (vue.openBlock(), vue.createElementBlock(
-              vue.Fragment,
-              { key: 5 },
-              [
-                $props.clearable && $options.isVal && !$props.disabled && $props.type !== "textarea" ? (vue.openBlock(), vue.createBlock(_component_uni_icons, {
-                  key: 0,
-                  class: vue.normalizeClass(["content-clear-icon", { "is-textarea-icon": $props.type === "textarea" }]),
-                  type: "clear",
-                  size: $props.clearSize,
-                  color: $options.msg ? "#dd524d" : $data.focusShow ? $props.primaryColor : "#c0c4cc",
-                  onClick: $options.onClear
-                }, null, 8, ["class", "size", "color", "onClick"])) : vue.createCommentVNode("v-if", true)
-              ],
-              64
-              /* STABLE_FRAGMENT */
-            )),
-            vue.renderSlot(_ctx.$slots, "right", {}, void 0, true)
-          ],
-          6
-          /* CLASS, STYLE */
-        )
-      ],
-      6
-      /* CLASS, STYLE */
-    );
+              class: "list_box"
+            }, [
+              (vue.openBlock(true), vue.createElementBlock(
+                vue.Fragment,
+                null,
+                vue.renderList(list, (item) => {
+                  return vue.openBlock(), vue.createElementBlock(
+                    "view",
+                    {
+                      key: item,
+                      class: "item"
+                    },
+                    vue.toDisplayString(item),
+                    1
+                    /* TEXT */
+                  );
+                }),
+                128
+                /* KEYED_FRAGMENT */
+              ))
+            ])) : vue.createCommentVNode("v-if", true)
+          ]),
+          empty: vue.withCtx(() => [
+            vue.createElementVNode("view", { style: { "height": "100%", "background-color": "aquamarine" } }, "我是无数据页面，你可以任意设置")
+          ]),
+          _: 1
+          /* STABLE */
+        }, 8, ["params", "emptyShowConfig"])
+      ]),
+      vue.createElementVNode("view", { class: "section_title" }, " 显示第一次加载直接失败的状态 "),
+      vue.createElementVNode("view", { style: { "height": "800rpx", "border": "1px solid gainsboro" } }, [
+        vue.createVNode(_component_cl_scroll_view, {
+          apiFun: $setup.apiFun3,
+          params: $setup.searchParams3
+        }, {
+          list: vue.withCtx(({ list }) => [
+            vue.createElementVNode("view", { class: "list_box" }, [
+              (vue.openBlock(true), vue.createElementBlock(
+                vue.Fragment,
+                null,
+                vue.renderList(list, (item) => {
+                  return vue.openBlock(), vue.createElementBlock(
+                    "view",
+                    {
+                      key: item,
+                      class: "item"
+                    },
+                    vue.toDisplayString(item),
+                    1
+                    /* TEXT */
+                  );
+                }),
+                128
+                /* KEYED_FRAGMENT */
+              ))
+            ])
+          ]),
+          _: 1
+          /* STABLE */
+        }, 8, ["params"])
+      ]),
+      vue.createElementVNode("view", { class: "section_title" }, " 显示非第一次加载失败的状态，使用messageField字段控制提示信息，使用errorToastConfig隐藏弹窗图标，使用errorShowConfig配置错误时展示的文本 "),
+      vue.createElementVNode("view", { style: { "height": "800rpx", "border": "1px solid gainsboro" } }, [
+        vue.createVNode(_component_cl_scroll_view, {
+          apiFun: $setup.apiFun4,
+          params: $setup.searchParams4,
+          hideLoad: "",
+          messageField: "message",
+          errorToastConfig: { icon: "none" },
+          errorShowConfig: { text: "好像没有拿到数据哇", imgSrc: "/static/logo.png" }
+        }, {
+          list: vue.withCtx(({ list }) => [
+            vue.createElementVNode("view", { class: "list_box" }, [
+              (vue.openBlock(true), vue.createElementBlock(
+                vue.Fragment,
+                null,
+                vue.renderList(list, (item) => {
+                  return vue.openBlock(), vue.createElementBlock(
+                    "view",
+                    {
+                      key: item,
+                      class: "item"
+                    },
+                    vue.toDisplayString(item),
+                    1
+                    /* TEXT */
+                  );
+                }),
+                128
+                /* KEYED_FRAGMENT */
+              ))
+            ])
+          ]),
+          _: 1
+          /* STABLE */
+        }, 8, ["params", "errorShowConfig"])
+      ])
+    ]);
   }
-  const __easycom_1 = /* @__PURE__ */ _export_sfc(_sfc_main$7, [["render", _sfc_render$3], ["__scopeId", "data-v-09fd5285"], ["__file", "E:/code/uniapp/uni-app-components/uni_modules/uni-easyinput/components/uni-easyinput/uni-easyinput.vue"]]);
-  const _sfc_main$6 = {
+  const PagesComponentPageClScrollViewIndex = /* @__PURE__ */ _export_sfc(_sfc_main$c, [["render", _sfc_render$b], ["__scopeId", "data-v-a70f1c9b"], ["__file", "E:/code/uniapp/uni-app-components/pages/componentPage/cl-scroll-view/index.vue"]]);
+  const _sfc_main$b = {
     __name: "cl-select",
     props: {
       options: {
@@ -4057,7 +4087,8 @@ if (uni.restoreGlobal) {
       }
     },
     emits: ["update:modelValue", "focus", "blur", "selected", "clear", "input"],
-    setup(__props, { emit: __emit }) {
+    setup(__props, { expose: __expose, emit: __emit }) {
+      __expose();
       const props = __props;
       const emits = __emit;
       const visible = vue.ref(false);
@@ -4108,6 +4139,8 @@ if (uni.restoreGlobal) {
       const blurHandle = () => {
         if (isSelected.value) {
           curSelectLabel.value = curSelect.value[props.labelField];
+        } else {
+          curSelectLabel.value = void 0;
         }
         emits("blur");
       };
@@ -4124,12 +4157,6 @@ if (uni.restoreGlobal) {
             showPlaceholder.value = props.placeholder;
             scrollIntoView.value = void 0;
           }
-        } else {
-          if (isSelected.value) {
-            showPlaceholder.value = props.placeholder;
-          } else {
-            curSelectLabel.value = curSelect.value[props.labelField];
-          }
         }
       });
       vue.watch(() => curSelect.value, (val) => {
@@ -4142,17 +4169,25 @@ if (uni.restoreGlobal) {
           curSelectValue.value = val[props.valueField];
         }
       });
-      const isEmpty = (val) => {
-        return val === "" || val === void 0 || val === null;
-      };
-      vue.watch(() => props.options, (newList) => {
-        if (newList.length > 0 && !isEmpty(props.modelValue)) {
-          formatAppLog("log", "at uni_modules/cl-select/components/cl-select/cl-select.vue:205", newList, props.modelValue);
-          const data = newList.find((item) => item[props.valueField] === props.modelValue);
+      const setCurSelect = () => {
+        if (props.options.length > 0 && !isEmpty(props.modelValue)) {
+          const data = props.options.find((item) => item[props.valueField] === props.modelValue);
           if (data) {
             curSelect.value = data;
           }
         }
+      };
+      const isEmpty = (val) => {
+        return val === "" || val === void 0 || val === null;
+      };
+      vue.watch(() => props.options, (newList) => {
+        setCurSelect();
+      }, {
+        immediate: true,
+        deep: true
+      });
+      vue.watch(() => props.modelValue, (newList) => {
+        setCurSelect();
       }, {
         immediate: true,
         deep: true
@@ -4160,132 +4195,143 @@ if (uni.restoreGlobal) {
       const maskClick = (e) => {
         visible.value = false;
       };
-      return (_ctx, _cache) => {
-        const _component_uni_icons = resolveEasycom(vue.resolveDynamicComponent("uni-icons"), __easycom_0$6);
-        const _component_uni_easyinput = resolveEasycom(vue.resolveDynamicComponent("uni-easyinput"), __easycom_1);
-        return vue.openBlock(), vue.createElementBlock(
-          vue.Fragment,
-          null,
-          [
-            vue.createElementVNode("view", { class: "el_select" }, [
-              vue.createVNode(_component_uni_easyinput, {
-                modelValue: curSelectLabel.value,
-                "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => curSelectLabel.value = $event),
-                clearable: false,
-                placeholder: showPlaceholder.value,
-                placeholderStyle: __props.placeholderStyle,
-                disabled: __props.disabled,
-                maxlength: __props.maxlength,
-                trim: __props.trim,
-                inputBorder: !__props.hideBorder,
-                cursorSpacing: __props.cursorSpacing,
-                onFocus: focusHandle,
-                onInput: inputHandle,
-                onBlur: blurHandle
-              }, {
-                right: vue.withCtx(() => [
-                  vue.createElementVNode("view", { class: "icons" }, [
-                    !isSelected.value ? (vue.openBlock(), vue.createBlock(_component_uni_icons, {
-                      key: 0,
-                      type: visible.value ? "top" : "bottom",
-                      size: "14"
-                    }, null, 8, ["type"])) : (vue.openBlock(), vue.createBlock(_component_uni_icons, {
-                      key: 1,
-                      type: "clear",
-                      size: "20",
-                      onClick: clearHandle
-                    }))
-                  ])
-                ]),
-                _: 1
-                /* STABLE */
-              }, 8, ["modelValue", "placeholder", "placeholderStyle", "disabled", "maxlength", "trim", "inputBorder", "cursorSpacing"]),
-              vue.withDirectives(vue.createElementVNode(
-                "view",
-                { class: "scroll_list" },
-                [
-                  vue.createElementVNode("view", { class: "triangle_icon" }),
-                  vue.createElementVNode("scroll-view", {
-                    "scroll-y": "",
-                    "scroll-into-view": scrollIntoView.value,
-                    style: vue.normalizeStyle({ maxHeight: __props.maxHeight + "px" })
-                  }, [
-                    (vue.openBlock(true), vue.createElementBlock(
-                      vue.Fragment,
-                      null,
-                      vue.renderList(showOptions.value, (item, index) => {
-                        return vue.openBlock(), vue.createElementBlock("view", {
-                          class: vue.normalizeClass(["select_item", { active: item[__props.valueField] === curSelect.value[__props.valueField] }]),
-                          key: index,
-                          onClick: ($event) => selected(item),
-                          id: item[__props.valueField]
-                        }, vue.toDisplayString(item[__props.labelField]), 11, ["onClick", "id"]);
-                      }),
-                      128
-                      /* KEYED_FRAGMENT */
-                    )),
-                    showOptions.value.length === 0 ? vue.renderSlot(_ctx.$slots, "empty", { key: 0 }, () => [
-                      vue.createElementVNode(
-                        "view",
-                        { class: "empty_text" },
-                        vue.toDisplayString(__props.emptyText),
-                        1
-                        /* TEXT */
-                      )
-                    ], true) : vue.createCommentVNode("v-if", true)
-                  ], 12, ["scroll-into-view"])
-                ],
-                512
-                /* NEED_PATCH */
-              ), [
-                [vue.vShow, visible.value]
+      const __returned__ = { props, emits, visible, curSelect, curSelectLabel, curSelectValue, isSelected, scrollIntoView, showOptions, selected, clearHandle, showPlaceholder, focusHandle, blurHandle, inputHandle, setCurSelect, isEmpty, maskClick, ref: vue.ref, watch: vue.watch, computed: vue.computed, nextTick: vue.nextTick, onMounted: vue.onMounted };
+      Object.defineProperty(__returned__, "__isScriptSetup", { enumerable: false, value: true });
+      return __returned__;
+    }
+  };
+  function _sfc_render$a(_ctx, _cache, $props, $setup, $data, $options) {
+    const _component_uni_icons = resolveEasycom(vue.resolveDynamicComponent("uni-icons"), __easycom_0$8);
+    const _component_uni_easyinput = resolveEasycom(vue.resolveDynamicComponent("uni-easyinput"), __easycom_1$1);
+    return vue.openBlock(), vue.createElementBlock(
+      vue.Fragment,
+      null,
+      [
+        vue.createElementVNode("view", { class: "el_select" }, [
+          vue.createVNode(_component_uni_easyinput, {
+            modelValue: $setup.curSelectLabel,
+            "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => $setup.curSelectLabel = $event),
+            clearable: false,
+            placeholder: $setup.showPlaceholder,
+            placeholderStyle: $props.placeholderStyle,
+            disabled: $props.disabled,
+            maxlength: $props.maxlength,
+            trim: $props.trim,
+            inputBorder: !$props.hideBorder,
+            cursorSpacing: $props.cursorSpacing,
+            onFocus: $setup.focusHandle,
+            onInput: $setup.inputHandle,
+            onBlur: $setup.blurHandle
+          }, {
+            right: vue.withCtx(() => [
+              vue.createElementVNode("view", { class: "icons" }, [
+                !$setup.isSelected || $setup.visible ? (vue.openBlock(), vue.createBlock(_component_uni_icons, {
+                  key: 0,
+                  type: $setup.visible ? "top" : "bottom",
+                  size: "14"
+                }, null, 8, ["type"])) : (vue.openBlock(), vue.createBlock(_component_uni_icons, {
+                  key: 1,
+                  type: "clear",
+                  size: "24",
+                  onClick: $setup.clearHandle,
+                  color: "#c0c4cc"
+                }))
               ])
             ]),
-            visible.value ? (vue.openBlock(), vue.createElementBlock("view", {
-              key: 0,
-              class: "mask",
-              onClick: maskClick
-            })) : vue.createCommentVNode("v-if", true)
-          ],
-          64
-          /* STABLE_FRAGMENT */
-        );
-      };
-    }
-  };
-  const __easycom_0$2 = /* @__PURE__ */ _export_sfc(_sfc_main$6, [["__scopeId", "data-v-4bd33685"], ["__file", "E:/code/uniapp/uni-app-components/uni_modules/cl-select/components/cl-select/cl-select.vue"]]);
-  const _sfc_main$5 = {
+            _: 1
+            /* STABLE */
+          }, 8, ["modelValue", "placeholder", "placeholderStyle", "disabled", "maxlength", "trim", "inputBorder", "cursorSpacing"]),
+          vue.withDirectives(vue.createElementVNode(
+            "view",
+            { class: "scroll_list" },
+            [
+              vue.createElementVNode("view", { class: "triangle_icon" }),
+              vue.createElementVNode("scroll-view", {
+                "scroll-y": "",
+                "scroll-into-view": $setup.scrollIntoView,
+                style: vue.normalizeStyle({ maxHeight: $props.maxHeight + "px" })
+              }, [
+                (vue.openBlock(true), vue.createElementBlock(
+                  vue.Fragment,
+                  null,
+                  vue.renderList($setup.showOptions, (item, index) => {
+                    return vue.openBlock(), vue.createElementBlock("view", {
+                      class: vue.normalizeClass(["select_item", { active: item[$props.valueField] === $setup.curSelect[$props.valueField] }]),
+                      key: index,
+                      onClick: ($event) => $setup.selected(item),
+                      id: item[$props.valueField]
+                    }, vue.toDisplayString(item[$props.labelField]), 11, ["onClick", "id"]);
+                  }),
+                  128
+                  /* KEYED_FRAGMENT */
+                )),
+                $setup.showOptions.length === 0 ? vue.renderSlot(_ctx.$slots, "empty", { key: 0 }, () => [
+                  vue.createElementVNode(
+                    "view",
+                    { class: "empty_text" },
+                    vue.toDisplayString($props.emptyText),
+                    1
+                    /* TEXT */
+                  )
+                ], true) : vue.createCommentVNode("v-if", true)
+              ], 12, ["scroll-into-view"])
+            ],
+            512
+            /* NEED_PATCH */
+          ), [
+            [vue.vShow, $setup.visible]
+          ])
+        ]),
+        $setup.visible ? (vue.openBlock(), vue.createElementBlock("view", {
+          key: 0,
+          class: "mask",
+          onClick: $setup.maskClick
+        })) : vue.createCommentVNode("v-if", true)
+      ],
+      64
+      /* STABLE_FRAGMENT */
+    );
+  }
+  const __easycom_0$4 = /* @__PURE__ */ _export_sfc(_sfc_main$b, [["render", _sfc_render$a], ["__scopeId", "data-v-4bd33685"], ["__file", "E:/code/uniapp/uni-app-components/uni_modules/cl-select/components/cl-select/cl-select.vue"]]);
+  const _sfc_main$a = {
     __name: "index",
-    setup(__props) {
-      const value = vue.ref();
-      const options = Array.from({ length: 100 }, (_, index) => {
+    setup(__props, { expose: __expose }) {
+      __expose();
+      const value = vue.ref("value50");
+      const options = Array.from({
+        length: 100
+      }, (_, index) => {
         return {
           label: `我是展示的值${index}`,
-          value: `我是选中的值${index}`
+          value: `value${index}`
         };
       });
-      return (_ctx, _cache) => {
-        const _component_cl_select = resolveEasycom(vue.resolveDynamicComponent("cl-select"), __easycom_0$2);
-        return vue.openBlock(), vue.createElementBlock("view", { class: "content" }, [
-          vue.createVNode(_component_cl_select, {
-            options: vue.unref(options),
-            modelValue: value.value,
-            "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => value.value = $event)
-          }, null, 8, ["options", "modelValue"])
-        ]);
-      };
+      const __returned__ = { value, options, ref: vue.ref };
+      Object.defineProperty(__returned__, "__isScriptSetup", { enumerable: false, value: true });
+      return __returned__;
     }
   };
-  const PagesComponentPageClSelectIndex = /* @__PURE__ */ _export_sfc(_sfc_main$5, [["__scopeId", "data-v-ad7d568c"], ["__file", "E:/code/uniapp/uni-app-components/pages/componentPage/cl-select/index.vue"]]);
-  const _sfc_main$4 = {
-    name: "UniStatusBar",
+  function _sfc_render$9(_ctx, _cache, $props, $setup, $data, $options) {
+    const _component_cl_select = resolveEasycom(vue.resolveDynamicComponent("cl-select"), __easycom_0$4);
+    return vue.openBlock(), vue.createElementBlock("view", { class: "content" }, [
+      vue.createElementVNode("text", null, "模仿uni-data-select做的可搜索下拉框，可直接回显数据，并定位到对应的数据项"),
+      vue.createVNode(_component_cl_select, {
+        options: $setup.options,
+        modelValue: $setup.value,
+        "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => $setup.value = $event)
+      }, null, 8, ["options", "modelValue"])
+    ]);
+  }
+  const PagesComponentPageClSelectIndex = /* @__PURE__ */ _export_sfc(_sfc_main$a, [["render", _sfc_render$9], ["__scopeId", "data-v-ad7d568c"], ["__file", "E:/code/uniapp/uni-app-components/pages/componentPage/cl-select/index.vue"]]);
+  const _sfc_main$9 = {
+    name: "ClStatusBar",
     data() {
       return {
         statusBarHeight: uni.getSystemInfoSync().statusBarHeight + "px"
       };
     }
   };
-  function _sfc_render$2(_ctx, _cache, $props, $setup, $data, $options) {
+  function _sfc_render$8(_ctx, _cache, $props, $setup, $data, $options) {
     return vue.openBlock(), vue.createElementBlock(
       "view",
       {
@@ -4299,12 +4345,69 @@ if (uni.restoreGlobal) {
       /* STYLE */
     );
   }
-  const statusBar = /* @__PURE__ */ _export_sfc(_sfc_main$4, [["render", _sfc_render$2], ["__scopeId", "data-v-7920e3e0"], ["__file", "E:/code/uniapp/uni-app-components/uni_modules/uni-nav-bar/components/uni-nav-bar/uni-status-bar.vue"]]);
+  const clStatusBar = /* @__PURE__ */ _export_sfc(_sfc_main$9, [["render", _sfc_render$8], ["__scopeId", "data-v-9f8a21c7"], ["__file", "E:/code/uniapp/uni-app-components/uni_modules/cl-nav-bar/components/cl-nav-bar/cl-status-bar.vue"]]);
+  const pages = [
+    {
+      path: "pages/index/index",
+      style: {
+        navigationBarTitleText: "uni-app"
+      }
+    },
+    {
+      path: "pages/componentPage/cl-select-picker/index",
+      style: {
+        navigationBarTitleText: "cl-select-picker"
+      }
+    },
+    {
+      path: "pages/componentPage/cl-scroll-view/index",
+      style: {
+        navigationBarTitleText: "cl-scroll-view"
+      }
+    },
+    {
+      path: "pages/componentPage/cl-select/index",
+      style: {
+        navigationBarTitleText: "cl-select"
+      }
+    },
+    {
+      path: "pages/componentPage/cl-nav-bar/index",
+      style: {
+        navigationBarTitleText: "我是自定义标题",
+        navigationStyle: "custom"
+      }
+    },
+    {
+      path: "pages/componentPage/cl-date-picker/index",
+      style: {
+        navigationBarTitleText: "时间选择器"
+      }
+    },
+    {
+      path: "pages/componentPage/cl-more-select-picker/index",
+      style: {
+        navigationBarTitleText: "弹出多选组件"
+      }
+    }
+  ];
+  const globalStyle = {
+    navigationBarTextStyle: "black",
+    navigationBarTitleText: "uni-app",
+    navigationBarBackgroundColor: "#F8F8F8",
+    backgroundColor: "#F8F8F8"
+  };
+  const uniIdRouter = {};
+  const pageData = {
+    pages,
+    globalStyle,
+    uniIdRouter
+  };
   const getVal = (val) => typeof val === "number" ? val + "px" : val;
-  const _sfc_main$3 = {
-    name: "UniNavBar",
+  const _sfc_main$8 = {
+    name: "ClNavBar",
     components: {
-      statusBar
+      clStatusBar
     },
     emits: ["clickLeft", "clickRight", "clickTitle"],
     props: {
@@ -4326,7 +4429,7 @@ if (uni.restoreGlobal) {
       },
       leftIcon: {
         type: String,
-        default: ""
+        default: "left"
       },
       rightIcon: {
         type: String,
@@ -4334,7 +4437,7 @@ if (uni.restoreGlobal) {
       },
       fixed: {
         type: [Boolean, String],
-        default: false
+        default: true
       },
       color: {
         type: String,
@@ -4346,7 +4449,7 @@ if (uni.restoreGlobal) {
       },
       statusBar: {
         type: [Boolean, String],
-        default: false
+        default: true
       },
       shadow: {
         type: [Boolean, String],
@@ -4354,7 +4457,7 @@ if (uni.restoreGlobal) {
       },
       border: {
         type: [Boolean, String],
-        default: true
+        default: false
       },
       height: {
         type: [Number, String],
@@ -4368,10 +4471,14 @@ if (uni.restoreGlobal) {
         type: [Number, String],
         default: 60
       },
-      stat: {
-        type: [Boolean, String],
-        default: ""
+      // 自动返回时间
+      autoBack: {
+        type: Boolean,
+        default: true
       }
+    },
+    mounted() {
+      formatAppLog("log", "at uni_modules/cl-nav-bar/components/cl-nav-bar/cl-nav-bar.vue:148", this.$attrs);
     },
     computed: {
       themeBgColor() {
@@ -4404,270 +4511,25 @@ if (uni.restoreGlobal) {
         return getVal(this.rightWidth);
       }
     },
-    mounted() {
-      if (uni.report && this.stat && this.title !== "") {
-        uni.report("title", this.title);
-      }
-    },
     methods: {
       onClickLeft() {
-        this.$emit("clickLeft");
+        if (this.autoBack) {
+          uni.navigateBack();
+        } else {
+          this.$emit("clickLeft");
+        }
       },
       onClickRight() {
         this.$emit("clickRight");
       },
       onClickTitle() {
         this.$emit("clickTitle");
-      }
-    }
-  };
-  function _sfc_render$1(_ctx, _cache, $props, $setup, $data, $options) {
-    const _component_status_bar = vue.resolveComponent("status-bar");
-    const _component_uni_icons = resolveEasycom(vue.resolveDynamicComponent("uni-icons"), __easycom_0$6);
-    return vue.openBlock(), vue.createElementBlock(
-      "view",
-      {
-        class: vue.normalizeClass(["uni-navbar", { "uni-dark": $props.dark, "uni-nvue-fixed": $props.fixed }])
       },
-      [
-        vue.createElementVNode(
-          "view",
-          {
-            class: vue.normalizeClass(["uni-navbar__content", { "uni-navbar--fixed": $props.fixed, "uni-navbar--shadow": $props.shadow, "uni-navbar--border": $props.border }]),
-            style: vue.normalizeStyle({ "background-color": $options.themeBgColor, "border-bottom-color": $options.themeColor })
-          },
-          [
-            $props.statusBar ? (vue.openBlock(), vue.createBlock(_component_status_bar, { key: 0 })) : vue.createCommentVNode("v-if", true),
-            vue.createElementVNode(
-              "view",
-              {
-                style: vue.normalizeStyle({ color: $options.themeColor, backgroundColor: $options.themeBgColor, height: $options.navbarHeight }),
-                class: "uni-navbar__header"
-              },
-              [
-                vue.createElementVNode(
-                  "view",
-                  {
-                    onClick: _cache[0] || (_cache[0] = (...args) => $options.onClickLeft && $options.onClickLeft(...args)),
-                    class: "uni-navbar__header-btns uni-navbar__header-btns-left",
-                    style: vue.normalizeStyle({ width: $options.leftIconWidth })
-                  },
-                  [
-                    vue.renderSlot(_ctx.$slots, "left", {}, () => [
-                      $props.leftIcon.length > 0 ? (vue.openBlock(), vue.createElementBlock("view", {
-                        key: 0,
-                        class: "uni-navbar__content_view"
-                      }, [
-                        vue.createVNode(_component_uni_icons, {
-                          color: $options.themeColor,
-                          type: $props.leftIcon,
-                          size: "20"
-                        }, null, 8, ["color", "type"])
-                      ])) : vue.createCommentVNode("v-if", true),
-                      $props.leftText.length ? (vue.openBlock(), vue.createElementBlock(
-                        "view",
-                        {
-                          key: 1,
-                          class: vue.normalizeClass([{ "uni-navbar-btn-icon-left": !$props.leftIcon.length > 0 }, "uni-navbar-btn-text"])
-                        },
-                        [
-                          vue.createElementVNode(
-                            "text",
-                            {
-                              style: vue.normalizeStyle({ color: $options.themeColor, fontSize: "12px" })
-                            },
-                            vue.toDisplayString($props.leftText),
-                            5
-                            /* TEXT, STYLE */
-                          )
-                        ],
-                        2
-                        /* CLASS */
-                      )) : vue.createCommentVNode("v-if", true)
-                    ], true)
-                  ],
-                  4
-                  /* STYLE */
-                ),
-                vue.createElementVNode("view", {
-                  class: "uni-navbar__header-container",
-                  onClick: _cache[1] || (_cache[1] = (...args) => $options.onClickTitle && $options.onClickTitle(...args))
-                }, [
-                  vue.renderSlot(_ctx.$slots, "default", {}, () => [
-                    $props.title.length > 0 ? (vue.openBlock(), vue.createElementBlock("view", {
-                      key: 0,
-                      class: "uni-navbar__header-container-inner"
-                    }, [
-                      vue.createElementVNode(
-                        "text",
-                        {
-                          class: "uni-nav-bar-text uni-ellipsis-1",
-                          style: vue.normalizeStyle({ color: $options.themeColor })
-                        },
-                        vue.toDisplayString($props.title),
-                        5
-                        /* TEXT, STYLE */
-                      )
-                    ])) : vue.createCommentVNode("v-if", true)
-                  ], true)
-                ]),
-                vue.createElementVNode(
-                  "view",
-                  {
-                    onClick: _cache[2] || (_cache[2] = (...args) => $options.onClickRight && $options.onClickRight(...args)),
-                    class: "uni-navbar__header-btns uni-navbar__header-btns-right",
-                    style: vue.normalizeStyle({ width: $options.rightIconWidth })
-                  },
-                  [
-                    vue.renderSlot(_ctx.$slots, "right", {}, () => [
-                      $props.rightIcon.length ? (vue.openBlock(), vue.createElementBlock("view", { key: 0 }, [
-                        vue.createVNode(_component_uni_icons, {
-                          color: $options.themeColor,
-                          type: $props.rightIcon,
-                          size: "22"
-                        }, null, 8, ["color", "type"])
-                      ])) : vue.createCommentVNode("v-if", true),
-                      $props.rightText.length && !$props.rightIcon.length ? (vue.openBlock(), vue.createElementBlock("view", {
-                        key: 1,
-                        class: "uni-navbar-btn-text"
-                      }, [
-                        vue.createElementVNode(
-                          "text",
-                          {
-                            class: "uni-nav-bar-right-text",
-                            style: vue.normalizeStyle({ color: $options.themeColor })
-                          },
-                          vue.toDisplayString($props.rightText),
-                          5
-                          /* TEXT, STYLE */
-                        )
-                      ])) : vue.createCommentVNode("v-if", true)
-                    ], true)
-                  ],
-                  4
-                  /* STYLE */
-                )
-              ],
-              4
-              /* STYLE */
-            )
-          ],
-          6
-          /* CLASS, STYLE */
-        ),
-        $props.fixed ? (vue.openBlock(), vue.createElementBlock("view", {
-          key: 0,
-          class: "uni-navbar__placeholder"
-        }, [
-          $props.statusBar ? (vue.openBlock(), vue.createBlock(_component_status_bar, { key: 0 })) : vue.createCommentVNode("v-if", true),
-          vue.createElementVNode(
-            "view",
-            {
-              class: "uni-navbar__placeholder-view",
-              style: vue.normalizeStyle({ height: $options.navbarHeight })
-            },
-            null,
-            4
-            /* STYLE */
-          )
-        ])) : vue.createCommentVNode("v-if", true)
-      ],
-      2
-      /* CLASS */
-    );
-  }
-  const __easycom_0$1 = /* @__PURE__ */ _export_sfc(_sfc_main$3, [["render", _sfc_render$1], ["__scopeId", "data-v-26544265"], ["__file", "E:/code/uniapp/uni-app-components/uni_modules/uni-nav-bar/components/uni-nav-bar/uni-nav-bar.vue"]]);
-  const pages = [
-    {
-      path: "pages/index/index",
-      style: {
-        navigationBarTitleText: "uni-app"
-      }
-    },
-    {
-      path: "pages/componentPage/cl-select-picker/index",
-      style: {
-        navigationBarTitleText: "cl-select-picker"
-      }
-    },
-    {
-      path: "pages/componentPage/cl-scroll-view/index",
-      style: {
-        navigationBarTitleText: "cl-scroll-view"
-      }
-    },
-    {
-      path: "pages/componentPage/cl-select/index",
-      style: {
-        navigationBarTitleText: "cl-select"
-      }
-    },
-    {
-      path: "pages/componentPage/cl-nav-bar/index",
-      style: {
-        navigationBarTitleText: "我是自定义标题",
-        navigationStyle: "custom"
-      }
-    }
-  ];
-  const globalStyle = {
-    navigationBarTextStyle: "black",
-    navigationBarTitleText: "uni-app",
-    navigationBarBackgroundColor: "#F8F8F8",
-    backgroundColor: "#F8F8F8"
-  };
-  const uniIdRouter = {};
-  const pageData = {
-    pages,
-    globalStyle,
-    uniIdRouter
-  };
-  const _sfc_main$2 = {
-    __name: "cl-nav-bar",
-    props: {
-      title: {
-        type: String,
-        default: ""
-      },
-      statusBar: {
-        type: Boolean,
-        default: true
-      },
-      fixed: {
-        type: Boolean,
-        default: true
-      },
-      leftIcon: {
-        type: String,
-        default: "left"
-      },
-      border: {
-        type: Boolean,
-        default: false
-      },
-      clickLeft: {
-        type: Function
-      },
-      clickright: {
-        type: Function
-      }
-    },
-    emits: ["getHeight"],
-    setup(__props, { emit: __emit }) {
-      const props = __props;
-      const $attrs = vue.useAttrs();
-      const emits = __emit;
-      onReady(() => {
-        const pageInstace = vue.getCurrentInstance();
-        const query = uni.createSelectorQuery().in(pageInstace == null ? void 0 : pageInstace.proxy);
-        query.select(".cl-nav-bar").boundingClientRect((data) => {
-          emits("getHeight", data.height);
-        }).exec();
-      });
-      const getCurrentPageTitle = () => {
+      // 自动获取title
+      getCurrentPageTitle() {
         var _a, _b;
-        if (props.title) {
-          return props.title;
+        if (this.title) {
+          return this.title;
         }
         const pageList = getCurrentPages();
         const curPage = pageList[pageList.length - 1];
@@ -4693,63 +4555,1576 @@ if (uni.restoreGlobal) {
             }
           }
         }
-      };
-      const clickLeft = () => {
-        if (typeof props.clickLeft === "function") {
-          props.clickLeft();
-        } else {
-          uni.navigateBack();
-        }
-      };
-      const clickright = () => {
-        if (typeof props.clickright === "function") {
-          props.clickright();
-        }
-      };
-      return (_ctx, _cache) => {
-        const _component_uni_nav_bar = resolveEasycom(vue.resolveDynamicComponent("uni-nav-bar"), __easycom_0$1);
-        return vue.openBlock(), vue.createBlock(_component_uni_nav_bar, vue.mergeProps({ class: "cl-nav-bar" }, vue.unref($attrs), {
-          border: __props.border,
-          statusBar: __props.statusBar,
-          fixed: __props.fixed,
-          leftIcon: __props.leftIcon,
-          title: getCurrentPageTitle(),
-          onClickLeft: clickLeft,
-          onClickright: clickright
-        }), null, 16, ["border", "statusBar", "fixed", "leftIcon", "title"]);
-      };
+      }
     }
   };
-  const __easycom_0 = /* @__PURE__ */ _export_sfc(_sfc_main$2, [["__file", "E:/code/uniapp/uni-app-components/uni_modules/cl-nav-bar/components/cl-nav-bar/cl-nav-bar.vue"]]);
-  const _sfc_main$1 = {};
-  function _sfc_render(_ctx, _cache) {
-    const _component_cl_nav_bar = resolveEasycom(vue.resolveDynamicComponent("cl-nav-bar"), __easycom_0);
+  function _sfc_render$7(_ctx, _cache, $props, $setup, $data, $options) {
+    const _component_clStatusBar = vue.resolveComponent("clStatusBar");
+    const _component_uni_icons = resolveEasycom(vue.resolveDynamicComponent("uni-icons"), __easycom_0$8);
+    return vue.openBlock(), vue.createElementBlock(
+      "view",
+      {
+        class: vue.normalizeClass(["cl_navbar", { "cl_dark": $props.dark, "cl_nvue-fixed": $props.fixed }])
+      },
+      [
+        vue.createElementVNode(
+          "view",
+          {
+            class: vue.normalizeClass(["cl_navbar__content", { "cl_navbar--fixed": $props.fixed, "cl_navbar--shadow": $props.shadow, "cl_navbar--border": $props.border }]),
+            style: vue.normalizeStyle({ "background-color": $options.themeBgColor, "border-bottom-color": $options.themeColor })
+          },
+          [
+            $props.statusBar ? (vue.openBlock(), vue.createBlock(_component_clStatusBar, { key: 0 })) : vue.createCommentVNode("v-if", true),
+            vue.createElementVNode(
+              "view",
+              {
+                style: vue.normalizeStyle({ color: $options.themeColor, backgroundColor: $options.themeBgColor, height: $options.navbarHeight }),
+                class: "cl_navbar__header"
+              },
+              [
+                vue.createElementVNode(
+                  "view",
+                  {
+                    onClick: _cache[0] || (_cache[0] = (...args) => $options.onClickLeft && $options.onClickLeft(...args)),
+                    class: "cl_navbar__header-btns cl_navbar__header-btns-left",
+                    style: vue.normalizeStyle({ width: $options.leftIconWidth })
+                  },
+                  [
+                    vue.renderSlot(_ctx.$slots, "left", {}, () => [
+                      $props.leftIcon.length > 0 ? (vue.openBlock(), vue.createElementBlock("view", {
+                        key: 0,
+                        class: "cl_navbar__content_view"
+                      }, [
+                        vue.createVNode(_component_uni_icons, {
+                          color: $options.themeColor,
+                          type: $props.leftIcon,
+                          size: "20"
+                        }, null, 8, ["color", "type"])
+                      ])) : vue.createCommentVNode("v-if", true),
+                      $props.leftText.length ? (vue.openBlock(), vue.createElementBlock(
+                        "view",
+                        {
+                          key: 1,
+                          class: vue.normalizeClass([{ "cl_navbar-btn-icon-left": !$props.leftIcon.length > 0 }, "cl_navbar-btn-text"])
+                        },
+                        [
+                          vue.createElementVNode(
+                            "text",
+                            {
+                              style: vue.normalizeStyle({ color: $options.themeColor, fontSize: "12px" })
+                            },
+                            vue.toDisplayString($props.leftText),
+                            5
+                            /* TEXT, STYLE */
+                          )
+                        ],
+                        2
+                        /* CLASS */
+                      )) : vue.createCommentVNode("v-if", true)
+                    ], true)
+                  ],
+                  4
+                  /* STYLE */
+                ),
+                vue.createElementVNode("view", {
+                  class: "cl_navbar__header-container",
+                  onClick: _cache[1] || (_cache[1] = (...args) => $options.onClickTitle && $options.onClickTitle(...args))
+                }, [
+                  vue.renderSlot(_ctx.$slots, "default", {}, () => [
+                    vue.createElementVNode("view", { class: "cl_navbar__header-container-inner" }, [
+                      vue.createElementVNode(
+                        "text",
+                        {
+                          class: "cl_nav-bar-text cl_ellipsis-1",
+                          style: vue.normalizeStyle({ color: $options.themeColor })
+                        },
+                        vue.toDisplayString($options.getCurrentPageTitle()),
+                        5
+                        /* TEXT, STYLE */
+                      )
+                    ])
+                  ], true)
+                ]),
+                vue.createElementVNode(
+                  "view",
+                  {
+                    onClick: _cache[2] || (_cache[2] = (...args) => $options.onClickRight && $options.onClickRight(...args)),
+                    class: "cl_navbar__header-btns cl_navbar__header-btns-right",
+                    style: vue.normalizeStyle({ width: $options.rightIconWidth })
+                  },
+                  [
+                    vue.renderSlot(_ctx.$slots, "right", {}, () => [
+                      $props.rightIcon.length ? (vue.openBlock(), vue.createElementBlock("view", { key: 0 }, [
+                        vue.createVNode(_component_uni_icons, {
+                          color: $options.themeColor,
+                          type: $props.rightIcon,
+                          size: "22"
+                        }, null, 8, ["color", "type"])
+                      ])) : vue.createCommentVNode("v-if", true),
+                      $props.rightText.length && !$props.rightIcon.length ? (vue.openBlock(), vue.createElementBlock("view", {
+                        key: 1,
+                        class: "cl_navbar-btn-text"
+                      }, [
+                        vue.createElementVNode(
+                          "text",
+                          {
+                            class: "cl_nav-bar-right-text",
+                            style: vue.normalizeStyle({ color: $options.themeColor })
+                          },
+                          vue.toDisplayString($props.rightText),
+                          5
+                          /* TEXT, STYLE */
+                        )
+                      ])) : vue.createCommentVNode("v-if", true)
+                    ], true)
+                  ],
+                  4
+                  /* STYLE */
+                )
+              ],
+              4
+              /* STYLE */
+            )
+          ],
+          6
+          /* CLASS, STYLE */
+        ),
+        $props.fixed ? (vue.openBlock(), vue.createElementBlock("view", {
+          key: 0,
+          class: "cl_navbar__placeholder"
+        }, [
+          $props.statusBar ? (vue.openBlock(), vue.createBlock(_component_clStatusBar, { key: 0 })) : vue.createCommentVNode("v-if", true),
+          vue.createElementVNode(
+            "view",
+            {
+              class: "cl_navbar__placeholder-view",
+              style: vue.normalizeStyle({ height: $options.navbarHeight })
+            },
+            null,
+            4
+            /* STYLE */
+          )
+        ])) : vue.createCommentVNode("v-if", true)
+      ],
+      2
+      /* CLASS */
+    );
+  }
+  const __easycom_0$3 = /* @__PURE__ */ _export_sfc(_sfc_main$8, [["render", _sfc_render$7], ["__scopeId", "data-v-99e6e796"], ["__file", "E:/code/uniapp/uni-app-components/uni_modules/cl-nav-bar/components/cl-nav-bar/cl-nav-bar.vue"]]);
+  const _sfc_main$7 = {};
+  function _sfc_render$6(_ctx, _cache) {
+    const _component_cl_nav_bar = resolveEasycom(vue.resolveDynamicComponent("cl-nav-bar"), __easycom_0$3);
     return vue.openBlock(), vue.createElementBlock(
       vue.Fragment,
       null,
       [
-        vue.createVNode(_component_cl_nav_bar, null, {
-          right: vue.withCtx(() => [
-            vue.createTextVNode("456")
-          ]),
-          left: vue.withCtx(() => [
-            vue.createTextVNode("123")
-          ]),
-          _: 1
-          /* STABLE */
-        }),
-        vue.createElementVNode("view", { style: { "padding": "30rpx" } }, " cl-nav-bar组件与uni-nav-bar组件并无区别，只是在其基础上定义了一些常用的属性与方法。具体差异可见md说明。 ")
+        vue.createVNode(_component_cl_nav_bar),
+        vue.createElementVNode("view", { style: { "padding": "30rpx" } }, " cl-nav-bar组件与uni-nav-bar组件并无区别，只是设置了部分属性的常用默认值，添加了自动从page.json获取标题的方法 ")
       ],
       64
       /* STABLE_FRAGMENT */
     );
   }
-  const PagesComponentPageClNavBarIndex = /* @__PURE__ */ _export_sfc(_sfc_main$1, [["render", _sfc_render], ["__file", "E:/code/uniapp/uni-app-components/pages/componentPage/cl-nav-bar/index.vue"]]);
+  const PagesComponentPageClNavBarIndex = /* @__PURE__ */ _export_sfc(_sfc_main$7, [["render", _sfc_render$6], ["__file", "E:/code/uniapp/uni-app-components/pages/componentPage/cl-nav-bar/index.vue"]]);
+  class MPAnimation {
+    constructor(options, _this) {
+      this.options = options;
+      this.animation = uni.createAnimation({
+        ...options
+      });
+      this.currentStepAnimates = {};
+      this.next = 0;
+      this.$ = _this;
+    }
+    _nvuePushAnimates(type, args) {
+      let aniObj = this.currentStepAnimates[this.next];
+      let styles = {};
+      if (!aniObj) {
+        styles = {
+          styles: {},
+          config: {}
+        };
+      } else {
+        styles = aniObj;
+      }
+      if (animateTypes1.includes(type)) {
+        if (!styles.styles.transform) {
+          styles.styles.transform = "";
+        }
+        let unit = "";
+        if (type === "rotate") {
+          unit = "deg";
+        }
+        styles.styles.transform += `${type}(${args + unit}) `;
+      } else {
+        styles.styles[type] = `${args}`;
+      }
+      this.currentStepAnimates[this.next] = styles;
+    }
+    _animateRun(styles = {}, config = {}) {
+      let ref = this.$.$refs["ani"].ref;
+      if (!ref)
+        return;
+      return new Promise((resolve, reject) => {
+        nvueAnimation.transition(ref, {
+          styles,
+          ...config
+        }, (res2) => {
+          resolve();
+        });
+      });
+    }
+    _nvueNextAnimate(animates, step = 0, fn) {
+      let obj = animates[step];
+      if (obj) {
+        let {
+          styles,
+          config
+        } = obj;
+        this._animateRun(styles, config).then(() => {
+          step += 1;
+          this._nvueNextAnimate(animates, step, fn);
+        });
+      } else {
+        this.currentStepAnimates = {};
+        typeof fn === "function" && fn();
+        this.isEnd = true;
+      }
+    }
+    step(config = {}) {
+      this.animation.step(config);
+      return this;
+    }
+    run(fn) {
+      this.$.animationData = this.animation.export();
+      this.$.timer = setTimeout(() => {
+        typeof fn === "function" && fn();
+      }, this.$.durationTime);
+    }
+  }
+  const animateTypes1 = [
+    "matrix",
+    "matrix3d",
+    "rotate",
+    "rotate3d",
+    "rotateX",
+    "rotateY",
+    "rotateZ",
+    "scale",
+    "scale3d",
+    "scaleX",
+    "scaleY",
+    "scaleZ",
+    "skew",
+    "skewX",
+    "skewY",
+    "translate",
+    "translate3d",
+    "translateX",
+    "translateY",
+    "translateZ"
+  ];
+  const animateTypes2 = ["opacity", "backgroundColor"];
+  const animateTypes3 = ["width", "height", "left", "right", "top", "bottom"];
+  animateTypes1.concat(animateTypes2, animateTypes3).forEach((type) => {
+    MPAnimation.prototype[type] = function(...args) {
+      this.animation[type](...args);
+      return this;
+    };
+  });
+  function createAnimation(option, _this) {
+    if (!_this)
+      return;
+    clearTimeout(_this.timer);
+    return new MPAnimation(option, _this);
+  }
+  const _sfc_main$6 = {
+    name: "uniTransition",
+    emits: ["click", "change"],
+    props: {
+      show: {
+        type: Boolean,
+        default: false
+      },
+      modeClass: {
+        type: [Array, String],
+        default() {
+          return "fade";
+        }
+      },
+      duration: {
+        type: Number,
+        default: 300
+      },
+      styles: {
+        type: Object,
+        default() {
+          return {};
+        }
+      },
+      customClass: {
+        type: String,
+        default: ""
+      },
+      onceRender: {
+        type: Boolean,
+        default: false
+      }
+    },
+    data() {
+      return {
+        isShow: false,
+        transform: "",
+        opacity: 1,
+        animationData: {},
+        durationTime: 300,
+        config: {}
+      };
+    },
+    watch: {
+      show: {
+        handler(newVal) {
+          if (newVal) {
+            this.open();
+          } else {
+            if (this.isShow) {
+              this.close();
+            }
+          }
+        },
+        immediate: true
+      }
+    },
+    computed: {
+      // 生成样式数据
+      stylesObject() {
+        let styles = {
+          ...this.styles,
+          "transition-duration": this.duration / 1e3 + "s"
+        };
+        let transform = "";
+        for (let i in styles) {
+          let line = this.toLine(i);
+          transform += line + ":" + styles[i] + ";";
+        }
+        return transform;
+      },
+      // 初始化动画条件
+      transformStyles() {
+        return "transform:" + this.transform + ";opacity:" + this.opacity + ";" + this.stylesObject;
+      }
+    },
+    created() {
+      this.config = {
+        duration: this.duration,
+        timingFunction: "ease",
+        transformOrigin: "50% 50%",
+        delay: 0
+      };
+      this.durationTime = this.duration;
+    },
+    methods: {
+      /**
+       *  ref 触发 初始化动画
+       */
+      init(obj = {}) {
+        if (obj.duration) {
+          this.durationTime = obj.duration;
+        }
+        this.animation = createAnimation(Object.assign(this.config, obj), this);
+      },
+      /**
+       * 点击组件触发回调
+       */
+      onClick() {
+        this.$emit("click", {
+          detail: this.isShow
+        });
+      },
+      /**
+       * ref 触发 动画分组
+       * @param {Object} obj
+       */
+      step(obj, config = {}) {
+        if (!this.animation)
+          return;
+        for (let i in obj) {
+          try {
+            if (typeof obj[i] === "object") {
+              this.animation[i](...obj[i]);
+            } else {
+              this.animation[i](obj[i]);
+            }
+          } catch (e) {
+            formatAppLog("error", "at uni_modules/uni-transition/components/uni-transition/uni-transition.vue:148", `方法 ${i} 不存在`);
+          }
+        }
+        this.animation.step(config);
+        return this;
+      },
+      /**
+       *  ref 触发 执行动画
+       */
+      run(fn) {
+        if (!this.animation)
+          return;
+        this.animation.run(fn);
+      },
+      // 开始过度动画
+      open() {
+        clearTimeout(this.timer);
+        this.transform = "";
+        this.isShow = true;
+        let { opacity, transform } = this.styleInit(false);
+        if (typeof opacity !== "undefined") {
+          this.opacity = opacity;
+        }
+        this.transform = transform;
+        this.$nextTick(() => {
+          this.timer = setTimeout(() => {
+            this.animation = createAnimation(this.config, this);
+            this.tranfromInit(false).step();
+            this.animation.run();
+            this.$emit("change", {
+              detail: this.isShow
+            });
+          }, 20);
+        });
+      },
+      // 关闭过度动画
+      close(type) {
+        if (!this.animation)
+          return;
+        this.tranfromInit(true).step().run(() => {
+          this.isShow = false;
+          this.animationData = null;
+          this.animation = null;
+          let { opacity, transform } = this.styleInit(false);
+          this.opacity = opacity || 1;
+          this.transform = transform;
+          this.$emit("change", {
+            detail: this.isShow
+          });
+        });
+      },
+      // 处理动画开始前的默认样式
+      styleInit(type) {
+        let styles = {
+          transform: ""
+        };
+        let buildStyle = (type2, mode) => {
+          if (mode === "fade") {
+            styles.opacity = this.animationType(type2)[mode];
+          } else {
+            styles.transform += this.animationType(type2)[mode] + " ";
+          }
+        };
+        if (typeof this.modeClass === "string") {
+          buildStyle(type, this.modeClass);
+        } else {
+          this.modeClass.forEach((mode) => {
+            buildStyle(type, mode);
+          });
+        }
+        return styles;
+      },
+      // 处理内置组合动画
+      tranfromInit(type) {
+        let buildTranfrom = (type2, mode) => {
+          let aniNum = null;
+          if (mode === "fade") {
+            aniNum = type2 ? 0 : 1;
+          } else {
+            aniNum = type2 ? "-100%" : "0";
+            if (mode === "zoom-in") {
+              aniNum = type2 ? 0.8 : 1;
+            }
+            if (mode === "zoom-out") {
+              aniNum = type2 ? 1.2 : 1;
+            }
+            if (mode === "slide-right") {
+              aniNum = type2 ? "100%" : "0";
+            }
+            if (mode === "slide-bottom") {
+              aniNum = type2 ? "100%" : "0";
+            }
+          }
+          this.animation[this.animationMode()[mode]](aniNum);
+        };
+        if (typeof this.modeClass === "string") {
+          buildTranfrom(type, this.modeClass);
+        } else {
+          this.modeClass.forEach((mode) => {
+            buildTranfrom(type, mode);
+          });
+        }
+        return this.animation;
+      },
+      animationType(type) {
+        return {
+          fade: type ? 1 : 0,
+          "slide-top": `translateY(${type ? "0" : "-100%"})`,
+          "slide-right": `translateX(${type ? "0" : "100%"})`,
+          "slide-bottom": `translateY(${type ? "0" : "100%"})`,
+          "slide-left": `translateX(${type ? "0" : "-100%"})`,
+          "zoom-in": `scaleX(${type ? 1 : 0.8}) scaleY(${type ? 1 : 0.8})`,
+          "zoom-out": `scaleX(${type ? 1 : 1.2}) scaleY(${type ? 1 : 1.2})`
+        };
+      },
+      // 内置动画类型与实际动画对应字典
+      animationMode() {
+        return {
+          fade: "opacity",
+          "slide-top": "translateY",
+          "slide-right": "translateX",
+          "slide-bottom": "translateY",
+          "slide-left": "translateX",
+          "zoom-in": "scale",
+          "zoom-out": "scale"
+        };
+      },
+      // 驼峰转中横线
+      toLine(name) {
+        return name.replace(/([A-Z])/g, "-$1").toLowerCase();
+      }
+    }
+  };
+  function _sfc_render$5(_ctx, _cache, $props, $setup, $data, $options) {
+    return vue.withDirectives((vue.openBlock(), vue.createElementBlock("view", {
+      ref: "ani",
+      animation: $data.animationData,
+      class: vue.normalizeClass($props.customClass),
+      style: vue.normalizeStyle($options.transformStyles),
+      onClick: _cache[0] || (_cache[0] = (...args) => $options.onClick && $options.onClick(...args))
+    }, [
+      vue.renderSlot(_ctx.$slots, "default")
+    ], 14, ["animation"])), [
+      [vue.vShow, $data.isShow]
+    ]);
+  }
+  const __easycom_0$2 = /* @__PURE__ */ _export_sfc(_sfc_main$6, [["render", _sfc_render$5], ["__file", "E:/code/uniapp/uni-app-components/uni_modules/uni-transition/components/uni-transition/uni-transition.vue"]]);
+  const _sfc_main$5 = {
+    name: "uniPopup",
+    components: {},
+    emits: ["change", "maskClick"],
+    props: {
+      // 开启动画
+      animation: {
+        type: Boolean,
+        default: true
+      },
+      // 弹出层类型，可选值，top: 顶部弹出层；bottom：底部弹出层；center：全屏弹出层
+      // message: 消息提示 ; dialog : 对话框
+      type: {
+        type: String,
+        default: "center"
+      },
+      // maskClick
+      isMaskClick: {
+        type: Boolean,
+        default: null
+      },
+      // TODO 2 个版本后废弃属性 ，使用 isMaskClick
+      maskClick: {
+        type: Boolean,
+        default: null
+      },
+      backgroundColor: {
+        type: String,
+        default: "none"
+      },
+      safeArea: {
+        type: Boolean,
+        default: true
+      },
+      maskBackgroundColor: {
+        type: String,
+        default: "rgba(0, 0, 0, 0.4)"
+      },
+      borderRadius: {
+        type: String
+      }
+    },
+    watch: {
+      /**
+       * 监听type类型
+       */
+      type: {
+        handler: function(type) {
+          if (!this.config[type])
+            return;
+          this[this.config[type]](true);
+        },
+        immediate: true
+      },
+      isDesktop: {
+        handler: function(newVal) {
+          if (!this.config[newVal])
+            return;
+          this[this.config[this.type]](true);
+        },
+        immediate: true
+      },
+      /**
+       * 监听遮罩是否可点击
+       * @param {Object} val
+       */
+      maskClick: {
+        handler: function(val) {
+          this.mkclick = val;
+        },
+        immediate: true
+      },
+      isMaskClick: {
+        handler: function(val) {
+          this.mkclick = val;
+        },
+        immediate: true
+      },
+      // H5 下禁止底部滚动
+      showPopup(show) {
+      }
+    },
+    data() {
+      return {
+        duration: 300,
+        ani: [],
+        showPopup: false,
+        showTrans: false,
+        popupWidth: 0,
+        popupHeight: 0,
+        config: {
+          top: "top",
+          bottom: "bottom",
+          center: "center",
+          left: "left",
+          right: "right",
+          message: "top",
+          dialog: "center",
+          share: "bottom"
+        },
+        maskClass: {
+          position: "fixed",
+          bottom: 0,
+          top: 0,
+          left: 0,
+          right: 0,
+          backgroundColor: "rgba(0, 0, 0, 0.4)"
+        },
+        transClass: {
+          backgroundColor: "transparent",
+          borderRadius: this.borderRadius || "0",
+          position: "fixed",
+          left: 0,
+          right: 0
+        },
+        maskShow: true,
+        mkclick: true,
+        popupstyle: "top"
+      };
+    },
+    computed: {
+      getStyles() {
+        let res2 = { backgroundColor: this.bg };
+        if (this.borderRadius || "0") {
+          res2 = Object.assign(res2, { borderRadius: this.borderRadius });
+        }
+        return res2;
+      },
+      isDesktop() {
+        return this.popupWidth >= 500 && this.popupHeight >= 500;
+      },
+      bg() {
+        if (this.backgroundColor === "" || this.backgroundColor === "none") {
+          return "transparent";
+        }
+        return this.backgroundColor;
+      }
+    },
+    mounted() {
+      const fixSize = () => {
+        const {
+          windowWidth,
+          windowHeight,
+          windowTop,
+          safeArea,
+          screenHeight,
+          safeAreaInsets
+        } = uni.getSystemInfoSync();
+        this.popupWidth = windowWidth;
+        this.popupHeight = windowHeight + (windowTop || 0);
+        if (safeArea && this.safeArea) {
+          this.safeAreaInsets = safeAreaInsets.bottom;
+        } else {
+          this.safeAreaInsets = 0;
+        }
+      };
+      fixSize();
+    },
+    // TODO vue3
+    unmounted() {
+      this.setH5Visible();
+    },
+    activated() {
+      this.setH5Visible(!this.showPopup);
+    },
+    deactivated() {
+      this.setH5Visible(true);
+    },
+    created() {
+      if (this.isMaskClick === null && this.maskClick === null) {
+        this.mkclick = true;
+      } else {
+        this.mkclick = this.isMaskClick !== null ? this.isMaskClick : this.maskClick;
+      }
+      if (this.animation) {
+        this.duration = 300;
+      } else {
+        this.duration = 0;
+      }
+      this.messageChild = null;
+      this.clearPropagation = false;
+      this.maskClass.backgroundColor = this.maskBackgroundColor;
+    },
+    methods: {
+      setH5Visible(visible = true) {
+      },
+      /**
+       * 公用方法，不显示遮罩层
+       */
+      closeMask() {
+        this.maskShow = false;
+      },
+      /**
+       * 公用方法，遮罩层禁止点击
+       */
+      disableMask() {
+        this.mkclick = false;
+      },
+      // TODO nvue 取消冒泡
+      clear(e) {
+        e.stopPropagation();
+        this.clearPropagation = true;
+      },
+      open(direction) {
+        if (this.showPopup) {
+          return;
+        }
+        let innerType = ["top", "center", "bottom", "left", "right", "message", "dialog", "share"];
+        if (!(direction && innerType.indexOf(direction) !== -1)) {
+          direction = this.type;
+        }
+        if (!this.config[direction]) {
+          formatAppLog("error", "at uni_modules/uni-popup/components/uni-popup/uni-popup.vue:298", "缺少类型：", direction);
+          return;
+        }
+        this[this.config[direction]]();
+        this.$emit("change", {
+          show: true,
+          type: direction
+        });
+      },
+      close(type) {
+        this.showTrans = false;
+        this.$emit("change", {
+          show: false,
+          type: this.type
+        });
+        clearTimeout(this.timer);
+        this.timer = setTimeout(() => {
+          this.showPopup = false;
+        }, 300);
+      },
+      // TODO 处理冒泡事件，头条的冒泡事件有问题 ，先这样兼容
+      touchstart() {
+        this.clearPropagation = false;
+      },
+      onTap() {
+        if (this.clearPropagation) {
+          this.clearPropagation = false;
+          return;
+        }
+        this.$emit("maskClick");
+        if (!this.mkclick)
+          return;
+        this.close();
+      },
+      /**
+       * 顶部弹出样式处理
+       */
+      top(type) {
+        this.popupstyle = this.isDesktop ? "fixforpc-top" : "top";
+        this.ani = ["slide-top"];
+        this.transClass = {
+          position: "fixed",
+          left: 0,
+          right: 0,
+          backgroundColor: this.bg,
+          borderRadius: this.borderRadius || "0"
+        };
+        if (type)
+          return;
+        this.showPopup = true;
+        this.showTrans = true;
+        this.$nextTick(() => {
+          if (this.messageChild && this.type === "message") {
+            this.messageChild.timerClose();
+          }
+        });
+      },
+      /**
+       * 底部弹出样式处理
+       */
+      bottom(type) {
+        this.popupstyle = "bottom";
+        this.ani = ["slide-bottom"];
+        this.transClass = {
+          position: "fixed",
+          left: 0,
+          right: 0,
+          bottom: 0,
+          paddingBottom: this.safeAreaInsets + "px",
+          backgroundColor: this.bg,
+          borderRadius: this.borderRadius || "0"
+        };
+        if (type)
+          return;
+        this.showPopup = true;
+        this.showTrans = true;
+      },
+      /**
+       * 中间弹出样式处理
+       */
+      center(type) {
+        this.popupstyle = "center";
+        this.ani = ["zoom-out", "fade"];
+        this.transClass = {
+          position: "fixed",
+          display: "flex",
+          flexDirection: "column",
+          bottom: 0,
+          left: 0,
+          right: 0,
+          top: 0,
+          justifyContent: "center",
+          alignItems: "center",
+          borderRadius: this.borderRadius || "0"
+        };
+        if (type)
+          return;
+        this.showPopup = true;
+        this.showTrans = true;
+      },
+      left(type) {
+        this.popupstyle = "left";
+        this.ani = ["slide-left"];
+        this.transClass = {
+          position: "fixed",
+          left: 0,
+          bottom: 0,
+          top: 0,
+          backgroundColor: this.bg,
+          borderRadius: this.borderRadius || "0",
+          display: "flex",
+          flexDirection: "column"
+        };
+        if (type)
+          return;
+        this.showPopup = true;
+        this.showTrans = true;
+      },
+      right(type) {
+        this.popupstyle = "right";
+        this.ani = ["slide-right"];
+        this.transClass = {
+          position: "fixed",
+          bottom: 0,
+          right: 0,
+          top: 0,
+          backgroundColor: this.bg,
+          borderRadius: this.borderRadius || "0",
+          display: "flex",
+          flexDirection: "column"
+        };
+        if (type)
+          return;
+        this.showPopup = true;
+        this.showTrans = true;
+      }
+    }
+  };
+  function _sfc_render$4(_ctx, _cache, $props, $setup, $data, $options) {
+    const _component_uni_transition = resolveEasycom(vue.resolveDynamicComponent("uni-transition"), __easycom_0$2);
+    return $data.showPopup ? (vue.openBlock(), vue.createElementBlock(
+      "view",
+      {
+        key: 0,
+        class: vue.normalizeClass(["uni-popup", [$data.popupstyle, $options.isDesktop ? "fixforpc-z-index" : ""]])
+      },
+      [
+        vue.createElementVNode(
+          "view",
+          {
+            onTouchstart: _cache[1] || (_cache[1] = (...args) => $options.touchstart && $options.touchstart(...args))
+          },
+          [
+            $data.maskShow ? (vue.openBlock(), vue.createBlock(_component_uni_transition, {
+              key: "1",
+              name: "mask",
+              "mode-class": "fade",
+              styles: $data.maskClass,
+              duration: $data.duration,
+              show: $data.showTrans,
+              onClick: $options.onTap
+            }, null, 8, ["styles", "duration", "show", "onClick"])) : vue.createCommentVNode("v-if", true),
+            vue.createVNode(_component_uni_transition, {
+              key: "2",
+              "mode-class": $data.ani,
+              name: "content",
+              styles: $data.transClass,
+              duration: $data.duration,
+              show: $data.showTrans,
+              onClick: $options.onTap
+            }, {
+              default: vue.withCtx(() => [
+                vue.createElementVNode(
+                  "view",
+                  {
+                    class: vue.normalizeClass(["uni-popup__wrapper", [$data.popupstyle]]),
+                    style: vue.normalizeStyle($options.getStyles),
+                    onClick: _cache[0] || (_cache[0] = (...args) => $options.clear && $options.clear(...args))
+                  },
+                  [
+                    vue.renderSlot(_ctx.$slots, "default", {}, void 0, true)
+                  ],
+                  6
+                  /* CLASS, STYLE */
+                )
+              ]),
+              _: 3
+              /* FORWARDED */
+            }, 8, ["mode-class", "styles", "duration", "show", "onClick"])
+          ],
+          32
+          /* NEED_HYDRATION */
+        )
+      ],
+      2
+      /* CLASS */
+    )) : vue.createCommentVNode("v-if", true);
+  }
+  const __easycom_1 = /* @__PURE__ */ _export_sfc(_sfc_main$5, [["render", _sfc_render$4], ["__scopeId", "data-v-4dd3c44b"], ["__file", "E:/code/uniapp/uni-app-components/uni_modules/uni-popup/components/uni-popup/uni-popup.vue"]]);
+  const _sfc_main$4 = {
+    __name: "cl-date-picker",
+    props: {
+      dateType: {
+        type: String,
+        default: "YYYY-MM-DD"
+      },
+      modelValue: {
+        type: String,
+        default: ""
+      },
+      placeholder: {
+        type: String,
+        default: "请选择"
+      },
+      disabled: {
+        type: Boolean,
+        default: false
+      },
+      // 隐藏border
+      hideBorder: {
+        type: Boolean,
+        default: false
+      },
+      // 年份下拉选项
+      yearOptions: {
+        type: Array,
+        default: () => []
+      },
+      // 打开弹窗默认选中当前时间
+      isNow: {
+        type: Boolean,
+        default: true
+      }
+    },
+    emits: ["update:modelValue", "cancel", "submit"],
+    setup(__props, { expose: __expose, emit: __emit }) {
+      const props = __props;
+      const emits = __emit;
+      const popupRef = vue.ref();
+      const dateOptionList = vue.ref([]);
+      const dateVal = vue.ref([]);
+      const dateLabelMap = {
+        YYYY: "年",
+        MM: "月",
+        DD: "日",
+        hh: "时",
+        mm: "分",
+        ss: "秒"
+      };
+      const dateTypeMap = [
+        {
+          type: "YYYY",
+          regExp: /^\d{4}$/
+        },
+        {
+          type: "YYYY-MM",
+          regExp: /^\d{4}-\d{2}$/
+        },
+        {
+          type: "YYYY-MM-DD",
+          regExp: /^\d{4}-\d{2}-\d{2}/
+        },
+        {
+          type: "YYYY-MM-DD HH",
+          regExp: /^\d{4}-\d{2}-\d{2} \d{2}$/
+        },
+        {
+          type: "YYYY-MM-DD HH:mm",
+          regExp: /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}$/
+        },
+        {
+          type: "YYYY-MM-DD HH:mm:ss",
+          regExp: /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/
+        }
+      ];
+      const isEmpty = (val) => {
+        return val === null || val === "" || val === void 0;
+      };
+      const supplementZero = (num) => {
+        return num >= 10 ? num + "" : "0" + num;
+      };
+      const getNowDate = () => {
+        const now = /* @__PURE__ */ new Date();
+        const YYYY = now.getFullYear() + "";
+        const MM = supplementZero(now.getMonth() + 1);
+        const DD = supplementZero(now.getDate());
+        const hh = supplementZero(now.getHours());
+        const mm = supplementZero(now.getMinutes());
+        const ss = supplementZero(now.getSeconds());
+        return {
+          YYYY,
+          MM,
+          DD,
+          hh,
+          mm,
+          ss
+        };
+      };
+      const dateFormatList = vue.computed(() => {
+        const regex = /(YYYY|MM|DD|hh|mm|ss)/g;
+        const matches = props.dateType.match(regex);
+        return matches || [];
+      });
+      const dataValList = vue.computed(() => {
+        const regex = /(\d{4}|\d{2}|\d{2}|\d{2}|\d{2}|\d{2})/g;
+        const matches = props.modelValue.match(regex);
+        return matches || [];
+      });
+      const getDateValList = (str) => {
+        const regex = /(\d{4}|\d{2}|\d{2}|\d{2}|\d{2}|\d{2})/g;
+        const matches = props.modelValue.match(regex);
+        return matches || [];
+      };
+      const createDateOptions = () => {
+        dateOptionList.value = [];
+        if (dateFormatList.value.length === 0) {
+          throw new Error("传入的时间格式无法识别到有效值，有效值包含：YYYY,MM,DD,hh,mm,ss");
+        }
+        dateFormatList.value.forEach((item, index) => {
+          let options = [];
+          if (item === "YYYY") {
+            if (props.yearOptions.length === 0) {
+              for (let i = 1990; i <= 2050; i++) {
+                options.push(i + "");
+              }
+            } else {
+              for (let i = 1990; i <= 2050; i++) {
+                options = props.yearOptions;
+              }
+            }
+          }
+          if (item === "MM") {
+            for (let i = 1; i <= 12; i++) {
+              options.push(supplementZero(i));
+            }
+          }
+          if (item === "DD") {
+            for (let i = 1; i <= 31; i++) {
+              options.push(supplementZero(i));
+            }
+          }
+          if (item === "hh") {
+            for (let i = 0; i <= 23; i++) {
+              options.push(supplementZero(i));
+            }
+          }
+          if (item === "mm" || item === "ss") {
+            for (let i = 0; i <= 59; i++) {
+              options.push(supplementZero(i));
+            }
+          }
+          dateOptionList.value.push({
+            type: item,
+            options
+          });
+        });
+      };
+      const showDate = () => {
+        dateVal.value = [];
+        dateFormatList.value.forEach((item, index) => {
+          const curOption = dateOptionList.value.find((itm) => itm.type === item);
+          const curData = curOption.options.findIndex((itm) => itm === dataValList.value[index]);
+          dateVal.value.push(curData);
+        });
+      };
+      const dateChange = ({
+        detail
+      }) => {
+        dateVal.value = detail.value;
+      };
+      const cancal = () => {
+        emits("cancel");
+        popupRef.value.close();
+      };
+      const handleSubmit = () => {
+        let str = props.dateType;
+        dateFormatList.value.forEach((item, index) => {
+          const reg = new RegExp(item);
+          const curOption = dateOptionList.value.find((itm) => itm.type === item);
+          const curData = curOption.options[dateVal.value[index]];
+          str = str.replace(reg, curData);
+        });
+        formatAppLog("log", "at uni_modules/cl-date-picker/components/cl-date-picker/cl-date-picker.vue:232", str, "str");
+        emits("submit", str);
+        emits("update:modelValue", str);
+        popupRef.value.close();
+      };
+      const handleOpen = () => {
+        if (isEmpty(props.modelValue)) {
+          if (props.isNow) {
+            let nowDateIdxList = [];
+            const nowDateMap = getNowDate();
+            dateFormatList.value.forEach((item) => {
+              const curOption = dateOptionList.value.find((itm) => itm.type === item);
+              let curIdx = curOption.options.findIndex((itm) => itm === nowDateMap[item]);
+              formatAppLog("log", "at uni_modules/cl-date-picker/components/cl-date-picker/cl-date-picker.vue:246", curIdx, curOption, nowDateMap[item]);
+              nowDateIdxList.push(curIdx);
+            });
+            dateVal.value = nowDateIdxList;
+          } else {
+            dateVal.value = [];
+          }
+        } else {
+          vue.nextTick(() => showDate());
+        }
+        popupRef.value.open();
+      };
+      onLoad(() => {
+        createDateOptions();
+      });
+      const close = () => {
+        popupRef.value.close();
+      };
+      __expose({
+        close,
+        open: handleOpen
+      });
+      const handleClear = () => {
+        emits("update:modelValue", "");
+      };
+      const __returned__ = { props, emits, popupRef, dateOptionList, dateVal, dateLabelMap, dateTypeMap, isEmpty, supplementZero, getNowDate, dateFormatList, dataValList, getDateValList, createDateOptions, showDate, dateChange, cancal, handleSubmit, handleOpen, close, handleClear, computed: vue.computed, nextTick: vue.nextTick, reactive: vue.reactive, ref: vue.ref, watch: vue.watch, get onLoad() {
+        return onLoad;
+      } };
+      Object.defineProperty(__returned__, "__isScriptSetup", { enumerable: false, value: true });
+      return __returned__;
+    }
+  };
+  function _sfc_render$3(_ctx, _cache, $props, $setup, $data, $options) {
+    const _component_uni_icons = resolveEasycom(vue.resolveDynamicComponent("uni-icons"), __easycom_0$8);
+    const _component_uni_popup = resolveEasycom(vue.resolveDynamicComponent("uni-popup"), __easycom_1);
+    return vue.openBlock(), vue.createElementBlock(
+      vue.Fragment,
+      null,
+      [
+        vue.createElementVNode(
+          "view",
+          {
+            class: vue.normalizeClass(["input_box", { disabled: $props.disabled, hideBorder: $props.hideBorder }])
+          },
+          [
+            vue.createElementVNode(
+              "view",
+              {
+                class: vue.normalizeClass(["input_ele", `input ${!$props.modelValue && "placeholder"}`]),
+                onClick: vue.withModifiers($setup.handleOpen, ["stop"])
+              },
+              vue.toDisplayString($props.modelValue || $props.placeholder),
+              3
+              /* TEXT, CLASS */
+            ),
+            $props.modelValue ? (vue.openBlock(), vue.createBlock(_component_uni_icons, {
+              key: 0,
+              class: "clear_icon",
+              type: "clear",
+              size: 24,
+              color: "#c0c4cc",
+              onClick: $setup.handleClear
+            })) : (vue.openBlock(), vue.createBlock(_component_uni_icons, {
+              key: 1,
+              class: "clear_icon",
+              type: "bottom",
+              size: 20,
+              color: "#c0c4cc"
+            }))
+          ],
+          2
+          /* CLASS */
+        ),
+        vue.createVNode(
+          _component_uni_popup,
+          {
+            type: "bottom",
+            ref: "popupRef"
+          },
+          {
+            default: vue.withCtx(() => [
+              vue.createElementVNode("view", { class: "btn_box" }, [
+                vue.createElementVNode("text", { onClick: $setup.cancal }, "取消"),
+                vue.createElementVNode("text", {
+                  class: "submit",
+                  onClick: $setup.handleSubmit
+                }, "确认")
+              ]),
+              vue.createElementVNode("picker-view", {
+                class: "picker-view",
+                value: $setup.dateVal,
+                onChange: $setup.dateChange,
+                "mask-class": "mask_class"
+              }, [
+                (vue.openBlock(true), vue.createElementBlock(
+                  vue.Fragment,
+                  null,
+                  vue.renderList($setup.dateOptionList, (item, index) => {
+                    return vue.openBlock(), vue.createElementBlock("picker-view-column", { key: index }, [
+                      (vue.openBlock(true), vue.createElementBlock(
+                        vue.Fragment,
+                        null,
+                        vue.renderList(item.options, (itm, idx) => {
+                          return vue.openBlock(), vue.createElementBlock(
+                            "view",
+                            {
+                              class: "item",
+                              key: idx
+                            },
+                            vue.toDisplayString(itm) + " " + vue.toDisplayString($setup.dateLabelMap[item.type]),
+                            1
+                            /* TEXT */
+                          );
+                        }),
+                        128
+                        /* KEYED_FRAGMENT */
+                      ))
+                    ]);
+                  }),
+                  128
+                  /* KEYED_FRAGMENT */
+                ))
+              ], 40, ["value"])
+            ]),
+            _: 1
+            /* STABLE */
+          },
+          512
+          /* NEED_PATCH */
+        )
+      ],
+      64
+      /* STABLE_FRAGMENT */
+    );
+  }
+  const __easycom_0$1 = /* @__PURE__ */ _export_sfc(_sfc_main$4, [["render", _sfc_render$3], ["__scopeId", "data-v-0657bf93"], ["__file", "E:/code/uniapp/uni-app-components/uni_modules/cl-date-picker/components/cl-date-picker/cl-date-picker.vue"]]);
+  const _sfc_main$3 = {
+    __name: "index",
+    setup(__props, { expose: __expose }) {
+      __expose();
+      const value = vue.ref("");
+      const datePickerRef = vue.ref();
+      const show = () => {
+        datePickerRef.value.open();
+      };
+      const __returned__ = { value, datePickerRef, show, ref: vue.ref };
+      Object.defineProperty(__returned__, "__isScriptSetup", { enumerable: false, value: true });
+      return __returned__;
+    }
+  };
+  function _sfc_render$2(_ctx, _cache, $props, $setup, $data, $options) {
+    const _component_cl_date_picker = resolveEasycom(vue.resolveDynamicComponent("cl-date-picker"), __easycom_0$1);
+    return vue.openBlock(), vue.createElementBlock("view", { class: "content" }, [
+      vue.createElementVNode("view", { class: "" }, " 使用picker-view和picker-view-column封装的时间选择器，支持年月日时分秒各种形式的组合搭配。 "),
+      vue.createVNode(_component_cl_date_picker, {
+        modelValue: $setup.value,
+        "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => $setup.value = $event),
+        ref: "datePickerRef",
+        isNow: "",
+        dateType: "hh:mm:ss"
+      }, null, 8, ["modelValue"])
+    ]);
+  }
+  const PagesComponentPageClDatePickerIndex = /* @__PURE__ */ _export_sfc(_sfc_main$3, [["render", _sfc_render$2], ["__scopeId", "data-v-fc709b23"], ["__file", "E:/code/uniapp/uni-app-components/pages/componentPage/cl-date-picker/index.vue"]]);
+  const _sfc_main$2 = {
+    __name: "cl-more-select-picker",
+    props: {
+      options: {
+        type: Array,
+        default: () => []
+      },
+      modelValue: {
+        type: Array,
+        default: () => []
+      },
+      placeholder: {
+        type: String,
+        default: "请选择"
+      },
+      labelField: {
+        type: String,
+        default: "label"
+      },
+      valueField: {
+        type: String,
+        default: "value"
+      },
+      interval: {
+        type: String,
+        default: "、"
+      },
+      hideBorder: {
+        type: Boolean,
+        default: false
+      },
+      emptyText: {
+        type: String,
+        default: "暂无数据"
+      },
+      disabled: {
+        type: Boolean,
+        default: false
+      }
+    },
+    emits: ["update:modelValue", "cancel", "submit", "clear", "change"],
+    setup(__props, { expose: __expose, emit: __emit }) {
+      __expose();
+      const props = __props;
+      const emits = __emit;
+      const selectList = vue.ref([]);
+      const formatOptions = vue.computed(() => {
+        return props.options.map((item) => {
+          if (typeof item !== "object") {
+            return {
+              [props.labelField]: item,
+              [props.valueField]: item
+            };
+          } else {
+            return item;
+          }
+        });
+      });
+      const showLabel = vue.computed(() => {
+        if (props.modelValue.length > 0) {
+          return formatOptions.value.filter((item) => props.modelValue.includes(item[props.valueField])).map((item) => item[props.labelField]).join(props.interval);
+        } else {
+          return props.placeholder;
+        }
+      });
+      const hasSelect = vue.computed(() => {
+        return props.modelValue.length > 0;
+      });
+      const handleClear = () => {
+        emits("update:modelValue", []);
+      };
+      const handleCancel = () => {
+        selectList.value = [];
+        popupRef.value.close();
+        emits("cancel");
+      };
+      const handleSubmit = () => {
+        emits("update:modelValue", selectList.value);
+        popupRef.value.close();
+        selectList.value = [];
+        emits("submit", selectList.value);
+      };
+      const handleToggle = (item) => {
+        const idx = selectList.value.findIndex((itm) => itm === item[props.valueField]);
+        if (idx > -1) {
+          selectList.value.splice(idx, 1);
+        } else {
+          selectList.value.push(item[props.valueField]);
+        }
+        emits("submit", item, idx === -1, selectList.value);
+      };
+      const popupRef = vue.ref();
+      const handleOpenPicker = () => {
+        selectList.value = JSON.parse(JSON.stringify(props.modelValue));
+        popupRef.value.open();
+      };
+      const __returned__ = { props, emits, selectList, formatOptions, showLabel, hasSelect, handleClear, handleCancel, handleSubmit, handleToggle, popupRef, handleOpenPicker, computed: vue.computed, ref: vue.ref };
+      Object.defineProperty(__returned__, "__isScriptSetup", { enumerable: false, value: true });
+      return __returned__;
+    }
+  };
+  function _sfc_render$1(_ctx, _cache, $props, $setup, $data, $options) {
+    const _component_uni_icons = resolveEasycom(vue.resolveDynamicComponent("uni-icons"), __easycom_0$8);
+    const _component_uni_popup = resolveEasycom(vue.resolveDynamicComponent("uni-popup"), __easycom_1);
+    return vue.openBlock(), vue.createElementBlock(
+      vue.Fragment,
+      null,
+      [
+        vue.createElementVNode("view", { class: "cl_more_select_piker" }, [
+          vue.createElementVNode(
+            "view",
+            {
+              class: vue.normalizeClass(["input_box", { hideBorder: $props.hideBorder, disabled: $props.disabled }]),
+              onClick: $setup.handleOpenPicker
+            },
+            [
+              vue.createElementVNode(
+                "view",
+                {
+                  class: vue.normalizeClass(["input_ele", { placeholder: !$setup.hasSelect }])
+                },
+                vue.toDisplayString($setup.hasSelect ? $setup.showLabel : $setup.props.placeholder),
+                3
+                /* TEXT, CLASS */
+              ),
+              $setup.hasSelect ? (vue.openBlock(), vue.createBlock(_component_uni_icons, {
+                key: 0,
+                class: "clear_icon",
+                type: "clear",
+                size: 24,
+                color: "#c0c4cc",
+                onClick: vue.withModifiers($setup.handleClear, ["stop"])
+              })) : (vue.openBlock(), vue.createBlock(_component_uni_icons, {
+                key: 1,
+                class: "clear_icon",
+                type: "bottom",
+                size: 20,
+                color: "#c0c4cc"
+              }))
+            ],
+            2
+            /* CLASS */
+          )
+        ]),
+        vue.createVNode(
+          _component_uni_popup,
+          {
+            ref: "popupRef",
+            type: "bottom"
+          },
+          {
+            default: vue.withCtx(() => [
+              vue.createElementVNode("view", { class: "btn_box" }, [
+                vue.createElementVNode("text", { onClick: $setup.handleCancel }, "取消"),
+                vue.createElementVNode("text", {
+                  class: "submit_btn",
+                  onClick: $setup.handleSubmit
+                }, "确实")
+              ]),
+              $props.options.length > 0 ? (vue.openBlock(), vue.createElementBlock("view", {
+                key: 0,
+                class: "scoll_box"
+              }, [
+                (vue.openBlock(true), vue.createElementBlock(
+                  vue.Fragment,
+                  null,
+                  vue.renderList($setup.formatOptions, (item, index) => {
+                    return vue.openBlock(), vue.createElementBlock("view", {
+                      key: index,
+                      class: "scoll_box_item"
+                    }, [
+                      vue.createElementVNode(
+                        "text",
+                        null,
+                        vue.toDisplayString(item[$props.labelField]),
+                        1
+                        /* TEXT */
+                      ),
+                      vue.createElementVNode("view", {
+                        class: vue.normalizeClass(["select_icon", { active: $setup.selectList.includes(item[$props.valueField]) }]),
+                        onClick: ($event) => $setup.handleToggle(item)
+                      }, [
+                        $setup.selectList.includes(item[$props.valueField]) ? (vue.openBlock(), vue.createElementBlock("text", { key: 0 }, "√")) : vue.createCommentVNode("v-if", true)
+                      ], 10, ["onClick"])
+                    ]);
+                  }),
+                  128
+                  /* KEYED_FRAGMENT */
+                ))
+              ])) : (vue.openBlock(), vue.createElementBlock(
+                "view",
+                {
+                  key: 1,
+                  class: "empty_box"
+                },
+                vue.toDisplayString($props.emptyText),
+                1
+                /* TEXT */
+              ))
+            ]),
+            _: 1
+            /* STABLE */
+          },
+          512
+          /* NEED_PATCH */
+        )
+      ],
+      64
+      /* STABLE_FRAGMENT */
+    );
+  }
+  const __easycom_0 = /* @__PURE__ */ _export_sfc(_sfc_main$2, [["render", _sfc_render$1], ["__scopeId", "data-v-3f537ef0"], ["__file", "E:/code/uniapp/uni-app-components/uni_modules/cl-more-select-picker/components/cl-more-select-picker/cl-more-select-picker.vue"]]);
+  const _sfc_main$1 = {
+    __name: "index",
+    setup(__props, { expose: __expose }) {
+      __expose();
+      const val = vue.ref([]);
+      const options = vue.ref([]);
+      onLoad(() => {
+        options.value = Array.from({ length: 100 }, (_, i) => {
+          return {
+            label: "我是label" + (i + 1),
+            value: i + 1
+          };
+        });
+      });
+      const __returned__ = { val, options, ref: vue.ref, get onLoad() {
+        return onLoad;
+      } };
+      Object.defineProperty(__returned__, "__isScriptSetup", { enumerable: false, value: true });
+      return __returned__;
+    }
+  };
+  function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
+    const _component_cl_more_select_picker = resolveEasycom(vue.resolveDynamicComponent("cl-more-select-picker"), __easycom_0);
+    return vue.openBlock(), vue.createElementBlock("view", { class: "content" }, [
+      vue.createVNode(_component_cl_more_select_picker, {
+        modelValue: $setup.val,
+        "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => $setup.val = $event),
+        options: $setup.options
+      }, null, 8, ["modelValue", "options"])
+    ]);
+  }
+  const PagesComponentPageClMoreSelectPickerIndex = /* @__PURE__ */ _export_sfc(_sfc_main$1, [["render", _sfc_render], ["__scopeId", "data-v-6318dc36"], ["__file", "E:/code/uniapp/uni-app-components/pages/componentPage/cl-more-select-picker/index.vue"]]);
   __definePage("pages/index/index", PagesIndexIndex);
   __definePage("pages/componentPage/cl-select-picker/index", PagesComponentPageClSelectPickerIndex);
   __definePage("pages/componentPage/cl-scroll-view/index", PagesComponentPageClScrollViewIndex);
   __definePage("pages/componentPage/cl-select/index", PagesComponentPageClSelectIndex);
   __definePage("pages/componentPage/cl-nav-bar/index", PagesComponentPageClNavBarIndex);
+  __definePage("pages/componentPage/cl-date-picker/index", PagesComponentPageClDatePickerIndex);
+  __definePage("pages/componentPage/cl-more-select-picker/index", PagesComponentPageClMoreSelectPickerIndex);
   const _sfc_main = {
     onLaunch: function() {
       formatAppLog("log", "at App.vue:4", "App Launch");

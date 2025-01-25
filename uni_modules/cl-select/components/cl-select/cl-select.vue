@@ -6,8 +6,8 @@
 			@blur="blurHandle">
 			<template #right>
 				<view class="icons">
-					<uni-icons v-if="!isSelected" :type="visible ? 'top' : 'bottom'" size="14"></uni-icons>
-					<uni-icons v-else type="clear" size="20" @click="clearHandle"></uni-icons>
+					<uni-icons v-if="!isSelected || visible" :type="visible ? 'top' : 'bottom'" size="14"></uni-icons>
+					<uni-icons v-else type="clear" size="24" @click="clearHandle" color="#c0c4cc"></uni-icons>
 				</view>
 			</template>
 		</uni-easyinput>
@@ -155,7 +155,7 @@
 		if (isSelected.value) {
 			curSelectLabel.value = curSelect.value[props.labelField]
 		} else {
-			// showPlaceholder.value = props.placeholder
+			curSelectLabel.value = undefined
 		}
 		emits('blur')
 	}
@@ -169,18 +169,13 @@
 	// 监听下拉框是否显示
 	watch(() => visible.value, (val) => {
 		if (val) {
+			// 监听是否有选中的值，有则替换Placeholder进行展示并定位到对应元素
 			if (isSelected.value) {
 				showPlaceholder.value = curSelect.value[props.labelField]
 				scrollIntoView.value = curSelect.value[props.valueField]
 			} else {
 				showPlaceholder.value = props.placeholder
 				scrollIntoView.value = undefined
-			}
-		} else {
-			if (isSelected.value) {
-				showPlaceholder.value = props.placeholder
-			} else {
-				curSelectLabel.value = curSelect.value[props.labelField]
 			}
 		}
 	})
@@ -195,23 +190,34 @@
 			curSelectValue.value = val[props.valueField]
 		}
 	})
+	// 回显数据
+	const setCurSelect = () => {
+		if (props.options.length > 0 && !isEmpty(props.modelValue)) {
+			const data = props.options.find(item => item[props.valueField] === props.modelValue)
+			if (data) {
+				curSelect.value = data
+			}
+		}
+	}
 
 	// 工具函数
 	const isEmpty = (val) => {
 		return val === '' || val === undefined || val === null
 	}
 	watch(() => props.options, (newList) => {
-		if (newList.length > 0 && !isEmpty(props.modelValue)) {
-			console.log(newList, props.modelValue);
-			const data = newList.find(item => item[props.valueField] === props.modelValue)
-			if (data) {
-				curSelect.value = data
-			}
-		}
+		setCurSelect()
 	}, {
 		immediate: true,
 		deep: true
 	})
+	watch(() => props.modelValue, (newList) => {
+		setCurSelect()
+	}, {
+		immediate: true,
+		deep: true
+	})
+	
+
 
 	const maskClick = (e) => {
 		visible.value = false
@@ -249,6 +255,7 @@
 	}
 
 	.icons {
+		position: relative;
 		margin-right: 5px;
 	}
 
