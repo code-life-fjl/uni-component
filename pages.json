@@ -13,35 +13,42 @@
 			}
 		},
 		{
-			"path" : "pages/componentPage/cl-scroll-view/index",
+			"path": "pages/componentPage/cl-scroll-view/index",
 			"style": {
 				"navigationBarTitleText": "cl-scroll-view"
 			}
 		},
 		{
-			"path" : "pages/componentPage/cl-select/index",	
+			"path": "pages/componentPage/cl-select/index",
 			"style": {
 				"navigationBarTitleText": "cl-select"
 			}
 		},
 		{
-			"path" : "pages/componentPage/cl-nav-bar/index",	
+			"path": "pages/componentPage/cl-nav-bar/index",
 			"style": {
 				"navigationBarTitleText": "我是自定义标题",
 				"navigationStyle": "custom"
 			}
 		},
 		{
-			"path" : "pages/componentPage/cl-date-picker/index",	
+			"path": "pages/componentPage/cl-date-picker/index",
 			"style": {
 				"navigationBarTitleText": "时间选择器"
 			}
 		},
 		{
-			"path" : "pages/componentPage/cl-more-select-picker/index",	
+			"path": "pages/componentPage/cl-more-select-picker/index",
 			"style": {
 				"navigationBarTitleText": "弹出多选组件"
 			}
+		},
+		{
+			"path": "pages/componentPage/cl-autocomplete/index",
+			"style": {
+				"navigationBarTitleText": "输入提示"
+			}
+
 		}
 	],
 	"globalStyle": {
