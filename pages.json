@@ -48,7 +48,12 @@
 			"style": {
 				"navigationBarTitleText": "输入提示"
 			}
-
+		},
+		{
+			"path": "pages/componentPage/cl-auto-page-list/index",
+			"style": {
+				"navigationBarTitleText": "本地数据虚拟分页"
+			}
 		}
 	],
 	"globalStyle": {

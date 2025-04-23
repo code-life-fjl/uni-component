@@ -13,9 +13,7 @@
 			<uni-forms :modelValue="formData" ref="formRef" label-width="150rpx">
 				<uni-forms-item label="表单测试" name="picker1" :rules="[{required: true, errorMessage: '表单测试不能为空'}]" required>
 					<cl-select-picker v-model="formData.picker1"  :options="options"></cl-select-picker>
-					<uni-easyinput placeholder="请输入" ></uni-easyinput>
 				</uni-forms-item>
-				{{formData.picker1}}
 				<button @click="formSubmit">表单提交</button>
 			</uni-forms>
 		</view>

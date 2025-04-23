@@ -1,6 +1,6 @@
 <template>
-	<picker  :range="dataList" :range-key="labelFiled"  :value="pickValue" @change="submit"
-		@cancel="cancel" :disabled="disabled ||  pickerDisabled ">
+	<picker :range="dataList" :range-key="labelFiled" :value="pickValue" @change="submit" @cancel="cancel"
+		:disabled="disabled ||  pickerDisabled ">
 		<uni-easyinput :disabled="disabled" v-model="selectText" :placeholder="placeholder" :clearable="isShowClearIcon"
 			:suffixIcon="!isShowClearIcon && 'bottom'" @clear="handleClear"></uni-easyinput>
 	</picker>

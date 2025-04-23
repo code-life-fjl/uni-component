@@ -1,5 +1,4 @@
 <template>
-  <!-- <uni-load-more status="loading" /> -->
   <scroll-view
     style="height: 100%"
     :scroll-y="true"

@@ -33,6 +33,10 @@
 		{
 			componentName: 'cl-autocomplete',
 			componentPath: '/pages/componentPage/cl-autocomplete/index'
+		},
+		{
+			componentName: 'cl-auto-page-list',
+			componentPath: '/pages/componentPage/cl-auto-page-list/index'
 		}
 	])
 	const pickerSubmit = (val, curData) => {

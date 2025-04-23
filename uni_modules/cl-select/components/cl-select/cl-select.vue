@@ -129,7 +129,7 @@
 	}
 	const showPlaceholder = ref(props.placeholder)
 	// 聚焦函数
-	const focusHandle = () => {
+	const focusHandle = (inputVal) => {
 		if (isSelected.value) {
 			showPlaceholder.value = curSelect.value[props.labelField]
 		} else {
@@ -138,7 +138,7 @@
 		visible.value = true
 		// 如果数据不是对象则转为对象
 		showOptions.value = props.options.map(item => {
-			if (typeof item !== 'object') {
+			if (['string', 'number'].includes(typeof item)) {
 				return {
 					[props.valueField]: item,
 					[props.labelField]: item
@@ -148,7 +148,7 @@
 			}
 		})
 		curSelectLabel.value = undefined
-		emits('focus')
+		emits('focus', inputVal)
 	}
 	// 失去焦点
 	const blurHandle = () => {
@@ -159,12 +159,15 @@
 		}
 		emits('blur')
 	}
-	// 监听输入框
+	// 添加防抖逻辑
+	let searchTimer = null
 	const inputHandle = (e) => {
-		showOptions.value = props.options.filter(item => item[props.labelField].includes(e))
-		emits('input', e)
+		clearTimeout(searchTimer)
+		searchTimer = setTimeout(() => {
+			showOptions.value = props.options.filter(item => item[props.labelField].includes(e))
+			emits('input', e)
+		}, 200)
 	}
-
 
 	// 监听下拉框是否显示
 	watch(() => visible.value, (val) => {
@@ -204,20 +207,12 @@
 	const isEmpty = (val) => {
 		return val === '' || val === undefined || val === null
 	}
-	watch(() => props.options, (newList) => {
+	watch([() => props.options, () => props.modelValue], () => {
 		setCurSelect()
 	}, {
+		deep: true,
 		immediate: true,
-		deep: true
 	})
-	watch(() => props.modelValue, (newList) => {
-		setCurSelect()
-	}, {
-		immediate: true,
-		deep: true
-	})
-	
-
 
 	const maskClick = (e) => {
 		visible.value = false

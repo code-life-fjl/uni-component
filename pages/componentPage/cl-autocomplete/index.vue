@@ -1,7 +1,7 @@
 <template>
 	<view class="content">
-		<text>模仿uni-data-select做的可搜索下拉框，可直接回显数据，并定位到对应的数据项</text>
-		<cl-autocomplete :options="options" v-model="value"></cl-autocomplete>
+		<text>模仿uni-data-select做的提示输入框，并可以根据输入内容进行过滤</text>
+		<cl-autocomplete v-model="searchText" :options="fruitList" placeholder="搜索水果" max-height="400" />
 	</view>
 </template>
 
@@ -9,12 +9,8 @@
 	import {
 		ref
 	} from 'vue'
-	const value = ref('value50')
-	const options = Array.from({
-		length: 100
-	}, (_, index) => {
-		return `我是展示的值${index}`
-	})
+	const fruitList = ['Apple', 'Banana', 'Orange', 'Mango', 'Strawberry']
+	const searchText = ref('')
 </script>
 
 <style scoped>

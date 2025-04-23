@@ -1,11 +1,10 @@
 <template>
 	<view class="el_select">
-		{{value}}
-		<uni-easyinput v-model="showVal" :clearable="true" :placeholder="placeholder" :placeholderStyle="placeholderStyle"
-			:disabled="disabled" :maxlength="maxlength" :trim="trim" :inputBorder="!hideBorder" :cursorSpacing="cursorSpacing"
-			@focus="focusHandle">
+		<uni-easyinput v-model="showVal" :type="type" :clearable="true" :placeholder="placeholder"
+			:placeholderStyle="placeholderStyle" :disabled="disabled" :maxlength="maxlength" :trim="trim"
+			:inputBorder="!hideBorder" :cursorSpacing="cursorSpacing" @focus="focusHandle">
 		</uni-easyinput>
-		<view class="scroll_list" v-if="visible">
+		<view class="scroll_list" v-if="visible && showOptions.length > 0">
 			<view class="triangle_icon"></view>
 			<scroll-view scroll-y :style="{maxHeight: maxHeight + 'px'}">
 				<view class="select_item" :class="{active: item === showVal}" v-for="(item, index) in showOptions" :key="index"
@@ -31,10 +30,6 @@
 			default: () => []
 		},
 		modelValue: {
-			type: String,
-			default: ''
-		},
-		value: {
 			type: String,
 			default: ''
 		},
@@ -68,28 +63,25 @@
 		},
 		cursorSpacing: {
 			type: Number,
-			default: 0
+			default: 300
+		},
+		type: {
+			type: String,
+			default: 'text'
 		},
 	})
-
-	const data = defineModel()
-
 	const emits = defineEmits(['update:modelValue', 'focus', 'blur', 'selected', 'clear', 'input'])
 
 	// 控制下拉框
 	const visible = ref(false)
-	// 当前选中的数据
-	const curSelect = ref({})
-	const curSelectLabel = ref()
-	const curSelectValue = ref()
-	const showOptions = computed(() => props.options.filter(item => item.includes(props.modelValue || '')))
+	const showOptions = computed(() => props.options.filter(item => item.toLowerCase()?.includes(props.modelValue
+		?.toLowerCase() || '')))
 
 	const showVal = computed({
 		get: () => {
-			console.log(props.modelValue, 'props.modelValue');
 			return props.modelValue
 		},
-		get: (newV) => {
+		set: (newV) => {
 			emits('update:modelValue', newV)
 		}
 	})
@@ -105,12 +97,14 @@
 		showVal.value = ''
 		emits('clear')
 	}
+	let timeoutId = null // 防抖ID
 	// 聚焦函数
 	const focusHandle = () => {
-		if (props.options.length > 0) {
-			visible.value = true
-		}
-		emits('focus')
+		if (timeoutId) clearTimeout(timeoutId)
+		timeoutId = setTimeout(() => {
+			visible.value = props.options.length > 0
+			emits('focus')
+		}, 150)
 	}
 	// 失去焦点
 	const blurHandle = () => {
@@ -195,6 +189,7 @@
 		left: 0;
 		bottom: 0;
 		right: 0;
-		/* background-color: #ebeef5; */
+		/* background-color: rgba(0, 0, 0, .1); */
+		z-index: 2;
 	}
 </style>
