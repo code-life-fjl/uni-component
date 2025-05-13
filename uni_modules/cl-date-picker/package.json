@@ -1,7 +1,7 @@
 {
   "id": "cl-date-picker",
   "displayName": "cl-date-picker",
-  "version": "1.0.4",
+  "version": "1.0.7",
   "description": "cl-date-picker",
   "keywords": [
     "cl-date-picker"
@@ -45,9 +45,10 @@
           "vue3": "y"
         },
         "App": {
-          "app-vue": "y",
-          "app-nvue": "u",
-          "app-uvue": "u"
+            "app-vue": "y",
+            "app-nvue": "u",
+            "app-uvue": "u",
+            "app-harmony": "u"
         },
         "H5-mobile": {
           "Safari": "y",

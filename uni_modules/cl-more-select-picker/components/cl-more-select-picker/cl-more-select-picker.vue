@@ -10,12 +10,14 @@
 	<uni-popup ref="popupRef" type="bottom">
 		<view class="btn_box">
 			<text @click="handleCancel">取消</text>
-			<text class="submit_btn" @click="handleSubmit">确实</text>
+			<uni-easyinput v-if="isFilter" style="margin: 0 20rpx;" v-model="keywords" placeholder="请输入关键字查询"></uni-easyinput>
+			<text class="submit_btn" @click="handleSubmit">确定</text>
 		</view>
-		<view class="scoll_box" v-if="options.length > 0">
-			<view v-for="(item, index) in formatOptions" :key="index" class="scoll_box_item">
+		<view class="scoll_box" v-if="filterList.length > 0">
+			<view v-for="(item, index) in filterList" :key="index" class="scoll_box_item" @click="handleToggle(item, 'row')">
 				<text>{{item[labelField]}}</text>
-				<view class="select_icon" :class="{active: selectList.includes(item[valueField])}" @click="handleToggle(item)">
+				<view class="select_icon" :class="{active: selectList.includes(item[valueField])}"
+					@click.stop="handleToggle(item, 'checkbox')">
 					<text v-if="selectList.includes(item[valueField])">√</text>
 				</view>
 			</view>
@@ -28,7 +30,8 @@
 <script setup>
 	import {
 		computed,
-		ref
+		ref,
+		watch
 	} from 'vue'
 	const props = defineProps({
 		options: {
@@ -66,15 +69,25 @@
 		disabled: {
 			type: Boolean,
 			default: false
+		},
+		// checkbox  点击勾选框  row  点击行数据
+		selectTarget: {
+			type: String,
+			default: 'checkbox'
+		},
+		isFilter: {
+			type: Boolean,
+			default: true
 		}
 	})
+	const isType = (type, val) => `[object ${type}]` === Object.prototype.toString.call(val)
 	const emits = defineEmits(['update:modelValue', 'cancel', 'submit', 'clear', 'change'])
-	// 弹窗选中的数据
-	const selectList = ref([])
-	// 下拉数据
-	const formatOptions = computed(() => {
-		return props.options.map(item => {
-			if (typeof item !== 'object') {
+	const formatList = ref([]) //格式化后的列表，为了应对数组里面不是对象的情况，例如[1,2,3]
+	const filterList = ref([]) //过滤后的列表
+	const keywords = ref("")
+	watch(() => props.options, () => {
+		formatList.value = props.options.map(item => {
+			if (isType('Number', item) || isType('String', item)) {
 				return {
 					[props.labelField]: item,
 					[props.valueField]: item,
@@ -83,18 +96,32 @@
 				return item
 			}
 		})
+		filterList.value = formatList.value
+		keywords.value = ''
+	}, {
+		deep: true,
+		immediate: true
 	})
+	watch(() => keywords.value, (newV) => {
+		filterList.value = formatList.value.filter(item => item[props.labelField].includes(keywords.value))
+		console.log(filterList.value);
+	}, {
+		deep: true,
+		immediate: true
+	})
+	// 弹窗选中的数据
+	const selectList = ref([])
 	// 显示选中数据的文本
 	const showLabel = computed(() => {
 		if (props.modelValue.length > 0) {
-			return formatOptions.value.filter(item => props.modelValue.includes(item[props.valueField])).map(item => item[
+			return formatList.value.filter(item => props.modelValue.includes(item[props.valueField])).map(item => item[
 				props.labelField]).join(props.interval)
 		} else {
 			return props.placeholder
 		}
 	})
 	const hasSelect = computed(() => {
-		return props.modelValue.length > 0
+		return props.modelValue?.length > 0
 	})
 
 	// 清除操作
@@ -115,17 +142,19 @@
 		emits('submit', selectList.value)
 	}
 	// 选中不选择状态切换
-	const handleToggle = (item) => {
+	const handleToggle = (item, type) => {
+		if (props.selectTarget !== type) return
 		const idx = selectList.value.findIndex(itm => itm === item[props.valueField])
 		if (idx > -1) {
 			selectList.value.splice(idx, 1)
 		} else {
 			selectList.value.push(item[props.valueField])
 		}
-		emits('submit', item, idx === -1, selectList.value)
+		emits('change', item, idx === -1, selectList.value)
 	}
 	const popupRef = ref()
 	const handleOpenPicker = () => {
+		keywords.value = ''
 		selectList.value = JSON.parse(JSON.stringify(props.modelValue))
 		popupRef.value.open()
 	}
@@ -172,7 +201,7 @@
 	}
 
 	.scoll_box>.scoll_box_item {
-		padding: 8px 0;
+		padding: 8px;
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
@@ -204,7 +233,6 @@
 		justify-content: center;
 		width: 18px;
 		height: 18px;
-		border-radius: 50%;
 		border: 1px solid gainsboro;
 	}
 
@@ -228,6 +256,7 @@
 	.submit_btn {
 		color: #007aff;
 	}
+
 	.disabled {
 		background-color: #F7F6F6 !important;
 		border-color: #e5e5e5 !important;

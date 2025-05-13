@@ -1,9 +1,25 @@
 <template>
-	<picker :range="dataList" :range-key="labelFiled" :value="pickValue" @change="submit" @cancel="cancel"
-		:disabled="disabled ||  pickerDisabled ">
-		<uni-easyinput :disabled="disabled" v-model="selectText" :placeholder="placeholder" :clearable="isShowClearIcon"
-			:suffixIcon="!isShowClearIcon && 'bottom'" @clear="handleClear"></uni-easyinput>
-	</picker>
+	<view class="input_box" :class="{disabled, hideBorder}">
+		<view class="input_ele" :class="`input ${!modelValue && 'placeholder'}`" @click.stop="handleOpen">
+			{{ selectText || placeholder }}
+		</view>
+		<uni-icons class="clear_icon" v-if="isShowClearIcon" type="clear" :size="22" color="#c0c4cc"
+			@click="handleClear"></uni-icons>
+		<uni-icons class="clear_icon" v-if="isShowBottomIcon" type="bottom" :size="22" color="#c0c4cc"></uni-icons>
+	</view>
+	<uni-popup type="bottom" ref="popupRef">
+		<view class="btn_box">
+			<text @click="cancel" style="padding: 6px;">取消</text>
+			<text class="submit" @click="submit" style="padding: 6px;">确认</text>
+		</view>
+		<picker-view class="picker-view" :value="pickValue" @change="selectChange" mask-class="mask_class">
+			<picker-view-column>
+				<view class="item" v-for="(item, index) in dataList" :key="index">
+					{{ item[props.labelFiled] }}
+				</view>
+			</picker-view-column>
+		</picker-view>
+	</uni-popup>
 </template>
 
 <script setup>
@@ -11,10 +27,9 @@
 		watch,
 		ref,
 		computed,
-		nextTick
+		nextTick,
 	} from 'vue'
-	const emit = defineEmits(['update:modelValue', 'submit', 'clear', 'cancel'])
-
+	const emits = defineEmits(['update:modelValue', 'submit', 'clear', 'cancel'])
 	const props = defineProps({
 		// 数据列表
 		options: {
@@ -26,11 +41,7 @@
 			type: String,
 			default: '请选择',
 		},
-		// 是否隐藏暂无数据
-		hideEmptyText: {
-			type: Boolean,
-			default: false,
-		},
+		
 		// 禁用
 		disabled: {
 			type: Boolean,
@@ -55,7 +66,11 @@
 			type: [String, Number],
 			default: undefined,
 		},
-		//
+		// 是否隐藏暂无数据
+		hideEmptyText: {
+			type: Boolean,
+			default: false,
+		},
 		emptyText: {
 			type: String,
 			default: '暂无数据',
@@ -66,21 +81,29 @@
 		},
 	})
 
+	const popupRef = ref()
+	const handleOpen = () => {
+		if (!isEmpty(props.modelValue)) {
+			dataShow()
+		}
+		popupRef.value.open()
+	}
+
+
 	const dataList = ref([])
+	// 选中的文本
+	// 选中的value值
 	const selectText = ref(undefined)
 	const selectValue = ref(undefined)
+	// 无数据占位符
 	const noDataValue = '#codeLife_noData#' //用来标识无数据选项
 
-	// 为了在点击清除的时候picker不弹出
-	const pickerDisabled = ref(false)
 	const handleClear = () => {
-		pickerDisabled.value = true
 		selectText.value = undefined
 		selectValue.value = undefined
-		emit('clear')
-		setTimeout(() => {
-			pickerDisabled.value = false
-		})
+		// 默认回到第一行
+		pickValue.value = [0]
+		emits('clear')
 	}
 	// 是否为空
 	const isEmpty = (val) => {
@@ -89,7 +112,7 @@
 
 	// 确认选中
 	const submit = (e) => {
-		const idx = Number(e.detail.value)
+		const idx = pickValue.value[0]
 		const item = dataList.value[idx]
 		const value = item ? item[props.valueFiled] : undefined
 		const label = item ? item[props.labelFiled] : undefined
@@ -99,27 +122,27 @@
 		) {
 			selectText.value = undefined
 			selectValue.value = undefined
-			emit('submit', undefined)
+			emits('submit', undefined)
 		} else {
 			selectText.value = label
 			selectValue.value = value
-			emit('submit', value, item)
+			emits('submit', value, item)
 		}
+		popupRef.value.close()
 	}
 	const cancel = () => {
+		popupRef.value.close()
 		emit('cancel')
 	}
 
 	// 选中数据的下标
-	const pickValue = ref(0)
+	const pickValue = ref([0])
 	// 数据回显
-	const dataShow = (list, val) => {
-		const idx = list.findIndex((item) => item[props.valueFiled] === val)
+	const dataShow = () => {
+		const idx = dataList.value.findIndex((item) => item[props.valueFiled] === props.modelValue)
 		if (idx > -1) {
-			pickValue.value = idx
-		}
-		const curData = list[idx]
-		if (curData) {
+			pickValue.value = [idx]
+			const curData = dataList.value[idx]
 			selectText.value = curData[props.labelFiled]
 			selectValue.value = curData[props.valueFiled]
 		} else {
@@ -127,10 +150,19 @@
 			selectValue.value = undefined
 		}
 	}
+	const selectChange = (e) => {
+		pickValue.value = e.detail.value
+	}
 
 	// 是否显示清除按钮
 	const isShowClearIcon = computed(() => {
 		if (!isEmpty(selectValue.value) && !props.disabled) {
+			return true
+		}
+	})
+	// 是否显示下拉箭头按钮
+	const isShowBottomIcon = computed(() => {
+		if (isEmpty(selectValue.value) && !props.disabled) {
 			return true
 		}
 	})
@@ -143,7 +175,7 @@
 				dataList.value = [{
 					[props.labelFiled]: props.emptyText,
 					[props.valueFiled]: noDataValue,
-				}, ]
+				}]
 			} else {
 				// 如果传入的数组是基本数组，如[1,2,3]则转为对象数组
 				dataList.value = props.options.map((item) => {
@@ -156,7 +188,7 @@
 						return item
 					}
 				})
-				dataShow(dataList.value, props.modelValue)
+				dataShow()
 			}
 		}, {
 			immediate: true,
@@ -167,7 +199,7 @@
 	watch(
 		() => selectValue.value,
 		(newV) => {
-			emit('update:modelValue', newV)
+			emits('update:modelValue', newV)
 		}
 	)
 
@@ -179,7 +211,7 @@
 				selectText.value = undefined
 				selectValue.value = undefined
 			} else {
-				dataShow(dataList.value, newV)
+				dataShow()
 			}
 		}, {
 			immediate: true,
@@ -188,31 +220,72 @@
 </script>
 
 <style scoped>
-	.uni_input {
-		min-height: 35px;
-		/* padding: 0; */
+	.input_box {
 		display: flex;
-		align-items: center;
 		justify-content: space-between;
-		border: 1px solid #e5e5e5;
-		box-sizing: border-box;
+		align-items: center;
+		border: 1px solid #dcdfe6;
+		background-color: #fff;
 		border-radius: 4px;
-		word-break: break-all;
-		overflow: hidden;
 	}
 
-	.show_text {
+	.hideBorder {
+		border: none !important;
+	}
+
+	.input_box>.input_ele {
+		flex: 1;
+		padding: 0 10px;
+		display: flex;
+		align-items: center;
+		min-height: 35px;
+		word-break: break-all;
 		color: #333;
 		font-size: 14px;
 	}
 
-	.hideBorder {
-		border: none;
+	.input_box>.placeholder {
+		color: #999;
+		font-size: 12px;
+	}
+
+	.clear_icon {
+		margin: 0 5px;
+	}
+
+	.picker-view {
+		width: 100%;
+		height: 500rpx;
+		background-color: #fff;
+	}
+
+	.btn_box {
+		padding: 20rpx;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		background-color: #fff;
+		font-size: 28rpx;
+	}
+
+	.btn_box>.submit {
+		color: #007aff;
+	}
+
+	.item {
+		flex: 1;
+		line-height: 70rpx;
+		text-align: center;
+		font-size: 26rpx;
+	}
+
+	.uni-easyinput__content {
+		pointer-events: none;
+		background-color: #007aff;
 	}
 
 	.disabled {
-		background-color: #f7f6f6 !important;
-		border-color: #e5e5e5 !important;
+		background-color: #F7F6F6;
 		pointer-events: none;
 	}
 </style>

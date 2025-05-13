@@ -140,10 +140,6 @@ const props = defineProps({
     type: [Object, Boolean],
     default: () => ({}),
   },
-  loadToastConfig: {
-    type: [Object, Boolean],
-    default: () => ({}),
-  },
   emptyShowConfig: {
     type: [Object, Boolean],
     default: () => ({}),
@@ -195,19 +191,6 @@ const mergeErrorToastConfig = computed(() => {
   )
 })
 
-const mergeLoadToastConfig = computed(() => {
-  if (!props.loadToastConfig) {
-    return false
-  }
-  return Object.assign(
-    {
-      title: '加载中',
-      mask: true,
-    },
-    props.loadToastConfig
-  )
-})
-
 const list = ref([])
 const isEnd = ref(false) //数据是否拿完
 const isRefresh = ref(false) //是否刷新
@@ -216,10 +199,6 @@ const screenOldTop = ref(0)
 const loadMoreStatus = ref('loading')
 
 const search = async (type) => {
-  // 显示loading窗口
-  if (mergeLoadToastConfig.value) {
-    uni.showLoading(mergeLoadToastConfig.value)
-  }
   // 显示底部加载状态
   loadMoreStatus.value = 'loading'
   // 是否提前对参数进行处理
@@ -228,9 +207,6 @@ const search = async (type) => {
     : props.params
   try {
     const res = await props.apiFun(searchForm)
-    if (mergeLoadToastConfig.value) {
-      uni.hideLoading()
-    }
     const code = res[props.successCodeField]
     const data = res[props.successDataField]
     // const message = res[props.messageField]

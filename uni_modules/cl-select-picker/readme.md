@@ -1,37 +1,41 @@
 # el-select-picker
 ## 说明
-该组件是根据uniapp原生picker组件封装的下拉组件，组件样式与uni-select保持一致。可以与uni-form组件搭配使用
+该组件是根据uni-popup和picker-view组件封装的下拉弹出组件，组件样式与uni-select保持一致。
+ - 可以与uni-form组件搭配使用
+ - 可以自定义选中字段与文本字段
+ - 支持对象类型和字符串，数字类型的数组
+ - 底部弹出，规避常规组件在顶部或者底部被遮挡的问题
 ## 使用方式
-	```html
-	<template>
-		<view class="content">
-			<cl-select-picker style="width: 340px;" v-model="formData.picker" :options="options">
-			</cl-select-picker>
-		</view>
-	</template>
-	<script setup>
-		import {
-			ref,
-			reactive
-		} from 'vue'
-		const formData = reactive({
-			picker: 'value3'
-		})
-		const options = ref([{
-				label: '我是展示的值1',
-				value: 'value1'
-			},
-			{
-				label: '我是展示的值2',
-				value: 'value2'
-			},
-			{
-				label: '我是展示的值3',
-				value: 'value3'
-			},
-		])
-	</script>
-	```
+```html
+<template>
+	<view class="content">
+		<cl-select-picker style="width: 340px;" v-model="formData.picker" :options="options">
+		</cl-select-picker>
+	</view>
+</template>
+<script setup>
+	import {
+		ref,
+		reactive
+	} from 'vue'
+	const formData = reactive({
+		picker: 'value3'
+	})
+	const options = ref([{
+			label: '我是展示的值1',
+			value: 'value1'
+		},
+		{
+			label: '我是展示的值2',
+			value: 'value2'
+		},
+		{
+			label: '我是展示的值3',
+			value: 'value3'
+		},
+	])
+</script>
+```
 # 属性列表
 | 属性名						| 说明																																																			|  类型											| 默认值							|
 | -----------				| -----------																																																| -----------								| -----------					|

@@ -5,7 +5,7 @@
 			:inputBorder="!hideBorder" :cursorSpacing="cursorSpacing" @focus="focusHandle" @input="inputHandle"
 			@blur="blurHandle">
 			<template #right>
-				<view class="icons">
+				<view class="icons" v-if="!disabled">
 					<uni-icons v-if="!isSelected || visible" :type="visible ? 'top' : 'bottom'" size="14"></uni-icons>
 					<uni-icons v-else type="clear" size="24" @click="clearHandle" color="#c0c4cc"></uni-icons>
 				</view>
@@ -117,14 +117,14 @@
 	const selected = (item) => {
 		curSelect.value = item
 		visible.value = false
-		emits('update:modelValue', item[props.valueField])
 		emits('selected', item[props.valueField], item)
 	}
 	// 清除
 	const clearHandle = () => {
 		// 清除所选项跟定位元素
 		curSelect.value = {}
-		scrollIntoView.value = undefined
+		console.log(props.options[0][props.valueField]);
+
 		emits('clear')
 	}
 	const showPlaceholder = ref(props.placeholder)
@@ -173,13 +173,17 @@
 	watch(() => visible.value, (val) => {
 		if (val) {
 			// 监听是否有选中的值，有则替换Placeholder进行展示并定位到对应元素
-			if (isSelected.value) {
-				showPlaceholder.value = curSelect.value[props.labelField]
-				scrollIntoView.value = curSelect.value[props.valueField]
-			} else {
-				showPlaceholder.value = props.placeholder
-				scrollIntoView.value = undefined
-			}
+			nextTick(() => {
+				if (isSelected.value) {
+					showPlaceholder.value = curSelect.value[props.labelField]
+					scrollIntoView.value = curSelect.value[props.valueField]
+				} else {
+					showPlaceholder.value = props.placeholder
+					if (props.options.length > 0) {
+						scrollIntoView.value = props.options[0][props.valueField]
+					}
+				}
+			})
 		}
 	})
 
@@ -192,6 +196,7 @@
 			curSelectLabel.value = val[props.labelField]
 			curSelectValue.value = val[props.valueField]
 		}
+		emits('update:modelValue', curSelectValue.value)
 	})
 	// 回显数据
 	const setCurSelect = () => {

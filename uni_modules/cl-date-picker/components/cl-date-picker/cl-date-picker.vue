@@ -3,9 +3,9 @@
 		<view class="input_ele" :class="`input ${!modelValue && 'placeholder'}`" @click.stop="handleOpen">
 			{{ modelValue || placeholder }}
 		</view>
-		<uni-icons class="clear_icon" v-if="modelValue" type="clear" :size="24" color="#c0c4cc"
+		<uni-icons class="clear_icon" v-if="modelValue && !disabled" type="clear" :size="22" color="#c0c4cc"
 			@click="handleClear"></uni-icons>
-		<uni-icons class="clear_icon" v-else type="bottom" :size="20" color="#c0c4cc"></uni-icons>
+		<uni-icons class="clear_icon" v-if="!modelValue && !disabled" type="bottom" :size="20" color="#c0c4cc"></uni-icons>
 	</view>
 	<uni-popup type="bottom" ref="popupRef">
 		<view class="btn_box">
@@ -132,7 +132,7 @@
 	}
 
 	// 获取时间类型列表
-	const dateFormatList = computed(() => {
+	const dateTypetList = computed(() => {
 		const regex = /(YYYY|MM|DD|hh|mm|ss)/g;
 		const matches = props.dateType.match(regex);
 		return matches || [];
@@ -143,20 +143,15 @@
 		const matches = props.modelValue.match(regex);
 		return matches || [];
 	})
-	const getDateValList = (str) => {
-		const regex = /(\d{4}|\d{2}|\d{2}|\d{2}|\d{2}|\d{2})/g;
-		const matches = props.modelValue.match(regex);
-		return matches || [];
-	}
 	// 创建时间选项
 	const createDateOptions = () => {
 		dateOptionList.value = []
 		const date = new Date()
-		if (dateFormatList.value.length === 0) {
+		if (dateTypetList.value.length === 0) {
 			throw new Error('传入的时间格式无法识别到有效值，有效值包含：YYYY,MM,DD,hh,mm,ss')
 			return false
 		}
-		dateFormatList.value.forEach((item, index) => {
+		dateTypetList.value.forEach((item, index) => {
 			let options = []
 			// 设置年份选项
 			if (item === 'YYYY') {
@@ -165,9 +160,7 @@
 						options.push(i + '')
 					}
 				} else {
-					for (let i = 1990; i <= 2050; i++) {
-						options = props.yearOptions
-					}
+					options = props.yearOptions
 				}
 			}
 			// 设置月份选项
@@ -204,7 +197,7 @@
 	// 获取对应下表进行时间回显
 	const showDate = () => {
 		dateVal.value = []
-		dateFormatList.value.forEach((item, index) => {
+		dateTypetList.value.forEach((item, index) => {
 			const curOption = dateOptionList.value.find(itm => itm.type === item)
 			const curData = curOption.options.findIndex(itm => itm === dataValList.value[index])
 			dateVal.value.push(curData)
@@ -213,6 +206,7 @@
 	const dateChange = ({
 		detail
 	}) => {
+		console.log(detail, 'detail');
 		dateVal.value = detail.value
 	}
 	// 取消按钮
@@ -223,13 +217,12 @@
 	// 提交按钮
 	const handleSubmit = () => {
 		let str = props.dateType
-		dateFormatList.value.forEach((item, index) => {
+		dateTypetList.value.forEach((item, index) => {
 			const reg = new RegExp(item)
 			const curOption = dateOptionList.value.find(itm => itm.type === item)
 			const curData = curOption.options[dateVal.value[index]]
 			str = str.replace(reg, curData)
 		})
-		console.log(str, 'str');
 		emits('submit', str)
 		emits('update:modelValue', str)
 		popupRef.value.close()
@@ -240,10 +233,9 @@
 			if (props.isNow) {
 				let nowDateIdxList = []
 				const nowDateMap = getNowDate()
-				dateFormatList.value.forEach(item => {
+				dateTypetList.value.forEach(item => {
 					const curOption = dateOptionList.value.find(itm => itm.type === item)
 					let curIdx = curOption.options.findIndex(itm => itm === nowDateMap[item])
-					console.log(curIdx, curOption, nowDateMap[item]);
 					nowDateIdxList.push(curIdx)
 				})
 				dateVal.value = nowDateIdxList

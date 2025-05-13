@@ -37,6 +37,10 @@
 		{
 			componentName: 'cl-auto-page-list',
 			componentPath: '/pages/componentPage/cl-auto-page-list/index'
+		},
+		{
+			componentName: 'cl-more-select-picker',
+			componentPath: '/pages/componentPage/cl-more-select-picker/index'
 		}
 	])
 	const pickerSubmit = (val, curData) => {

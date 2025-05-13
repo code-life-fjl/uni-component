@@ -2,30 +2,33 @@
 
 ## 说明
 
-使用 picker-view 和 picker-view-column 封装的时间选择器，支持年月日时分秒各种形式的组合搭配。
+使用 picker-view 和 picker-view-column 封装的时间选择器，
+ - 支持自定义时间格式的组合搭配。
+ - 支持默认当前时间
+ - 可以支持年月日，时分秒一起选择
 
 ## 使用方式
 
-    ```html
-    <template>
-    <view class="content">
-    	<cl-date-picker v-model="value" isNow dateType="hh:mm:ss"></cl-date-picker>
-    </view>
-
+```vue
+<template>
+<view class="content">
+	<cl-date-picker v-model="value" isNow dateType="hh:mm:ss"></cl-date-picker>
+</view>
 </template>
-	```
+```
 	
-# 属性列表
-| 属性名						| 说明																																																			|  类型											| 默认值							|
-| -----------				| -----------																																																| -----------								| -----------					|
-| dateType						| 时间格式，包含（YYYY,MM,DD,hh,mm,ss）即可，例如想要一个年月日：YYYY-MM-DD或者YYYY/MM/DD或者YYYY年MM月DD日		|  String										| YYYY-MM-DD							|
-| v-model				   | 绑定的时间值																					|  String					|  ''  |
-| placeholder				| 输入框提示																																												|String											|请选择								|
-| disabled				| 是否禁用																																															|Boolean											|false	|
-| hideBorder		| 是否隐藏边框																																					|Boolean											| false								|
-| yearOptions				| 手动年份下拉选择														|string[]											| ['1990', '1991', ... '2050']									|
+## 属性列表
+| 属性名			| 说明																																																	|  类型				| 默认值													|
+| -----------	| -----------																																													| -----------	| -----------										|
+| dateType		| 时间格式，包含（YYYY,MM,DD,hh,mm,ss）即可，例如想要一个年月日：YYYY-MM-DD或者YYYY/MM/DD或者YYYY年MM月DD日	|  String			| `YYYY-MM-DD`										|
+| modelValue	| 绑定的时间值	使用v-model进行绑定																																				|  String			|  ''														|
+| placeholder	| 输入框提示																																														|String				|请选择													|
+| disabled		| 是否禁用																																															|Boolean			|`false`												|
+| hideBorder	| 是否隐藏边框																																													|Boolean			| `false`												|
+| yearOptions	| 手动年份下拉选择																																											|string[]			| `['1990', '1991', ... '2050']`|
+| isNow				| 打开弹窗时自动选中当前时间																																							|Boolean			| `true`												|
 
-# 方法列表
+## 方法列表
 
 | 方法名 | 说明             | 参数               |
 | ------ | ---------------- | ------------------ |
