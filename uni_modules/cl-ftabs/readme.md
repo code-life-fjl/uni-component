@@ -1,4 +1,6 @@
-# cl-tabs
+# cl-ftabs
+> 本想取名cl-tabs，但是被占用了/(ㄒoㄒ)/~~
+
 ## 说明
 该组件百分比还原uni-ui的uni-segmented-control分段器组件。
 - 支持v-model双向数据绑定
@@ -33,16 +35,16 @@
 <template>
 	<view class="content">
 		<uni-section>按钮样式</uni-section>
-		<cl-tabs v-model="value1" :option="option"></cl-tabs>
+		<cl-ftabs v-model="value1" :option="option"></cl-ftabs>
 		<uni-section>文本样式</uni-section>
-		<cl-tabs v-model="value2" :option="option" styleType="text" @change="handleChange"></cl-tabs>
+		<cl-ftabs v-model="value2" :option="option" styleType="text" @change="handleChange"></cl-ftabs>
 		<uni-section>插槽</uni-section>
-		<cl-tabs v-model="value2" :option="option" styleType="text" @change="handleChange">
+		<cl-ftabs v-model="value2" :option="option" styleType="text" @change="handleChange">
 			<template #label="{label, tabItem, isActive}">
 				<text v-if="!isActive" style="color:blueviolet;">{{label}}~{{tabItem.value}}</text>
 				<text v-else style="color:red;">{{label}}~{{tabItem.value}}</text>
 			</template>
-		</cl-tabs>
+		</cl-ftabs>
 	</view>
 </template>
 <script setup>

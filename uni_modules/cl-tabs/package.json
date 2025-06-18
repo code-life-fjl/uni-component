@@ -1,10 +1,10 @@
 {
-  "id": "cl-tabs",
-  "displayName": "cl-tabs",
+  "id": "cl-tabsf",
+  "displayName": "cl-tabsf",
   "version": "1.0.0",
-  "description": "cl-tabs",
+  "description": "cl-tabsf",
   "keywords": [
-    "cl-tabs"
+    "cl-tabsf"
 ],
   "repository": "",
   "engines": {

@@ -1,15 +1,16 @@
 <template>
 	<view class="content">
 		<uni-section>按钮样式</uni-section>
-		<cl-tabs v-model="value1" :option="option"></cl-tabs>
+		<cl-ftabs v-model="value1" :option="option"></cl-ftabs>
 		<uni-section>文本样式</uni-section>
-		<cl-tabs v-model="value2" :option="option" styleType="text" @change="handleChange"></cl-tabs>
+		<cl-ftabs v-model="value2" :option="option" styleType="text" @change="handleChange"></cl-ftabs>
 		<uni-section>插槽</uni-section>
-		<cl-tabs v-model="value2" :option="option" styleType="text" @change="handleChange">
-			<template #label="{label, tabItem}">
-				<text style="color:blueviolet;">{{label}}~{{tabItem.value}}</text>
+		<cl-ftabs v-model="value2" :option="option" styleType="text" @change="handleChange">
+			<template #label="{label, tabItem, isActive}">
+				<text v-if="!isActive" style="color:blueviolet;">{{label}}~{{tabItem.value}}</text>
+				<text v-else style="color:red;">{{label}}~{{tabItem.value}}</text>
 			</template>
-		</cl-tabs>
+		</cl-ftabs>
 	</view>
 </template>
 
