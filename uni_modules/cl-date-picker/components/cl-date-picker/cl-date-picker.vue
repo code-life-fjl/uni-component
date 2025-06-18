@@ -38,10 +38,6 @@
 			type: String,
 			default: 'YYYY-MM-DD',
 		},
-		modelValue: {
-			type: String,
-			default: '',
-		},
 		placeholder: {
 			type: String,
 			default: '请选择',
@@ -71,7 +67,9 @@
 		},
 	})
 
-	const emits = defineEmits(['update:modelValue', 'cancel', 'submit'])
+	const modelValue = defineModel()
+	console.log(modelValue, 'modelValue');
+	const emits = defineEmits(['cancel', 'submit'])
 	const popupRef = ref()
 	const dateOptionList = ref([])
 	// 存储的时间下拉值，也就是选项的下标
@@ -229,7 +227,7 @@
 			str = str.replace(reg, curData)
 		})
 		emits('submit', str)
-		emits('update:modelValue', str)
+		modelValue.value = str
 		popupRef.value.close()
 	}
 	// 打开弹窗
@@ -254,9 +252,6 @@
 		popupRef.value.open()
 	}
 
-	onLoad(() => {
-		// createDateOptions()
-	})
 	// 关闭弹窗
 	const close = () => {
 		popupRef.value.close()
@@ -267,7 +262,7 @@
 	})
 	// 清除所选数据
 	const handleClear = () => {
-		emits('update:modelValue', '')
+		modelValue.value = ''
 	}
 </script>
 <!-- 这里没有使用任何css编译器，方便在其他环境使用 -->

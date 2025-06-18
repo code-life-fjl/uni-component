@@ -54,6 +54,12 @@
 			"style": {
 				"navigationBarTitleText": "本地数据虚拟分页"
 			}
+		},
+		{
+			"path": "pages/componentPage/cl-tabs/index",
+			"style": {
+				"navigationBarTitleText": "tabs组件"
+			}
 		}
 	],
 	"globalStyle": {

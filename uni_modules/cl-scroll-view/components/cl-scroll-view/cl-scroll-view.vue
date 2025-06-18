@@ -45,7 +45,7 @@
 			type: Boolean,
 			default: true,
 		},
-		// 参数改变字段刷新列表
+		// 参数改变是否刷新列表
 		autoRefreshByParamsChange: {
 			type: Boolean,
 			default: false,

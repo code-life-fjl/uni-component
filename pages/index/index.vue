@@ -41,6 +41,10 @@
 		{
 			componentName: 'cl-more-select-picker',
 			componentPath: '/pages/componentPage/cl-more-select-picker/index'
+		},
+		{
+			componentName: 'cl-tabs',
+			componentPath: '/pages/componentPage/cl-tabs/index'
 		}
 	])
 	const pickerSubmit = (val, curData) => {
