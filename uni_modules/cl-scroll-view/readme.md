@@ -48,26 +48,23 @@
 ```
 	
 # 属性列表
-| 属性名						| 说明																																																			|  类型											| 默认值							|
-| -----------				| -----------													| -----------								| -----------					|
-| lowerThreshold		| 距底部/多远时（单位px），触发加载事件														|  Number, String										| 50			|
-| refresherEnabled				| 开启下拉刷新																																								|Boolean											|true								|
-| autoLoad				| 是否页面加载自动加载列表													|Boolean											| true									|
-| apiFun				| 接口方法（只支持返回Promise对象）																																										|Function											|-	|
-| params		| 接口的请求参数（一般包含页码，码值等）																																					|Object											| {}								|
-| pageNumField				| 页码字段，parmas对象里面的属性																					|  String	| pageNum						|
-| loadPageNum					|  每页加载数据长度																															|  Number										| 10									|
-| beforeHook				| 接口调用前的钩子函数，参数为接口请求参数parmas，此处可对参数进行二次处理。内部使用JSON进行深拷贝，部分类型可能失效         | Function										| -								|
-| afterHook						| 接口调用成功后的钩子函数，参数为接口返回的列表数据													| Function										| -								|
-| errorHook						| 接口调用失败后的钩子函数，该钩子函数有两个参数，参数1为错误对象，参数2为失败类型，类型为project则是业务逻辑报错，返回错误状态码值不对；类型为network是接口超时或者404等	| Function										| -								|
-| successCodeNum						| 判断接口请求成功的状态码值													| Number										| 200								|
-| successCodeField						| 判断接口请求成功的状态码字段												| String										| code							|
-| messageField						| 接口调用后获取接口提示信息的字段，传了该值则错误提示会显示对应字段的值，不穿则错误提示直接为‘加载失败！’													| String										| ''								|
-| successDataField						| 接口调用成功后接收数据字段												| String										| data								|
-| errorToastConfig						|  显示接口报错信息的弹窗，传false则不显示，传对象则弹窗使用对象里面的配置  | Boolean, Object							| {duration: 1000,icon: 'error',title: '加载失败！',mask: true}		|
-| loadToastConfig						|  显示加载中太弹窗，传false则不显示，传对象则弹窗使用对象里面的配置  | Boolean, Object									| {title: '加载中',mask: true}								|
-| emptyShowConfig						|  无数据是的页面展示情况，传false则不展示  | Boolean, Object										| {text: '暂无数据',imageSrc: 本地图片地址,}								|
-| errorShowConfig						|  接口失败后的页面展示情况，失败分为两种，1.第一次调用就直接使用，则使用默认报错图展示；2.非第一次调用，这个时候页面是有数据，所以只在底部显示  | Boolean, Object									| {text: '加载失败，请重试',imageSrc: 本地图片地址}								|
+| 属性名										| 说明																																																																															|  类型						| 默认值				|
+| -----------								| -----------																																																																											| -----------			| -----------	|
+| lowerThreshold						| 距底部/多远时（单位px），触发加载事件																																																															|  Number, String	| 50					|
+| refresherEnabled					| 开启下拉刷新																																																																											|Boolean					|true					|
+| autoLoad									| 是否页面加载自动加载列表																																																																					|Boolean					| true				|
+| autoRefreshByParamsChange	| 参数更新是否自动刷新																																																																							|Boolean					| false				|
+| apiFun										| 接口方法（只支持返回Promise对象）																																																																	|Function					|-						|
+| params										| 接口的请求参数（一般包含页码，码值等）																																																															|Object						| {}					|
+| pageNumField							| 页码字段，parmas对象里面的属性																																																																		|  String					| pageNum			|
+| loadPageNum								|  每页加载数据长度																																																																								|  Number					| 10					|
+| beforeHook								| 接口调用前的钩子函数，参数为接口请求参数parmas，此处可对参数进行二次处理。内部使用JSON进行深拷贝，部分类型可能失效																										| Function				| -						|
+| afterHook									| 接口调用成功后的钩子函数，参数为接口返回的列表数据																																																									| Function				| -						|
+| errorHook									| 接口调用失败后的钩子函数，该钩子函数有两个参数，参数1为错误对象，参数2为失败类型，类型为project则是业务逻辑报错，返回错误状态码值不对；类型为network是接口超时或者404等	| Function				| -						|
+| successCodeNum						| 判断接口请求成功的状态码值																																																																				| Number					| 200					|
+| codeField									| 判断接口请求成功的状态码字段																																																																			| String					| code				|
+| msgField									| 接口调用后获取接口提示信息的字段，传了该值则错误提示会显示对应字段的值，不穿则错误提示直接为‘加载失败！’																														| String					| ''					|
+| resField									| 接口调用成功后接收数据字段																																																																				| String					| data				|
 
 # 插槽
 | 插槽名						| 说明				| 作用域数据  |
@@ -75,7 +72,6 @@
 |  list           | 列表插槽  |  list：接口返回的列表数据 |
 |  empty           | 无数据的页面展示插槽  |  - |
 |  error           | 接口报错时页面展示的插槽（分为第一次调用接口报错跟非第一次接口报错）  |  list：接口返回的列表数据 |
-| errorShowText    |  错误时的文本展示 | errorShowText：文本数据，reload：列表加载接口，由用于重新加载列表。
 
 > 注意：若想要在组件外部使用search（查询）或refresh（刷新）方法，可以使用ref进行调用，并将调用方法放在`nextTick`内部调用。
 

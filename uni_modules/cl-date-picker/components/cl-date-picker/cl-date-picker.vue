@@ -3,7 +3,7 @@
 		<view class="input_ele" :class="`input ${!modelValue && 'placeholder'}`" @click.stop="handleOpen">
 			{{ modelValue || placeholder }}
 		</view>
-		<uni-icons class="clear_icon" v-if="modelValue && !disabled" type="clear" :size="22" color="#c0c4cc"
+		<uni-icons class="clear_icon" v-if="modelValue && !disabled && clearable" type="clear" :size="22" color="#c0c4cc"
 			@click="handleClear"></uni-icons>
 		<uni-icons class="clear_icon" v-if="!modelValue && !disabled" type="bottom" :size="20" color="#c0c4cc"></uni-icons>
 	</view>
@@ -50,6 +50,10 @@
 			type: Boolean,
 			default: false,
 		},
+		clearable: {
+			type: Boolean,
+			default: true
+		},
 		// 隐藏border
 		hideBorder: {
 			type: Boolean,
@@ -64,7 +68,7 @@
 		isNow: {
 			type: Boolean,
 			default: true
-		}
+		},
 	})
 
 	const emits = defineEmits(['update:modelValue', 'cancel', 'submit'])
@@ -220,6 +224,7 @@
 		dateTypetList.value.forEach((item, index) => {
 			const reg = new RegExp(item)
 			const curOption = dateOptionList.value.find(itm => itm.type === item)
+			console.log(curOption, 'curOption');
 			const curData = curOption.options[dateVal.value[index]]
 			str = str.replace(reg, curData)
 		})
@@ -229,6 +234,7 @@
 	}
 	// 打开弹窗
 	const handleOpen = () => {
+		createDateOptions()
 		if (isEmpty(props.modelValue)) {
 			if (props.isNow) {
 				let nowDateIdxList = []
@@ -249,7 +255,7 @@
 	}
 
 	onLoad(() => {
-		createDateOptions()
+		// createDateOptions()
 	})
 	// 关闭弹窗
 	const close = () => {

@@ -1,7 +1,7 @@
 {
   "id": "cl-more-select-picker",
   "displayName": "cl-more-select-picker",
-  "version": "1.0.4",
+  "version": "1.0.8",
   "description": "cl-more-select-picker",
   "keywords": [
     "多选选择器"

@@ -38,8 +38,9 @@
 | labelFiled	|  选中数据对象里面用来展示的字段（options为普通数组则忽略）														|  String										| text				|
 | valueFiled	| 选中数据对象里面用来回传的字段   （options为普通数组则忽略）													| String										| value				|
 | emptyText		| 无数据的展示文本																																		| String										| 暂无数据			|
-| selectTarget| 切换状态的触发元素 [checkbox：点击选框，row：点击行数据]															| String										| checkbox		|
+| selectTarget| 切换状态的触发元素 [checkbox：点击选框，row：点击行数据]															| String										| row					|
 | isFilter		| 是否需要过滤																																				| Boolean										| true				|
+| maxLength		| 设置可选数量	（为空则不显示）																												| Number										| undefined		|
 
 # 方法列表
 |方法名					| 			说明		|     参数 |

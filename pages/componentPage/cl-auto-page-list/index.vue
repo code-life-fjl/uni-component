@@ -10,11 +10,6 @@
 				</view>
 			</template>
 		</cl-auto-page-list>
-		<view class="cl_bottom_box">
-			<view class="cl_bottom_box_btn">
-				新增模板
-			</view>
-		</view>
 	</view>
 </template>
 
@@ -28,7 +23,7 @@
 	})
 
 	const list = Array.from({
-		length: 500
+		length: 20
 	}, (_, index) => {
 		return {
 			label: `我是展示的值${index}`,

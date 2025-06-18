@@ -1,7 +1,7 @@
 <template>
 	<view class="content">
 		<view class="section_title">
-			基本使用
+			基本使用（使用list插槽）
 		</view>
 		<view style="height: 600rpx;border: 1px solid gainsboro;">
 			<cl-scroll-view :apiFun="apiFun" :params="searchParams">
@@ -13,11 +13,20 @@
 			</cl-scroll-view>
 		</view>
 		<view class="section_title">
-			隐藏loading弹窗，并对请求参数（永远请求pageNum等于10的数据）和接口返回值进行二次处理（将结果包装为“我是处理过的返回值n”）
+			基本使用（使用list-item插槽）
 		</view>
 		<view style="height: 600rpx;border: 1px solid gainsboro;">
-			<cl-scroll-view :apiFun="apiFun1" :params="searchParams1" :loadToastConfig="false" :beforeHook="beforeHook"
-				:afterHook="afterHook">
+			<cl-scroll-view :apiFun="apiFun" :params="searchParams">
+				<template v-slot:list-item="{item}">
+					<view class="item">{{item}}</view>
+				</template>
+			</cl-scroll-view>
+		</view>
+		<view class="section_title">
+			对请求参数（永远请求pageNum等于10的数据）和接口返回值进行二次处理（将结果包装为“我是处理过的返回值n”）
+		</view>
+		<view style="height: 600rpx;border: 1px solid gainsboro;">
+			<cl-scroll-view :apiFun="apiFun1" :params="searchParams1" :beforeHook="beforeHook" :afterHook="afterHook">
 				<template v-slot:list="{list}">
 					<view class="list_box">
 						<view v-for="item in list" :key="item" class="item">{{item}}</view>
@@ -38,40 +47,21 @@
 			</cl-scroll-view>
 		</view>
 		<view class="section_title">
-			自定义无数据页面
+			无数据页面（使用插槽）
 		</view>
 		<view style="height: 800rpx;border: 1px solid gainsboro;">
-			<cl-scroll-view :apiFun="apiFun2" :params="searchParams2"
-				:emptyShowConfig="{text: '好像没有拿到数据哇', imgSrc: '/static/logo.png'}">
-				<template v-slot:list="{list}">
-					<view class="list_box">
-						<view v-for="item in list" :key="item" class="item">{{item}}</view>
-					</view>
-				</template>
-			</cl-scroll-view>
-		</view>
-		<view class="section_title">
-			使用插槽控制自定义无数据页面
-		</view>
-		<view style="height: 800rpx;border: 1px solid gainsboro;">
-			<cl-scroll-view :apiFun="apiFun2" :params="searchParams2"
-				:emptyShowConfig="{text: '好像没有拿到数据哇', imgSrc: '/static/logo.png'}">
-				<template v-slot:list="{list}">
-					<view class="list_box" v-if="list.length > 0">
-						<view v-for="item in list" :key="item" class="item">{{item}}</view>
-					</view>
-				</template>
-				<template v-slot:empty>
+			<cl-scroll-view :apiFun="apiFun2" :params="searchParams2">
+				<template #empty>
 					<view style="height: 100%;background-color: aquamarine;">我是无数据页面，你可以任意设置</view>
 				</template>
 			</cl-scroll-view>
 		</view>
 		<view class="section_title">
-			显示第一次加载直接失败的状态
+			显示加载失败
 		</view>
 		<view style="height: 800rpx;border: 1px solid gainsboro">
 			<cl-scroll-view :apiFun="apiFun3" :params="searchParams3">
-				<template v-slot:list="{list}">
+				<template #list="{list}">
 					<view class="list_box">
 						<view v-for="item in list" :key="item" class="item">{{item}}</view>
 					</view>
@@ -79,15 +69,12 @@
 			</cl-scroll-view>
 		</view>
 		<view class="section_title">
-			显示非第一次加载失败的状态，使用messageField字段控制提示信息，使用errorToastConfig隐藏弹窗图标，使用errorShowConfig配置错误时展示的文本
+			显示加载失败（使用插槽）
 		</view>
 		<view style="height: 800rpx;border: 1px solid gainsboro">
-			<cl-scroll-view :apiFun="apiFun4" :params="searchParams4" hideLoad messageField="message"
-				:errorToastConfig="{icon: 'none'}" :errorShowConfig="{text: '好像没有拿到数据哇', imgSrc: '/static/logo.png'}">
-				<template v-slot:list="{list}">
-					<view class="list_box">
-						<view v-for="item in list" :key="item" class="item">{{item}}</view>
-					</view>
+			<cl-scroll-view :apiFun="apiFun3" :params="searchParams3">
+				<template #error>
+					<view style="height: 100%;background-color: aquamarine;">我是错误页面，你可以任意设置</view>
 				</template>
 			</cl-scroll-view>
 		</view>
@@ -120,6 +107,7 @@
 		pageSize: 10,
 		pageNum: 1
 	})
+	// 基础使用
 	const apiFun = (params) => {
 		return new Promise((resolve, reject) => {
 			setTimeout(() => {

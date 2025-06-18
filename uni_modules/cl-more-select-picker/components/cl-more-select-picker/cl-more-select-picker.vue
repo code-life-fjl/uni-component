@@ -1,15 +1,17 @@
 <template>
 	<view class="cl_more_select_piker">
-		<view class="input_box" @click="handleOpenPicker" :class="{hideBorder, disabled}">
-			<view class="input_ele" :class="{placeholder: !hasSelect}">{{hasSelect ? showLabel : props.placeholder}}</view>
+		<view class="input_box" :class="{hideBorder, disabled}">
+			<view class="input_ele" @click="handleOpenPicker" :class="{placeholder: !hasSelect}">
+				{{hasSelect ? showLabel : props.placeholder}}
+			</view>
 			<uni-icons class="clear_icon" v-if="hasSelect" type="clear" :size="24" color="#c0c4cc"
-				@tap.native.stop="handleClear"></uni-icons>
+				@click="handleClear"></uni-icons>
 			<uni-icons class="clear_icon" v-else type="bottom" :size="20" color="#c0c4cc"></uni-icons>
 		</view>
 	</view>
 	<uni-popup ref="popupRef" type="bottom">
 		<view class="btn_box">
-			<text @click="handleCancel">取消</text>
+			<text class="cancel_btn" @click="handleCancel">取消</text>
 			<uni-easyinput v-if="isFilter" style="margin: 0 20rpx;" v-model="keywords" placeholder="请输入关键字查询"></uni-easyinput>
 			<text class="submit_btn" @click="handleSubmit">确定</text>
 		</view>
@@ -73,11 +75,15 @@
 		// checkbox  点击勾选框  row  点击行数据
 		selectTarget: {
 			type: String,
-			default: 'checkbox'
+			default: 'row'
 		},
 		isFilter: {
 			type: Boolean,
 			default: true
+		},
+		maxLength: {
+			type: Number,
+			default: undefined
 		}
 	})
 	const isType = (type, val) => `[object ${type}]` === Object.prototype.toString.call(val)
@@ -126,6 +132,7 @@
 
 	// 清除操作
 	const handleClear = () => {
+		console.log(123213);
 		emits('update:modelValue', [])
 	}
 	// 取消按钮
@@ -143,8 +150,17 @@
 	}
 	// 选中不选择状态切换
 	const handleToggle = (item, type) => {
-		if (props.selectTarget !== type) return
+		if (props.selectTarget === 'checkbox' && type !== 'checkbox') return
 		const idx = selectList.value.findIndex(itm => itm === item[props.valueField])
+		// 判断是不是新目标
+		if (idx === -1 && typeof props.maxLength === 'number' && selectList.value.length === props.maxLength) {
+			uni.showToast({
+				title: `最多只能选择${props.maxLength}条数据`,
+				icon: 'none',
+				duration: 500
+			})
+			return
+		}
 		if (idx > -1) {
 			selectList.value.splice(idx, 1)
 		} else {
@@ -191,7 +207,7 @@
 	}
 
 	.scoll_box {
-		padding: 10px 5px;
+		padding: 10rpx 10rpx 20rpx 10rpx;
 		box-sizing: border-box;
 		width: 100%;
 		background-color: #fff;
@@ -253,7 +269,12 @@
 		background-color: #fff;
 	}
 
+	.cancel_btn {
+		padding: 10rpx;
+	}
+
 	.submit_btn {
+		padding: 10rpx;
 		color: #007aff;
 	}
 
