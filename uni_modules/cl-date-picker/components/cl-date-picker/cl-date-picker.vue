@@ -1,12 +1,10 @@
 <template>
-	<view class="input_box" :class="{disabled, hideBorder}">
-		<view class="input_ele" :class="`input ${!modelValue && 'placeholder'}`" @click.stop="handleOpen">
-			{{ modelValue || placeholder }}
-		</view>
-		<uni-icons class="clear_icon" v-if="modelValue && !disabled && clearable" type="clear" :size="22" color="#c0c4cc"
-			@click="handleClear"></uni-icons>
-		<uni-icons class="clear_icon" v-if="!modelValue && !disabled" type="bottom" :size="20" color="#c0c4cc"></uni-icons>
-	</view>
+	<cl-input v-model="modelValue" inputType="falseInput" :placeholder="placeholder" :disabled="disabled" v-bind="atrrs"
+		@inputClick="handleOpen">
+		<template #right>
+			<uni-icons v-if="!modelValue && !disabled" type="bottom" :size="14" color="#999"></uni-icons>
+		</template>
+	</cl-input>
 	<uni-popup type="bottom" ref="popupRef">
 		<view class="btn_box">
 			<text @click="cancal">取消</text>
@@ -28,6 +26,7 @@
 		nextTick,
 		reactive,
 		ref,
+		useAttrs,
 		watch
 	} from 'vue'
 	import {
@@ -42,18 +41,9 @@
 			type: String,
 			default: '请选择',
 		},
-		disabled: {
-			type: Boolean,
-			default: false,
-		},
 		clearable: {
 			type: Boolean,
 			default: true
-		},
-		// 隐藏border
-		hideBorder: {
-			type: Boolean,
-			default: false,
 		},
 		// 年份下拉选项
 		yearOptions: {
@@ -65,10 +55,15 @@
 			type: Boolean,
 			default: true
 		},
+		disabled: {
+			type: Boolean,
+			default: false
+		}
 	})
 
+	const atrrs = useAttrs()
+	console.log(atrrs);
 	const modelValue = defineModel()
-	console.log(modelValue, 'modelValue');
 	const emits = defineEmits(['cancel', 'submit'])
 	const popupRef = ref()
 	const dateOptionList = ref([])
@@ -266,40 +261,7 @@
 	}
 </script>
 <!-- 这里没有使用任何css编译器，方便在其他环境使用 -->
-<style scoped>
-	.input_box {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		border: 1px solid #dcdfe6;
-		background-color: #fff;
-		border-radius: 4px;
-	}
-
-	.hideBorder {
-		border: none !important;
-	}
-
-	.input_box>.input_ele {
-		flex: 1;
-		padding: 0 10px;
-		display: flex;
-		align-items: center;
-		min-height: 35px;
-		word-break: break-all;
-		color: #333;
-		font-size: 14px;
-	}
-
-	.input_box>.placeholder {
-		color: #999;
-		font-size: 12px;
-	}
-
-	.clear_icon {
-		margin: 0 5px;
-	}
-
+<style scoped lang="scss">
 	.picker-view {
 		width: 100%;
 		height: 500rpx;
@@ -313,26 +275,17 @@
 		align-items: center;
 		background-color: #fff;
 		font-size: 28rpx;
+
+		.submit {
+			color: #007aff;
+		}
 	}
 
-	.btn_box>.submit {
-		color: #007aff;
-	}
 
 	.item {
 		flex: 1;
 		line-height: 70rpx;
 		text-align: center;
 		font-size: 26rpx;
-	}
-
-	.uni-easyinput__content {
-		pointer-events: none;
-		background-color: #007aff;
-	}
-
-	.disabled {
-		background-color: #F7F6F6;
-		pointer-events: none;
 	}
 </style>

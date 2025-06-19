@@ -22,11 +22,10 @@
 | -----------	| -----------																																													| -----------	| -----------										|
 | dateType		| 时间格式，包含（YYYY,MM,DD,hh,mm,ss）即可，例如想要一个年月日：YYYY-MM-DD或者YYYY/MM/DD或者YYYY年MM月DD日	|  String			| `YYYY-MM-DD`										|
 | modelValue	| 绑定的时间值	使用v-model进行绑定																																				|  String			|  ''														|
-| placeholder	| 输入框提示																																														|String				|请选择													|
-| disabled		| 是否禁用																																															|Boolean			|`false`												|
-| hideBorder	| 是否隐藏边框																																													|Boolean			| `false`												|
 | yearOptions	| 手动年份下拉选择																																											|string[]			| `['1990', '1991', ... '2050']`|
 | isNow				| 打开弹窗时自动选中当前时间																																							|Boolean			| `true`												|
+
+> 其余属性皆与uni-easyinput组件一直
 
 ## 方法列表
 

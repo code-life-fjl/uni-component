@@ -1,10 +1,10 @@
 {
-  "id": "cl-date-picker",
-  "displayName": "cl-date-picker 自定义格式的时间选择器",
-  "version": "1.0.9",
-  "description": "cl-date-picker",
+  "id": "cl-input",
+  "displayName": "cl-input",
+  "version": "1.0.0",
+  "description": "cl-input",
   "keywords": [
-    "cl-date-picker"
+    "cl-input"
 ],
   "repository": "",
   "engines": {
@@ -46,8 +46,8 @@
         },
         "App": {
             "app-vue": "y",
-            "app-nvue": "u",
-            "app-uvue": "u",
+            "app-nvue": "n",
+            "app-uvue": "n",
             "app-harmony": "u"
         },
         "H5-mobile": {
@@ -75,8 +75,8 @@
           "京东": "y"
         },
         "快应用": {
-          "华为": "y",
-          "联盟": "y"
+          "华为": "u",
+          "联盟": "u"
         }
       }
     }

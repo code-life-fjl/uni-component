@@ -9,6 +9,7 @@
 		<cl-date-picker v-model="value2" ref="datePickerRef" dateType="hh:mm:ss"></cl-date-picker>
 		<uni-section>禁用状态</uni-section>
 		<cl-date-picker v-model="value3" ref="datePickerRef" disabled></cl-date-picker>
+		<uni-data-select v-model="value" :localdata="range" @change="change"></uni-data-select>
 	</view>
 </template>
 

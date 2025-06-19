@@ -9,7 +9,14 @@
 	import {
 		ref,
 	} from 'vue'
-	const city = ref('')
+	const formRef = ref()
+	const formData = ref({
+		val: ''
+	})
+	const aaa = () => {
+		console.log(formRef.value);
+		formRef.value.validate()
+	}
 	const pageList = ref([{
 			componentName: 'cl-select-picker',
 			componentPath: '/pages/componentPage/cl-select-picker/index'
