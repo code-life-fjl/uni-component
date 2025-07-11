@@ -1,12 +1,10 @@
 <template>
-	<view class="input_box" :class="{disabled, hideBorder}">
-		<view class="input_ele" :class="`input ${!modelValue && 'placeholder'}`" @click.stop="handleOpen">
-			{{ selectText || placeholder }}
-		</view>
-		<uni-icons class="clear_icon" v-if="isShowClearIcon" type="clear" :size="22" color="#c0c4cc"
-			@click="handleClear"></uni-icons>
-		<uni-icons class="clear_icon" v-if="isShowBottomIcon" type="bottom" :size="22" color="#c0c4cc"></uni-icons>
-	</view>
+	<cl-input v-model="modelValue" inputType="falseInput" :placeholder="placeholder" :disabled="disabled" v-bind="atrrs"
+		@inputClick="handleOpen">
+		<template #right>
+			<uni-icons v-if="!modelValue && !disabled" type="bottom" :size="14" color="#999"></uni-icons>
+		</template>
+	</cl-input>
 	<uni-popup type="bottom" ref="popupRef">
 		<view class="btn_box">
 			<text @click="cancel" style="padding: 6px;">取消</text>
@@ -62,10 +60,6 @@
 			type: String,
 			default: 'value',
 		},
-		modelValue: {
-			type: [String, Number],
-			default: undefined,
-		},
 		// 是否隐藏暂无数据
 		hideEmptyText: {
 			type: Boolean,
@@ -80,10 +74,11 @@
 			default: () => ({}),
 		},
 	})
+	const modelValue = defineModel()
 
 	const popupRef = ref()
 	const handleOpen = () => {
-		if (!isEmpty(props.modelValue)) {
+		if (!isEmpty(modelValue.value)) {
 			dataShow()
 		}
 		popupRef.value.open()
@@ -139,7 +134,7 @@
 	const pickValue = ref([0])
 	// 数据回显
 	const dataShow = () => {
-		const idx = dataList.value.findIndex((item) => item[props.valueFiled] === props.modelValue)
+		const idx = dataList.value.findIndex((item) => item[props.valueFiled] === modelValue.value)
 		if (idx > -1) {
 			pickValue.value = [idx]
 			const curData = dataList.value[idx]
@@ -153,19 +148,6 @@
 	const selectChange = (e) => {
 		pickValue.value = e.detail.value
 	}
-
-	// 是否显示清除按钮
-	const isShowClearIcon = computed(() => {
-		if (!isEmpty(selectValue.value) && !props.disabled) {
-			return true
-		}
-	})
-	// 是否显示下拉箭头按钮
-	const isShowBottomIcon = computed(() => {
-		if (isEmpty(selectValue.value) && !props.disabled) {
-			return true
-		}
-	})
 
 	watch(
 		() => props.options,
@@ -199,13 +181,13 @@
 	watch(
 		() => selectValue.value,
 		(newV) => {
-			emits('update:modelValue', newV)
+			modelValue.value = newV
 		}
 	)
 
 	// 数据回显
 	watch(
-		() => props.modelValue,
+		() => modelValue.value,
 		(newV) => {
 			if (isEmpty(newV)) {
 				selectText.value = undefined

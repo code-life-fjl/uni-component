@@ -52,6 +52,10 @@
 		{
 			componentName: 'cl-tabs',
 			componentPath: '/pages/componentPage/cl-tabs/index'
+		},
+		{
+			componentName: 'cl-table',
+			componentPath: '/pages/componentPage/cl-table/index'
 		}
 	])
 	const pickerSubmit = (val, curData) => {

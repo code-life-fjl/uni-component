@@ -60,6 +60,12 @@
 			"style": {
 				"navigationBarTitleText": "tabs组件"
 			}
+		},
+		{
+			"path": "pages/componentPage/cl-table/index",
+			"style": {
+				"navigationBarTitleText": "表格组件"
+			}
 		}
 	],
 	"globalStyle": {

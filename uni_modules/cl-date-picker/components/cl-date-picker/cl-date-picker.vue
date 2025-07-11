@@ -261,7 +261,7 @@
 	}
 </script>
 <!-- 这里没有使用任何css编译器，方便在其他环境使用 -->
-<style scoped lang="scss">
+<style scoped lang="scss"> 
 	.picker-view {
 		width: 100%;
 		height: 500rpx;
