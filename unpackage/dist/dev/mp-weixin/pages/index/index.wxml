@@ -1,1 +1,0 @@
-<view class="content data-v-1cf27b2a"><button wx:for="{{a}}" wx:for-item="item" wx:key="b" class="button data-v-1cf27b2a" bindtap="{{item.c}}">{{item.a}}</button></view><rich-text class="data-v-1cf27b2a" nodes="{{b}}"></rich-text>

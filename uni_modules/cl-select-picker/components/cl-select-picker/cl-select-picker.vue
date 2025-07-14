@@ -1,9 +1,6 @@
 <template>
 	<cl-input v-model="modelValue" inputType="falseInput" :placeholder="placeholder" :disabled="disabled" v-bind="atrrs"
 		@inputClick="handleOpen">
-		<template #right>
-			<uni-icons v-if="!modelValue && !disabled" type="bottom" :size="14" color="#999"></uni-icons>
-		</template>
 	</cl-input>
 	<uni-popup type="bottom" ref="popupRef">
 		<view class="btn_box">
@@ -26,8 +23,10 @@
 		ref,
 		computed,
 		nextTick,
+		useAttrs,
 	} from 'vue'
-	const emits = defineEmits(['update:modelValue', 'submit', 'clear', 'cancel'])
+	const atrrs = useAttrs()
+	const emits = defineEmits(['submit', 'clear', 'cancel'])
 	const props = defineProps({
 		// 数据列表
 		options: {

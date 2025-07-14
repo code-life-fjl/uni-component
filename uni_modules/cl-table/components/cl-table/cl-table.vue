@@ -18,7 +18,6 @@
 			</cl-table-row>
 		</view>
 	</view>
-
 </template>
 <script setup>
 	import {

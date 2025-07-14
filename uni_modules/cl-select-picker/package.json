@@ -1,7 +1,7 @@
 {
   "id": "cl-select-picker",
   "displayName": "cl-select-picker",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "根据picker封装的select组件，样式与select完全一致",
   "keywords": [
     "cl-select-picker"

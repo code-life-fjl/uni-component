@@ -1,6 +1,0 @@
-{
-  "navigationBarTitleText": "cl-scroll-view",
-  "usingComponents": {
-    "cl-scroll-view": "../../../uni_modules/cl-scroll-view/components/cl-scroll-view/cl-scroll-view"
-  }
-}

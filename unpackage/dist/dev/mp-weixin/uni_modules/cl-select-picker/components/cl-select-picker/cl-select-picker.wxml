@@ -1,1 +1,0 @@
-<picker class="data-v-7036e199" range="{{d}}" range-key="{{e}}" value="{{f}}" bindchange="{{g}}" bindcancel="{{h}}" disabled="{{i}}"><uni-easyinput wx:if="{{c}}" class="data-v-7036e199" bindclear="{{a}}" u-i="7036e199-0" bind:__l="__l" bindupdateModelValue="{{b}}" u-p="{{c}}"></uni-easyinput></picker>

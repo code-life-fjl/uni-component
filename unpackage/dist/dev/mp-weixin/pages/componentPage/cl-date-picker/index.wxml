@@ -1,1 +1,0 @@
-<view class="content data-v-fc709b23"><view class=" data-v-fc709b23"> 使用picker-view和picker-view-column封装的时间选择器，支持年月日时分秒各种形式的组合搭配。 </view><cl-date-picker wx:if="{{c}}" class="r data-v-fc709b23" u-r="datePickerRef" u-i="fc709b23-0" bind:__l="__l" bindupdateModelValue="{{b}}" u-p="{{c}}"></cl-date-picker></view>

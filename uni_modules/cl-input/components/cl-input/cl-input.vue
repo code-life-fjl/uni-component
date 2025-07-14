@@ -19,6 +19,9 @@
 			<template v-if="showNum && maxlength && type === 'textarea'">
 				<text class="textarea_maxlength_show">{{val.length}}/{{maxlength}}</text>
 			</template>
+			<template v-if="inputType === 'falseInput' && showSelectIcon">
+				<uni-icons style="margin-right: 5px;" v-if="!val && !disabled" type="bottom" :size="14" color="#999"></uni-icons>
+			</template>
 			</view>
 			<template v-if="type === 'password' && passwordIcon">
 				<!-- 开启密码时显示小眼睛 -->
@@ -239,6 +242,11 @@
 			inputType: {
 				type: String,
 				default: 'input'
+			},
+			// 是否显示下拉图标
+			showSelectIcon: {
+				type: Boolean,
+				default: true
 			}
 		},
 		data() {

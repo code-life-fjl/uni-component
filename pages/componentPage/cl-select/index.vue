@@ -1,6 +1,6 @@
 <template>
 	<view class="content">
-		<text>模仿uni-data-select做的可搜索下拉框，可直接回显数据，并定位到对应的数据项</text>
+		<uni-section>模仿uni-data-select做的可搜索下拉框，可直接回显数据，并定位到对应的数据项</uni-section>
 		<cl-select :options="options" v-model="value"></cl-select>
 		{{value}}
 	</view>

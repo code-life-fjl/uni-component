@@ -1,16 +1,16 @@
 <template>
 	<view class="el_select">
-		<uni-easyinput v-model="curSelectLabel" :clearable="false" :placeholder="showPlaceholder"
-			:placeholderStyle="placeholderStyle" :disabled="disabled" :maxlength="maxlength" :trim="trim"
-			:inputBorder="!hideBorder" :cursorSpacing="cursorSpacing" @focus="focusHandle" @input="inputHandle"
-			@blur="blurHandle">
-			<template #right>
+		<cl-input class="cl_input" v-model="curSelectLabel" :placeholder="showPlaceholder"
+			:inputType="filterable ? 'input' :  'falseInput'" :placeholderStyle="placeholderStyle" :disabled="disabled"
+			:maxlength="maxlength" :trim="trim" :inputBorder="!hideBorder" :cursorSpacing="cursorSpacing" @focus="focusHandle"
+			@input="inputHandle" @blur="blurHandle" @inputClick="inputClick" @clear="clearHandle">
+			<template #right v-if="filterable">
 				<view class="icons" v-if="!disabled">
-					<uni-icons v-if="!isSelected || visible" :type="visible ? 'top' : 'bottom'" size="14"></uni-icons>
-					<uni-icons v-else type="clear" size="24" @click="clearHandle" color="#c0c4cc"></uni-icons>
+					<uni-icons v-if="!isSelected || visible" :type="visible ? 'top' : 'bottom'" size="14"
+						color="#999"></uni-icons>
 				</view>
 			</template>
-		</uni-easyinput>
+		</cl-input>
 		<view class="scroll_list" v-show="visible">
 			<view class="triangle_icon"></view>
 			<scroll-view scroll-y :scroll-into-view="scrollIntoView" :style="{maxHeight: maxHeight + 'px'}">
@@ -34,9 +34,10 @@
 		watch,
 		computed,
 		nextTick,
-		onMounted
+		onMounted,
+		getCurrentInstance
 	} from 'vue'
-
+	const curInstance = getCurrentInstance()
 	const props = defineProps({
 		options: {
 			type: Array,
@@ -89,6 +90,10 @@
 		emptyText: {
 			type: String,
 			default: '暂无数据'
+		},
+		filterable: {
+			type: Boolean,
+			default: true
 		}
 	})
 
@@ -112,6 +117,19 @@
 	const scrollIntoView = ref()
 	// 展示的下拉数据
 	const showOptions = ref([])
+	// 格式化的下拉列表数据
+	const formatOptions = computed(() => {
+		return props.options.map(item => {
+			if (typeof item !== 'object') {
+				return {
+					[props.valueField]: item,
+					[props.labelField]: item
+				}
+			} else {
+				return item
+			}
+		})
+	})
 
 	// 选中数据
 	const selected = (item) => {
@@ -128,6 +146,18 @@
 		emits('clear')
 	}
 	const showPlaceholder = ref(props.placeholder)
+	// 输入框点击（不可搜索的状态）
+	const inputClick = () => {
+		if (isSelected.value) {
+			showPlaceholder.value = curSelect.value[props.labelField]
+		} else {
+			showPlaceholder.value = props.placeholder
+		}
+		visible.value = true
+		// 如果数据不是对象则转为对象
+		showOptions.value = formatOptions.value
+		curSelectLabel.value = undefined
+	}
 	// 聚焦函数
 	const focusHandle = (inputVal) => {
 		if (isSelected.value) {
@@ -137,16 +167,7 @@
 		}
 		visible.value = true
 		// 如果数据不是对象则转为对象
-		showOptions.value = props.options.map(item => {
-			if (['string', 'number'].includes(typeof item)) {
-				return {
-					[props.valueField]: item,
-					[props.labelField]: item
-				}
-			} else {
-				return item
-			}
-		})
+		showOptions.value = formatOptions.value
 		curSelectLabel.value = undefined
 		emits('focus', inputVal)
 	}
@@ -164,7 +185,7 @@
 	const inputHandle = (e) => {
 		clearTimeout(searchTimer)
 		searchTimer = setTimeout(() => {
-			showOptions.value = props.options.filter(item => item[props.labelField].includes(e))
+			showOptions.value = formatOptions.value.filter(item => item[props.labelField].includes(e))
 			emits('input', e)
 		}, 200)
 	}
@@ -179,8 +200,8 @@
 					scrollIntoView.value = curSelect.value[props.valueField]
 				} else {
 					showPlaceholder.value = props.placeholder
-					if (props.options.length > 0) {
-						scrollIntoView.value = props.options[0][props.valueField]
+					if (formatOptions.value.length > 0) {
+						scrollIntoView.value = formatOptions.value[0][props.valueField]
 					}
 				}
 			})
@@ -200,8 +221,8 @@
 	})
 	// 回显数据
 	const setCurSelect = () => {
-		if (props.options.length > 0 && !isEmpty(props.modelValue)) {
-			const data = props.options.find(item => item[props.valueField] === props.modelValue)
+		if (formatOptions.value.length > 0 && !isEmpty(props.modelValue)) {
+			const data = formatOptions.value.find(item => item[props.valueField] === props.modelValue)
 			if (data) {
 				curSelect.value = data
 			}
@@ -267,10 +288,6 @@
 		font-size: 14px;
 	}
 
-	.select_item:hover {
-		background-color: #f9f9f9;
-	}
-
 	.active {
 		background-color: #f9f9f9;
 	}
@@ -283,11 +300,11 @@
 	}
 
 	.mask {
+		opacity: .5;
 		position: fixed;
 		top: 0;
 		left: 0;
 		bottom: 0;
 		right: 0;
-		/* background-color: #ebeef5; */
 	}
 </style>

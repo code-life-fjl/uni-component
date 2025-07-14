@@ -1,1 +1,0 @@
-<view class="content data-v-6318dc36"><cl-more-select-picker wx:if="{{b}}" class="data-v-6318dc36" u-i="6318dc36-0" bind:__l="__l" bindupdateModelValue="{{a}}" u-p="{{b}}"></cl-more-select-picker></view>

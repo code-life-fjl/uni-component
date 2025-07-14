@@ -1,8 +1,8 @@
 {
   "id": "cl-input",
   "displayName": "cl-input",
-  "version": "1.0.0",
-  "description": "cl-input",
+  "version": "1.0.1",
+  "description": "用于cl-ui组件库的下拉组件封装，针对于uni-easyinput的二次封装",
   "keywords": [
     "cl-input"
 ],
