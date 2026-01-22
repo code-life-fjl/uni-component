@@ -148,6 +148,9 @@
 	const showPlaceholder = ref(props.placeholder)
 	// 输入框点击（不可搜索的状态）
 	const inputClick = () => {
+		if (props.disabled) {
+			return
+		}
 		if (isSelected.value) {
 			showPlaceholder.value = curSelect.value[props.labelField]
 		} else {
@@ -296,7 +299,7 @@
 		text-align: center;
 		line-height: 30px;
 		color: gray;
-		font-size: 28rpx;
+		font-size: 24rpx;
 	}
 
 	.mask {

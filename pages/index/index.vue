@@ -7,16 +7,13 @@
 
 <script setup>
 	import {
-		ref,
+		ref,onMounted
 	} from 'vue'
+	import {onShareAppMessage} from '@dcloudio/uni-app'
 	const formRef = ref()
 	const formData = ref({
 		val: ''
 	})
-	const aaa = () => {
-		console.log(formRef.value);
-		formRef.value.validate()
-	}
 	const pageList = ref([{
 			componentName: 'cl-select-picker',
 			componentPath: '/pages/componentPage/cl-select-picker/index'
@@ -58,15 +55,24 @@
 			componentPath: '/pages/componentPage/cl-table/index'
 		}
 	])
-	const pickerSubmit = (val, curData) => {
-		console.log(val, curData);
-	}
 
 	const toPage = (url) => {
 		uni.navigateTo({
 			url
 		})
 	}
+	onMounted(() => {
+		uni.showShareMenu({
+			title: '234',
+			menus: ["shareAppMessage", "shareTimeline"]
+		})
+	})
+	onShareAppMessage((res) => {
+		console.log(res);
+		return {
+			title: '243'
+		}
+	})
 </script>
 
 <style scoped>

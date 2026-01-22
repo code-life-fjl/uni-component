@@ -1,16 +1,21 @@
 <template>
 	<view class="el_select">
-		<uni-easyinput v-model="showVal" :type="type" :clearable="true" :placeholder="placeholder"
+		<uni-easyinput v-model="modelValue" :type="type" :clearable="true" :placeholder="placeholder"
 			:placeholderStyle="placeholderStyle" :disabled="disabled" :maxlength="maxlength" :trim="trim"
 			:inputBorder="!hideBorder" :cursorSpacing="cursorSpacing" @focus="focusHandle">
 		</uni-easyinput>
 		<view class="scroll_list" v-if="visible && showOptions.length > 0">
 			<view class="triangle_icon"></view>
 			<scroll-view scroll-y :style="{maxHeight: maxHeight + 'px'}">
-				<view class="select_item" :class="{active: item === showVal}" v-for="(item, index) in showOptions" :key="index"
-					@click="selected(item)">
-					{{item}}
+				<view class="select_item" :class="{active: item === modelValue}" v-for="(item, index) in showOptions"
+					:key="index" @click="selected(item)">
+					<text v-html="setHighlight(item)"></text>
 				</view>
+				<slot name="empty" v-if="showOptions.length === 0">
+					<view class="empty_text">
+						{{emptyText}}
+					</view>
+				</slot>
 			</scroll-view>
 		</view>
 	</view>
@@ -28,10 +33,6 @@
 		options: {
 			type: Array,
 			default: () => []
-		},
-		modelValue: {
-			type: String,
-			default: ''
 		},
 		placeholder: {
 			type: String,
@@ -69,32 +70,67 @@
 			type: String,
 			default: 'text'
 		},
+		// 是否启用严格模式。会区分大小写
+		isStrict: {
+			type: Boolean,
+			default: false
+		},
+		// 是否高亮
+		isHighlight: {
+			type: Boolean,
+			default: false
+		},
+		// 高亮颜色
+		highlightColor: {
+			type: String,
+			default: '#007aff'
+		},
+		// 自定义过滤方法
+		customFilter: {
+			type: Function
+		}
 	})
-	const emits = defineEmits(['update:modelValue', 'focus', 'blur', 'selected', 'clear', 'input'])
+	const modelValue = defineModel({default: ''})
+	const emits = defineEmits(['focus', 'blur', 'selected', 'clear', 'input'])
 
 	// 控制下拉框
 	const visible = ref(false)
-	const showOptions = computed(() => props.options.filter(item => item.toLowerCase()?.includes(props.modelValue
-		?.toLowerCase() || '')))
+	const showOptions = computed(() => {
+		return props.options.filter(item => {
+			if (props.customFilter) {
+				return props.customFilter(item)
+			}
+			if (props.isStrict) {
+				return item.includes(modelValue.value || '')
+			} else {
+				return item.toLowerCase()?.includes(modelValue.value?.toLowerCase() || '')
+			}
 
-	const showVal = computed({
-		get: () => {
-			return props.modelValue
-		},
-		set: (newV) => {
-			emits('update:modelValue', newV)
-		}
+		})
 	})
+	
+	// 设置高亮
+	const setHighlight = (item) => {
+		if (typeof item !== 'string') {
+			return ''
+		}
+		if(!props.isHighlight) {
+			return item
+		}
+		const regxp = props.isStrict ? new RegExp(modelValue.value, 'g') : new RegExp(modelValue.value, 'gi')
+		return item.replace(regxp, (word) => `<span style="color: ${props.highlightColor};">${word}</span>`)
+	}
+
 	// 选中数据
 	const selected = (item) => {
 		visible.value = false
-		showVal.value = item
+		modelValue.value = item
 		emits('selected', item)
 	}
 	// 清除
 	const clearHandle = () => {
 		// 清除所选项跟定位元素
-		showVal.value = ''
+		modelValue.value = ''
 		emits('clear')
 	}
 	let timeoutId = null // 防抖ID
@@ -191,5 +227,12 @@
 		right: 0;
 		/* background-color: rgba(0, 0, 0, .1); */
 		z-index: 2;
+	}
+
+	.empty_text {
+		text-align: center;
+		line-height: 30px;
+		color: gray;
+		font-size: 28rpx;
 	}
 </style>

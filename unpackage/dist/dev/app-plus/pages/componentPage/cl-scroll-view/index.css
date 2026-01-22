@@ -178,26 +178,35 @@
 }
 }
 
-.error_empty_box[data-v-77892465] {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 3.125rem 1.5625rem;
-  font-size: 0.9375rem;
+.icon_box[data-v-77892465] {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		padding: 3.125rem 1.5625rem;
+		font-size: 0.9375rem;
+}
+.icon_box .image[data-v-77892465] {
+		width: 12.5rem;
+		height: 12.5rem;
+}
+.icon_box .text[data-v-77892465] {
+		font-size: 1rem;
+		color: #878787;
+		font-weight: bold;
 }
 .error_data_box[data-v-77892465] {
-  /* padding: 30rpx 0; */
-  height: 40px;
-  line-height: 40px;
-  text-align: center;
-  color: #777777;
-  font-size: 14px;
+		/* padding: 30rpx 0; */
+		height: 40px;
+		line-height: 40px;
+		text-align: center;
+		color: #777777;
+		font-size: 14px;
 }
 .reload_btn[data-v-77892465] {
-  text-decoration: underline;
-  color: blue;
-  color: #777777;
-  font-size: 14px;
+		text-decoration: underline;
+		color: blue;
+		color: #777777;
+		font-size: 14px;
 }
 
 

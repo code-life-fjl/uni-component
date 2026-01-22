@@ -1,0 +1,1 @@
+<view class="content data-v-ad7d568c"><uni-section class="data-v-ad7d568c" u-s="{{['d']}}" u-i="ad7d568c-0" bind:__l="__l">模仿uni-data-select做的可搜索下拉框，可直接回显数据，并定位到对应的数据项</uni-section><cl-select wx:if="{{b}}" class="data-v-ad7d568c" u-i="ad7d568c-1" bind:__l="__l" bindupdateModelValue="{{a}}" u-p="{{b}}"></cl-select> {{c}}</view>

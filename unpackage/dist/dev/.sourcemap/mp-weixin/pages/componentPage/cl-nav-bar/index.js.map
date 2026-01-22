@@ -1,0 +1,1 @@
+{"version":3,"file":"index.js","sources":["../../../soft/HBuilderX/plugins/uniapp-cli-vite/uniPage:/cGFnZXMvY29tcG9uZW50UGFnZS9jbC1uYXYtYmFyL2luZGV4LnZ1ZQ"],"sourcesContent":["import MiniProgramPage from 'D:/code/code-life/uni-app-components/pages/componentPage/cl-nav-bar/index.vue'\nwx.createPage(MiniProgramPage)"],"names":[],"mappings":";;;;;;;;;;;;;;;AACA,GAAG,WAAW,eAAe;"}

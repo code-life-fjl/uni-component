@@ -1,0 +1,1 @@
+<view class="{{['data-v-f3f60d72', 'tabs', b]}}"><view wx:for="{{a}}" wx:for-item="item" wx:key="d" class="{{['data-v-f3f60d72', 'tabs_item', item.e]}}" bindtap="{{item.f}}"><block wx:if="{{$slots.label}}"><slot name="{{item.b}}"></slot></block><block wx:else><view class="tabs_item_text data-v-f3f60d72">{{item.a}}</view></block></view></view>

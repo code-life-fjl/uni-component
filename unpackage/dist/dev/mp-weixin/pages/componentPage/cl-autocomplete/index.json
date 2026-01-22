@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "输入提示",
+  "usingComponents": {
+    "cl-autocomplete": "../../../uni_modules/cl-autocomplete/components/cl-autocomplete/cl-autocomplete"
+  }
+}

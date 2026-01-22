@@ -1,9 +1,9 @@
 <template>
 	<cl-input v-model="modelValue" inputType="falseInput" :placeholder="placeholder" :disabled="disabled" v-bind="atrrs"
 		@inputClick="handleOpen">
-		<template #right>
+		<!-- <template #right>
 			<uni-icons v-if="!modelValue && !disabled" type="bottom" :size="14" color="#999"></uni-icons>
-		</template>
+		</template> -->
 	</cl-input>
 	<uni-popup type="bottom" ref="popupRef">
 		<view class="btn_box">
@@ -62,7 +62,6 @@
 	})
 
 	const atrrs = useAttrs()
-	console.log(atrrs);
 	const modelValue = defineModel()
 	const emits = defineEmits(['cancel', 'submit'])
 	const popupRef = ref()
@@ -200,11 +199,32 @@
 			dateVal.value.push(curData)
 		})
 	}
-	const dateChange = ({
-		detail
-	}) => {
-		console.log(detail, 'detail');
-		dateVal.value = detail.value
+	const dateChange = (e) => {
+		const {
+			value
+		} = e.detail
+		console.log(e, 'detail');
+		console.log(dateTypetList.value, 'dateTypetList');
+		// 找到年跟月的数据下标
+		const yearIdx = dateTypetList.value.findIndex(item => item === 'YYYY')
+		const monthIdx = dateTypetList.value.findIndex(item => item === 'MM')
+		const dayIdx = dateTypetList.value.findIndex(item => item === 'DD')
+		
+		if (monthIdx > -1 && dayIdx > -1) {
+			let year = Date.now().getFullYear()
+			if (yearIdx > -1) {
+				year = value[yearIdx]
+				const days = new Date(year, month, 0).getDate()
+				console.log(days, 'days');
+			}
+			// if (value[yearIdx] !== dateVal.value[yearIdx]) {
+			// 	return new Date(year, month, 0).getDate();
+			// }
+			dateVal.value = value
+		} else {
+			dateVal.value = value
+		}
+
 	}
 	// 取消按钮
 	const cancal = () => {
@@ -227,6 +247,9 @@
 	}
 	// 打开弹窗
 	const handleOpen = () => {
+		if (props.disabled) {
+			return
+		}
 		createDateOptions()
 		if (isEmpty(props.modelValue)) {
 			if (props.isNow) {
@@ -261,7 +284,7 @@
 	}
 </script>
 <!-- 这里没有使用任何css编译器，方便在其他环境使用 -->
-<style scoped lang="scss"> 
+<style scoped lang="scss">
 	.picker-view {
 		width: 100%;
 		height: 500rpx;

@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "弹出多选组件",
+  "usingComponents": {
+    "cl-more-select-picker": "../../../uni_modules/cl-more-select-picker/components/cl-more-select-picker/cl-more-select-picker"
+  }
+}

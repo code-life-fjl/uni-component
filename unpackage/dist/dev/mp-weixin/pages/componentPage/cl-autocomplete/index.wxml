@@ -1,0 +1,1 @@
+<view class="content data-v-80363e37"><text class="data-v-80363e37">模仿uni-data-select做的提示输入框，并可以根据输入内容进行过滤</text><cl-autocomplete wx:if="{{b}}" class="data-v-80363e37" u-i="80363e37-0" bind:__l="__l" bindupdateModelValue="{{a}}" u-p="{{b}}"/></view>

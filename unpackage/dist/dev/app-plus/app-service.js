@@ -33,6 +33,7 @@ if (uni.restoreGlobal) {
   "use strict";
   const ON_LOAD = "onLoad";
   const ON_READY = "onReady";
+  const ON_SHARE_APP_MESSAGE = "onShareAppMessage";
   function formatAppLog(type, filename, ...args) {
     if (uni.__log__) {
       uni.__log__(type, filename, ...args);
@@ -43,11 +44,24 @@ if (uni.restoreGlobal) {
   function resolveEasycom(component, easycom) {
     return typeof component === "string" ? easycom : component;
   }
-  const createHook = (lifecycle) => (hook, target = vue.getCurrentInstance()) => {
+  const createLifeCycleHook = (lifecycle, flag = 0) => (hook, target = vue.getCurrentInstance()) => {
     !vue.isInSSRComponentSetup && vue.injectHook(lifecycle, hook, target);
   };
-  const onLoad = /* @__PURE__ */ createHook(ON_LOAD);
-  const onReady = /* @__PURE__ */ createHook(ON_READY);
+  const onLoad = /* @__PURE__ */ createLifeCycleHook(
+    ON_LOAD,
+    2
+    /* HookFlags.PAGE */
+  );
+  const onReady = /* @__PURE__ */ createLifeCycleHook(
+    ON_READY,
+    2
+    /* HookFlags.PAGE */
+  );
+  const onShareAppMessage = /* @__PURE__ */ createLifeCycleHook(
+    ON_SHARE_APP_MESSAGE,
+    2
+    /* HookFlags.PAGE */
+  );
   const _export_sfc = (sfc, props) => {
     const target = sfc.__vccOpts || sfc;
     for (const [key, val] of props) {
@@ -55,11 +69,14 @@ if (uni.restoreGlobal) {
     }
     return target;
   };
-  const _sfc_main$r = {
+  const _sfc_main$w = {
     __name: "index",
     setup(__props, { expose: __expose }) {
       __expose();
-      const city = vue.ref("");
+      const formRef = vue.ref();
+      const formData = vue.ref({
+        val: ""
+      });
       const pageList = vue.ref([
         {
           componentName: "cl-select-picker",
@@ -88,22 +105,45 @@ if (uni.restoreGlobal) {
         {
           componentName: "cl-auto-page-list",
           componentPath: "/pages/componentPage/cl-auto-page-list/index"
+        },
+        {
+          componentName: "cl-more-select-picker",
+          componentPath: "/pages/componentPage/cl-more-select-picker/index"
+        },
+        {
+          componentName: "cl-tabs",
+          componentPath: "/pages/componentPage/cl-tabs/index"
+        },
+        {
+          componentName: "cl-table",
+          componentPath: "/pages/componentPage/cl-table/index"
         }
       ]);
-      const pickerSubmit = (val, curData) => {
-        formatAppLog("log", "at pages/index/index.vue:43", val, curData);
-      };
       const toPage = (url) => {
         uni.navigateTo({
           url
         });
       };
-      const __returned__ = { city, pageList, pickerSubmit, toPage, ref: vue.ref };
+      vue.onMounted(() => {
+        uni.showShareMenu({
+          title: "234",
+          menus: ["shareAppMessage", "shareTimeline"]
+        });
+      });
+      onShareAppMessage((res2) => {
+        formatAppLog("log", "at pages/index/index.vue:71", res2);
+        return {
+          title: "243"
+        };
+      });
+      const __returned__ = { formRef, formData, pageList, toPage, ref: vue.ref, onMounted: vue.onMounted, get onShareAppMessage() {
+        return onShareAppMessage;
+      } };
       Object.defineProperty(__returned__, "__isScriptSetup", { enumerable: false, value: true });
       return __returned__;
     }
   };
-  function _sfc_render$q(_ctx, _cache, $props, $setup, $data, $options) {
+  function _sfc_render$v(_ctx, _cache, $props, $setup, $data, $options) {
     return vue.openBlock(), vue.createElementBlock("view", { class: "content" }, [
       (vue.openBlock(true), vue.createElementBlock(
         vue.Fragment,
@@ -120,7 +160,7 @@ if (uni.restoreGlobal) {
       ))
     ]);
   }
-  const PagesIndexIndex = /* @__PURE__ */ _export_sfc(_sfc_main$r, [["render", _sfc_render$q], ["__scopeId", "data-v-1cf27b2a"], ["__file", "D:/code-life/uni-app-components/pages/index/index.vue"]]);
+  const PagesIndexIndex = /* @__PURE__ */ _export_sfc(_sfc_main$w, [["render", _sfc_render$v], ["__scopeId", "data-v-1cf27b2a"], ["__file", "D:/code/code-life/uni-app-components/pages/index/index.vue"]]);
   const fontData = [
     {
       "font_class": "arrow-down",
@@ -771,7 +811,7 @@ if (uni.restoreGlobal) {
     const reg = /^[0-9]*$/g;
     return typeof val === "number" || reg.test(val) ? val + "px" : val;
   };
-  const _sfc_main$q = {
+  const _sfc_main$v = {
     name: "UniIcons",
     emits: ["click"],
     props: {
@@ -825,7 +865,7 @@ if (uni.restoreGlobal) {
       }
     }
   };
-  function _sfc_render$p(_ctx, _cache, $props, $setup, $data, $options) {
+  function _sfc_render$u(_ctx, _cache, $props, $setup, $data, $options) {
     return vue.openBlock(), vue.createElementBlock(
       "text",
       {
@@ -840,7 +880,567 @@ if (uni.restoreGlobal) {
       /* CLASS, STYLE */
     );
   }
-  const __easycom_0$c = /* @__PURE__ */ _export_sfc(_sfc_main$q, [["render", _sfc_render$p], ["__scopeId", "data-v-d31e1c47"], ["__file", "D:/code-life/uni-app-components/uni_modules/uni-icons/components/uni-icons/uni-icons.vue"]]);
+  const __easycom_0$c = /* @__PURE__ */ _export_sfc(_sfc_main$v, [["render", _sfc_render$u], ["__scopeId", "data-v-d31e1c47"], ["__file", "D:/code/code-life/uni-app-components/uni_modules/uni-icons/components/uni-icons/uni-icons.vue"]]);
+  function obj2strClass$1(obj) {
+    let classess = "";
+    for (let key in obj) {
+      const val = obj[key];
+      if (val) {
+        classess += `${key} `;
+      }
+    }
+    return classess;
+  }
+  function obj2strStyle$1(obj) {
+    let style = "";
+    for (let key in obj) {
+      const val = obj[key];
+      style += `${key}:${val};`;
+    }
+    return style;
+  }
+  const _sfc_main$u = {
+    name: "uni-easyinput",
+    emits: [
+      "click",
+      "iconClick",
+      "update:modelValue",
+      "input",
+      "focus",
+      "blur",
+      "confirm",
+      "clear",
+      "eyes",
+      "change",
+      "keyboardheightchange",
+      "inputClick"
+    ],
+    model: {
+      prop: "modelValue",
+      event: "update:modelValue"
+    },
+    options: {
+      virtualHost: true
+    },
+    inject: {
+      form: {
+        from: "uniForm",
+        default: null
+      },
+      formItem: {
+        from: "uniFormItem",
+        default: null
+      }
+    },
+    props: {
+      name: String,
+      value: [Number, String],
+      modelValue: [Number, String],
+      type: {
+        type: String,
+        default: "text"
+      },
+      clearable: {
+        type: Boolean,
+        default: true
+      },
+      autoHeight: {
+        type: Boolean,
+        default: false
+      },
+      placeholder: {
+        type: String,
+        default: "请输入"
+      },
+      placeholderStyle: String,
+      focus: {
+        type: Boolean,
+        default: false
+      },
+      disabled: {
+        type: Boolean,
+        default: false
+      },
+      maxlength: {
+        type: [Number, String],
+        default: 140
+      },
+      showNum: {
+        type: Boolean,
+        default: false
+      },
+      confirmType: {
+        type: String,
+        default: "done"
+      },
+      clearSize: {
+        type: [Number, String],
+        default: 24
+      },
+      inputBorder: {
+        type: Boolean,
+        default: true
+      },
+      prefixIcon: {
+        type: String,
+        default: ""
+      },
+      suffixIcon: {
+        type: String,
+        default: ""
+      },
+      trim: {
+        type: [Boolean, String],
+        default: false
+      },
+      cursorSpacing: {
+        type: Number,
+        default: 0
+      },
+      passwordIcon: {
+        type: Boolean,
+        default: true
+      },
+      adjustPosition: {
+        type: Boolean,
+        default: true
+      },
+      primaryColor: {
+        type: String,
+        default: "#2979ff"
+      },
+      styles: {
+        type: Object,
+        default() {
+          return {
+            color: "#333",
+            backgroundColor: "#fff",
+            disableColor: "#F7F6F6",
+            borderColor: "#e5e5e5"
+          };
+        }
+      },
+      errorMessage: {
+        type: [String, Boolean],
+        default: ""
+      },
+      // input的类型，默认input，falseInput则为虚假input，常用于封装其他组件时
+      inputType: {
+        type: String,
+        default: "input"
+      },
+      // 是否显示下拉图标
+      showSelectIcon: {
+        type: Boolean,
+        default: true
+      }
+    },
+    data() {
+      return {
+        focused: false,
+        val: "",
+        showMsg: "",
+        border: false,
+        isFirstBorder: false,
+        showClearIcon: false,
+        showPassword: false,
+        focusShow: false,
+        localMsg: "",
+        isEnter: false
+        // 用于判断当前是否是使用回车操作
+      };
+    },
+    computed: {
+      // 输入框内是否有值
+      isVal() {
+        const val = this.val;
+        if (val || val === 0) {
+          return true;
+        }
+        return false;
+      },
+      msg() {
+        return this.localMsg || this.errorMessage;
+      },
+      // 因为uniapp的input组件的maxlength组件必须要数值，这里转为数值，用户可以传入字符串数值
+      inputMaxlength() {
+        return Number(this.maxlength);
+      },
+      // 处理外层样式的style
+      boxStyle() {
+        return `color:${this.inputBorder && this.msg ? "#e43d33" : this.styles.color};`;
+      },
+      // input 内容的类和样式处理
+      inputContentClass() {
+        return obj2strClass$1({
+          "is-input-border": this.inputBorder,
+          "is-input-error-border": this.inputBorder && this.msg,
+          "is-textarea": this.type === "textarea",
+          "is-disabled": this.disabled,
+          "is-focused": this.focusShow
+        });
+      },
+      inputContentStyle() {
+        const focusColor = this.focusShow ? this.primaryColor : this.styles.borderColor;
+        const borderColor = this.inputBorder && this.msg ? "#dd524d" : focusColor;
+        return obj2strStyle$1({
+          "border-color": borderColor || "#e5e5e5",
+          "background-color": this.disabled ? this.styles.disableColor : this.styles.backgroundColor
+        });
+      },
+      // input右侧样式
+      inputStyle() {
+        const paddingRight = this.type === "password" || this.clearable || this.prefixIcon ? "" : "10px";
+        return obj2strStyle$1({
+          "padding-right": paddingRight,
+          "padding-left": this.prefixIcon ? "" : "10px"
+        });
+      }
+    },
+    watch: {
+      value(newVal) {
+        if (newVal === null) {
+          this.val = "";
+          return;
+        }
+        this.val = newVal;
+      },
+      modelValue(newVal) {
+        if (newVal === null) {
+          this.val = "";
+          return;
+        }
+        this.val = newVal;
+      },
+      focus(newVal) {
+        this.$nextTick(() => {
+          this.focused = this.focus;
+          this.focusShow = this.focus;
+        });
+      }
+    },
+    created() {
+      this.init();
+      if (this.form && this.formItem) {
+        this.$watch("formItem.errMsg", (newVal) => {
+          this.localMsg = newVal;
+        });
+      }
+    },
+    mounted() {
+      this.$nextTick(() => {
+        this.focused = this.focus;
+        this.focusShow = this.focus;
+      });
+    },
+    methods: {
+      // 输入框点击事件
+      _Click() {
+        this.$emit("inputClick");
+      },
+      /**
+       * 初始化变量值
+       */
+      init() {
+        if (this.value || this.value === 0) {
+          this.val = this.value;
+        } else if (this.modelValue || this.modelValue === 0 || this.modelValue === "") {
+          this.val = this.modelValue;
+        } else {
+          this.val = "";
+        }
+      },
+      /**
+       * 点击图标时触发
+       * @param {Object} type
+       */
+      onClickIcon(type) {
+        this.$emit("iconClick", type);
+      },
+      /**
+       * 显示隐藏内容，密码框时生效
+       */
+      onEyes() {
+        this.showPassword = !this.showPassword;
+        this.$emit("eyes", this.showPassword);
+      },
+      /**
+       * 输入时触发
+       * @param {Object} event
+       */
+      onInput(event) {
+        let value = event.detail.value;
+        if (this.trim) {
+          if (typeof this.trim === "boolean" && this.trim) {
+            value = this.trimStr(value);
+          }
+          if (typeof this.trim === "string") {
+            value = this.trimStr(value, this.trim);
+          }
+        }
+        if (this.errMsg)
+          this.errMsg = "";
+        this.val = value;
+        this.$emit("input", value);
+        this.$emit("update:modelValue", value);
+      },
+      /**
+       * 外部调用方法
+       * 获取焦点时触发
+       * @param {Object} event
+       */
+      onFocus() {
+        this.$nextTick(() => {
+          this.focused = true;
+        });
+        this.$emit("focus", null);
+      },
+      _Focus(event) {
+        this.focusShow = true;
+        this.$emit("focus", event);
+      },
+      /**
+       * 外部调用方法
+       * 失去焦点时触发
+       * @param {Object} event
+       */
+      onBlur() {
+        this.focused = false;
+        this.$emit("blur", null);
+      },
+      _Blur(event) {
+        event.detail.value;
+        this.focusShow = false;
+        this.$emit("blur", event);
+        if (this.isEnter === false) {
+          this.$emit("change", this.val);
+        }
+        if (this.form && this.formItem) {
+          const { validateTrigger } = this.form;
+          if (validateTrigger === "blur") {
+            this.formItem.onFieldChange();
+          }
+        }
+      },
+      /**
+       * 按下键盘的发送键
+       * @param {Object} e
+       */
+      onConfirm(e) {
+        this.$emit("confirm", this.val);
+        this.isEnter = true;
+        this.$emit("change", this.val);
+        this.$nextTick(() => {
+          this.isEnter = false;
+        });
+      },
+      /**
+       * 清理内容
+       * @param {Object} event
+       */
+      onClear(event) {
+        this.val = "";
+        this.$emit("input", "");
+        this.$emit("update:modelValue", "");
+        this.$emit("clear");
+      },
+      /**
+       * 键盘高度发生变化的时候触发此事件
+       * 兼容性：微信小程序2.7.0+、App 3.1.0+
+       * @param {Object} event
+       */
+      onkeyboardheightchange(event) {
+        this.$emit("keyboardheightchange", event);
+      },
+      /**
+       * 去除空格
+       */
+      trimStr(str, pos = "both") {
+        if (pos === "both") {
+          return str.trim();
+        } else if (pos === "left") {
+          return str.trimLeft();
+        } else if (pos === "right") {
+          return str.trimRight();
+        } else if (pos === "start") {
+          return str.trimStart();
+        } else if (pos === "end") {
+          return str.trimEnd();
+        } else if (pos === "all") {
+          return str.replace(/\s+/g, "");
+        } else if (pos === "none") {
+          return str;
+        }
+        return str;
+      }
+    }
+  };
+  function _sfc_render$t(_ctx, _cache, $props, $setup, $data, $options) {
+    const _component_uni_icons = resolveEasycom(vue.resolveDynamicComponent("uni-icons"), __easycom_0$c);
+    return vue.openBlock(), vue.createElementBlock(
+      "view",
+      {
+        class: vue.normalizeClass(["uni-easyinput", { "uni-easyinput-error": $options.msg }]),
+        style: vue.normalizeStyle($options.boxStyle)
+      },
+      [
+        vue.createElementVNode(
+          "view",
+          {
+            class: vue.normalizeClass(["uni-easyinput__content", $options.inputContentClass]),
+            style: vue.normalizeStyle($options.inputContentStyle)
+          },
+          [
+            $props.prefixIcon ? (vue.openBlock(), vue.createBlock(_component_uni_icons, {
+              key: 0,
+              class: "content-clear-icon",
+              type: $props.prefixIcon,
+              color: "#c0c4cc",
+              onClick: _cache[0] || (_cache[0] = ($event) => $options.onClickIcon("prefix")),
+              size: "22"
+            }, null, 8, ["type"])) : vue.createCommentVNode("v-if", true),
+            vue.renderSlot(_ctx.$slots, "left", {}, void 0, true),
+            vue.createElementVNode("view", {
+              style: { "width": "100%", "display": "flex", "align-items": "center" },
+              onClick: _cache[11] || (_cache[11] = (...args) => $options._Click && $options._Click(...args))
+            }, [
+              $props.type === "textarea" ? (vue.openBlock(), vue.createElementBlock("textarea", {
+                key: 0,
+                class: vue.normalizeClass(["uni-easyinput__content-textarea", { "input-padding": $props.inputBorder, "pev-none": $props.inputType === "falseInput" }]),
+                name: $props.name,
+                value: $data.val,
+                placeholder: $props.placeholder,
+                placeholderStyle: $props.placeholderStyle,
+                disabled: $props.disabled,
+                "placeholder-class": "uni-easyinput__placeholder-class",
+                maxlength: $options.inputMaxlength,
+                focus: $data.focused,
+                autoHeight: $props.autoHeight,
+                "cursor-spacing": $props.cursorSpacing,
+                "adjust-position": $props.adjustPosition,
+                onInput: _cache[1] || (_cache[1] = (...args) => $options.onInput && $options.onInput(...args)),
+                onBlur: _cache[2] || (_cache[2] = (...args) => $options._Blur && $options._Blur(...args)),
+                onFocus: _cache[3] || (_cache[3] = (...args) => $options._Focus && $options._Focus(...args)),
+                onConfirm: _cache[4] || (_cache[4] = (...args) => $options.onConfirm && $options.onConfirm(...args)),
+                onKeyboardheightchange: _cache[5] || (_cache[5] = (...args) => $options.onkeyboardheightchange && $options.onkeyboardheightchange(...args))
+              }, null, 42, ["name", "value", "placeholder", "placeholderStyle", "disabled", "maxlength", "focus", "autoHeight", "cursor-spacing", "adjust-position"])) : (vue.openBlock(), vue.createElementBlock("input", {
+                key: 1,
+                type: $props.type === "password" ? "text" : $props.type,
+                class: vue.normalizeClass(["uni-easyinput__content-input", { "pev-none": $props.inputType === "falseInput" }]),
+                style: vue.normalizeStyle($options.inputStyle),
+                name: $props.name,
+                value: $data.val,
+                password: !$data.showPassword && $props.type === "password",
+                placeholder: $props.placeholder,
+                placeholderStyle: $props.placeholderStyle,
+                "placeholder-class": "uni-easyinput__placeholder-class",
+                disabled: $props.disabled,
+                maxlength: $options.inputMaxlength,
+                focus: $data.focused,
+                confirmType: $props.confirmType,
+                "cursor-spacing": $props.cursorSpacing,
+                "adjust-position": $props.adjustPosition,
+                onFocus: _cache[6] || (_cache[6] = (...args) => $options._Focus && $options._Focus(...args)),
+                onBlur: _cache[7] || (_cache[7] = (...args) => $options._Blur && $options._Blur(...args)),
+                onInput: _cache[8] || (_cache[8] = (...args) => $options.onInput && $options.onInput(...args)),
+                onConfirm: _cache[9] || (_cache[9] = (...args) => $options.onConfirm && $options.onConfirm(...args)),
+                onKeyboardheightchange: _cache[10] || (_cache[10] = (...args) => $options.onkeyboardheightchange && $options.onkeyboardheightchange(...args))
+              }, null, 46, ["type", "name", "value", "password", "placeholder", "placeholderStyle", "disabled", "maxlength", "focus", "confirmType", "cursor-spacing", "adjust-position"])),
+              $props.showNum && $props.maxlength && $props.type !== "textarea" ? (vue.openBlock(), vue.createElementBlock(
+                "text",
+                {
+                  key: 2,
+                  class: "text_maxlength_show"
+                },
+                vue.toDisplayString($data.val.length) + "/" + vue.toDisplayString($props.maxlength),
+                1
+                /* TEXT */
+              )) : vue.createCommentVNode("v-if", true),
+              $props.showNum && $props.maxlength && $props.type === "textarea" ? (vue.openBlock(), vue.createElementBlock(
+                "text",
+                {
+                  key: 3,
+                  class: "textarea_maxlength_show"
+                },
+                vue.toDisplayString($data.val.length) + "/" + vue.toDisplayString($props.maxlength),
+                1
+                /* TEXT */
+              )) : vue.createCommentVNode("v-if", true),
+              $props.inputType === "falseInput" && $props.showSelectIcon ? (vue.openBlock(), vue.createElementBlock(
+                vue.Fragment,
+                { key: 4 },
+                [
+                  !$data.val && !$props.disabled ? (vue.openBlock(), vue.createBlock(_component_uni_icons, {
+                    key: 0,
+                    style: { "margin-right": "5px" },
+                    type: "bottom",
+                    size: 14,
+                    color: "#999"
+                  })) : vue.createCommentVNode("v-if", true)
+                ],
+                64
+                /* STABLE_FRAGMENT */
+              )) : vue.createCommentVNode("v-if", true)
+            ]),
+            $props.type === "password" && $props.passwordIcon ? (vue.openBlock(), vue.createElementBlock(
+              vue.Fragment,
+              { key: 1 },
+              [
+                vue.createCommentVNode(" 开启密码时显示小眼睛 "),
+                $options.isVal ? (vue.openBlock(), vue.createBlock(_component_uni_icons, {
+                  key: 0,
+                  class: vue.normalizeClass(["content-clear-icon", { "is-textarea-icon": $props.type === "textarea" }]),
+                  type: $data.showPassword ? "eye-slash-filled" : "eye-filled",
+                  size: 22,
+                  color: $data.focusShow ? $props.primaryColor : "#c0c4cc",
+                  onClick: $options.onEyes
+                }, null, 8, ["class", "type", "color", "onClick"])) : vue.createCommentVNode("v-if", true)
+              ],
+              64
+              /* STABLE_FRAGMENT */
+            )) : vue.createCommentVNode("v-if", true),
+            $props.suffixIcon ? (vue.openBlock(), vue.createElementBlock(
+              vue.Fragment,
+              { key: 2 },
+              [
+                $props.suffixIcon ? (vue.openBlock(), vue.createBlock(_component_uni_icons, {
+                  key: 0,
+                  class: "content-clear-icon",
+                  type: $props.suffixIcon,
+                  color: "#c0c4cc",
+                  onClick: _cache[12] || (_cache[12] = ($event) => $options.onClickIcon("suffix")),
+                  size: "22"
+                }, null, 8, ["type"])) : vue.createCommentVNode("v-if", true)
+              ],
+              64
+              /* STABLE_FRAGMENT */
+            )) : (vue.openBlock(), vue.createElementBlock(
+              vue.Fragment,
+              { key: 3 },
+              [
+                $props.clearable && $options.isVal && !$props.disabled && $props.type !== "textarea" ? (vue.openBlock(), vue.createBlock(_component_uni_icons, {
+                  key: 0,
+                  class: vue.normalizeClass(["content-clear-icon", { "is-textarea-icon": $props.type === "textarea" }]),
+                  type: "clear",
+                  size: $props.clearSize,
+                  color: $options.msg ? "#dd524d" : $data.focusShow ? $props.primaryColor : "#c0c4cc",
+                  onClick: $options.onClear
+                }, null, 8, ["class", "size", "color", "onClick"])) : vue.createCommentVNode("v-if", true)
+              ],
+              64
+              /* STABLE_FRAGMENT */
+            )),
+            vue.renderSlot(_ctx.$slots, "right", {}, void 0, true)
+          ],
+          6
+          /* CLASS, STYLE */
+        )
+      ],
+      6
+      /* CLASS, STYLE */
+    );
+  }
+  const __easycom_0$b = /* @__PURE__ */ _export_sfc(_sfc_main$u, [["render", _sfc_render$t], ["__scopeId", "data-v-ed66538f"], ["__file", "D:/code/code-life/uni-app-components/uni_modules/cl-input/components/cl-input/cl-input.vue"]]);
   class MPAnimation {
     constructor(options, _this) {
       this.options = options;
@@ -953,7 +1553,7 @@ if (uni.restoreGlobal) {
     clearTimeout(_this.timer);
     return new MPAnimation(option, _this);
   }
-  const _sfc_main$p = {
+  const _sfc_main$t = {
     name: "uniTransition",
     emits: ["click", "change"],
     props: {
@@ -1204,7 +1804,7 @@ if (uni.restoreGlobal) {
       }
     }
   };
-  function _sfc_render$o(_ctx, _cache, $props, $setup, $data, $options) {
+  function _sfc_render$s(_ctx, _cache, $props, $setup, $data, $options) {
     return vue.withDirectives((vue.openBlock(), vue.createElementBlock("view", {
       ref: "ani",
       animation: $data.animationData,
@@ -1217,8 +1817,8 @@ if (uni.restoreGlobal) {
       [vue.vShow, $data.isShow]
     ]);
   }
-  const __easycom_0$b = /* @__PURE__ */ _export_sfc(_sfc_main$p, [["render", _sfc_render$o], ["__file", "D:/code-life/uni-app-components/uni_modules/uni-transition/components/uni-transition/uni-transition.vue"]]);
-  const _sfc_main$o = {
+  const __easycom_0$a = /* @__PURE__ */ _export_sfc(_sfc_main$t, [["render", _sfc_render$s], ["__file", "D:/code/code-life/uni-app-components/uni_modules/uni-transition/components/uni-transition/uni-transition.vue"]]);
+  const _sfc_main$s = {
     name: "uniPopup",
     components: {},
     emits: ["change", "maskClick"],
@@ -1571,8 +2171,8 @@ if (uni.restoreGlobal) {
       }
     }
   };
-  function _sfc_render$n(_ctx, _cache, $props, $setup, $data, $options) {
-    const _component_uni_transition = resolveEasycom(vue.resolveDynamicComponent("uni-transition"), __easycom_0$b);
+  function _sfc_render$r(_ctx, _cache, $props, $setup, $data, $options) {
+    const _component_uni_transition = resolveEasycom(vue.resolveDynamicComponent("uni-transition"), __easycom_0$a);
     return $data.showPopup ? (vue.openBlock(), vue.createElementBlock(
       "view",
       {
@@ -1631,11 +2231,11 @@ if (uni.restoreGlobal) {
       /* CLASS */
     )) : vue.createCommentVNode("v-if", true);
   }
-  const __easycom_1$2 = /* @__PURE__ */ _export_sfc(_sfc_main$o, [["render", _sfc_render$n], ["__scopeId", "data-v-4dd3c44b"], ["__file", "D:/code-life/uni-app-components/uni_modules/uni-popup/components/uni-popup/uni-popup.vue"]]);
+  const __easycom_2$1 = /* @__PURE__ */ _export_sfc(_sfc_main$s, [["render", _sfc_render$r], ["__scopeId", "data-v-4dd3c44b"], ["__file", "D:/code/code-life/uni-app-components/uni_modules/uni-popup/components/uni-popup/uni-popup.vue"]]);
   const noDataValue = "#codeLife_noData#";
-  const _sfc_main$n = {
+  const _sfc_main$r = {
     __name: "cl-select-picker",
-    props: {
+    props: /* @__PURE__ */ vue.mergeModels({
       // 数据列表
       options: {
         type: Array,
@@ -1666,10 +2266,6 @@ if (uni.restoreGlobal) {
         type: String,
         default: "value"
       },
-      modelValue: {
-        type: [String, Number],
-        default: void 0
-      },
       // 是否隐藏暂无数据
       hideEmptyText: {
         type: Boolean,
@@ -1683,15 +2279,23 @@ if (uni.restoreGlobal) {
         type: Object,
         default: () => ({})
       }
-    },
-    emits: ["update:modelValue", "submit", "clear", "cancel"],
+    }, {
+      "modelValue": {},
+      "modelModifiers": {}
+    }),
+    emits: /* @__PURE__ */ vue.mergeModels(["submit", "clear", "cancel"], ["update:modelValue"]),
     setup(__props, { expose: __expose, emit: __emit }) {
       __expose();
+      const atrrs = vue.useAttrs();
       const emits = __emit;
       const props = __props;
+      const modelValue = vue.useModel(__props, "modelValue");
       const popupRef = vue.ref();
       const handleOpen = () => {
-        if (!isEmpty(props.modelValue)) {
+        if (props.disabled) {
+          return;
+        }
+        if (!isEmpty(modelValue.value)) {
           dataShow();
         }
         popupRef.value.open();
@@ -1730,7 +2334,9 @@ if (uni.restoreGlobal) {
       };
       const pickValue = vue.ref([0]);
       const dataShow = () => {
-        const idx = dataList.value.findIndex((item) => item[props.valueFiled] === props.modelValue);
+        const idx = dataList.value.findIndex(
+          (item) => item[props.valueFiled] === modelValue.value
+        );
         if (idx > -1) {
           pickValue.value = [idx];
           const curData = dataList.value[idx];
@@ -1744,24 +2350,16 @@ if (uni.restoreGlobal) {
       const selectChange = (e) => {
         pickValue.value = e.detail.value;
       };
-      const isShowClearIcon = vue.computed(() => {
-        if (!isEmpty(selectValue.value) && !props.disabled) {
-          return true;
-        }
-      });
-      const isShowBottomIcon = vue.computed(() => {
-        if (isEmpty(selectValue.value) && !props.disabled) {
-          return true;
-        }
-      });
       vue.watch(
         () => props.options,
         (newV) => {
           if (newV.length === 0 && !props.hideEmptyText) {
-            dataList.value = [{
-              [props.labelFiled]: props.emptyText,
-              [props.valueFiled]: noDataValue
-            }];
+            dataList.value = [
+              {
+                [props.labelFiled]: props.emptyText,
+                [props.valueFiled]: noDataValue
+              }
+            ];
           } else {
             dataList.value = props.options.map((item) => {
               if (typeof item !== "object") {
@@ -1784,11 +2382,11 @@ if (uni.restoreGlobal) {
       vue.watch(
         () => selectValue.value,
         (newV) => {
-          emits("update:modelValue", newV);
+          modelValue.value = newV;
         }
       );
       vue.watch(
-        () => props.modelValue,
+        () => modelValue.value,
         (newV) => {
           if (isEmpty(newV)) {
             selectText.value = void 0;
@@ -1801,53 +2399,28 @@ if (uni.restoreGlobal) {
           immediate: true
         }
       );
-      const __returned__ = { emits, props, popupRef, handleOpen, dataList, selectText, selectValue, noDataValue, handleClear, isEmpty, submit, cancel, pickValue, dataShow, selectChange, isShowClearIcon, isShowBottomIcon, watch: vue.watch, ref: vue.ref, computed: vue.computed, nextTick: vue.nextTick };
+      const __returned__ = { atrrs, emits, props, modelValue, popupRef, handleOpen, dataList, selectText, selectValue, noDataValue, handleClear, isEmpty, submit, cancel, pickValue, dataShow, selectChange, watch: vue.watch, ref: vue.ref, useAttrs: vue.useAttrs };
       Object.defineProperty(__returned__, "__isScriptSetup", { enumerable: false, value: true });
       return __returned__;
     }
   };
-  function _sfc_render$m(_ctx, _cache, $props, $setup, $data, $options) {
-    const _component_uni_icons = resolveEasycom(vue.resolveDynamicComponent("uni-icons"), __easycom_0$c);
-    const _component_uni_popup = resolveEasycom(vue.resolveDynamicComponent("uni-popup"), __easycom_1$2);
+  function _sfc_render$q(_ctx, _cache, $props, $setup, $data, $options) {
+    const _component_cl_input = resolveEasycom(vue.resolveDynamicComponent("cl-input"), __easycom_0$b);
+    const _component_uni_popup = resolveEasycom(vue.resolveDynamicComponent("uni-popup"), __easycom_2$1);
     return vue.openBlock(), vue.createElementBlock(
       vue.Fragment,
       null,
       [
-        vue.createElementVNode(
-          "view",
-          {
-            class: vue.normalizeClass(["input_box", { disabled: $props.disabled, hideBorder: $props.hideBorder }])
-          },
-          [
-            vue.createElementVNode(
-              "view",
-              {
-                class: vue.normalizeClass(["input_ele", `input ${!$props.modelValue && "placeholder"}`]),
-                onClick: vue.withModifiers($setup.handleOpen, ["stop"])
-              },
-              vue.toDisplayString($setup.selectText || $props.placeholder),
-              3
-              /* TEXT, CLASS */
-            ),
-            $setup.isShowClearIcon ? (vue.openBlock(), vue.createBlock(_component_uni_icons, {
-              key: 0,
-              class: "clear_icon",
-              type: "clear",
-              size: 22,
-              color: "#c0c4cc",
-              onClick: $setup.handleClear
-            })) : vue.createCommentVNode("v-if", true),
-            $setup.isShowBottomIcon ? (vue.openBlock(), vue.createBlock(_component_uni_icons, {
-              key: 1,
-              class: "clear_icon",
-              type: "bottom",
-              size: 22,
-              color: "#c0c4cc"
-            })) : vue.createCommentVNode("v-if", true)
-          ],
-          2
-          /* CLASS */
-        ),
+        vue.createVNode(_component_cl_input, vue.mergeProps({
+          modelValue: $setup.selectText,
+          "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => $setup.selectText = $event),
+          inputType: "falseInput",
+          placeholder: $props.placeholder,
+          disabled: $props.disabled
+        }, $setup.atrrs, {
+          onInputClick: $setup.handleOpen,
+          onClear: $setup.handleClear
+        }), null, 16, ["modelValue", "placeholder", "disabled"]),
         vue.createVNode(
           _component_uni_popup,
           {
@@ -1906,8 +2479,8 @@ if (uni.restoreGlobal) {
       /* STABLE_FRAGMENT */
     );
   }
-  const __easycom_0$a = /* @__PURE__ */ _export_sfc(_sfc_main$n, [["render", _sfc_render$m], ["__scopeId", "data-v-7036e199"], ["__file", "D:/code-life/uni-app-components/uni_modules/cl-select-picker/components/cl-select-picker/cl-select-picker.vue"]]);
-  const _sfc_main$m = {
+  const __easycom_0$9 = /* @__PURE__ */ _export_sfc(_sfc_main$r, [["render", _sfc_render$q], ["__scopeId", "data-v-7036e199"], ["__file", "D:/code/code-life/uni-app-components/uni_modules/cl-select-picker/components/cl-select-picker/cl-select-picker.vue"]]);
+  const _sfc_main$q = {
     name: "uniFormsItem",
     options: {
       virtualHost: true
@@ -2239,7 +2812,7 @@ if (uni.restoreGlobal) {
       }
     }
   };
-  function _sfc_render$l(_ctx, _cache, $props, $setup, $data, $options) {
+  function _sfc_render$p(_ctx, _cache, $props, $setup, $data, $options) {
     return vue.openBlock(), vue.createElementBlock(
       "view",
       {
@@ -2295,7 +2868,7 @@ if (uni.restoreGlobal) {
       /* CLASS */
     );
   }
-  const __easycom_1$1 = /* @__PURE__ */ _export_sfc(_sfc_main$m, [["render", _sfc_render$l], ["__scopeId", "data-v-462874dd"], ["__file", "D:/code-life/uni-app-components/uni_modules/uni-forms/components/uni-forms-item/uni-forms-item.vue"]]);
+  const __easycom_1$4 = /* @__PURE__ */ _export_sfc(_sfc_main$q, [["render", _sfc_render$p], ["__scopeId", "data-v-462874dd"], ["__file", "D:/code/code-life/uni-app-components/uni_modules/uni-forms/components/uni-forms-item/uni-forms-item.vue"]]);
   var pattern = {
     email: /^\S+?@\S+?\.\S+?$/,
     idcard: /^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/,
@@ -2859,7 +3432,7 @@ if (uni.restoreGlobal) {
       return false;
     }
   };
-  const _sfc_main$l = {
+  const _sfc_main$p = {
     name: "uniForms",
     emits: ["validate", "submit"],
     options: {
@@ -3161,21 +3734,21 @@ if (uni.restoreGlobal) {
       _isEqual: isEqual
     }
   };
-  function _sfc_render$k(_ctx, _cache, $props, $setup, $data, $options) {
+  function _sfc_render$o(_ctx, _cache, $props, $setup, $data, $options) {
     return vue.openBlock(), vue.createElementBlock("view", { class: "uni-forms" }, [
       vue.createElementVNode("form", null, [
         vue.renderSlot(_ctx.$slots, "default", {}, void 0, true)
       ])
     ]);
   }
-  const __easycom_2 = /* @__PURE__ */ _export_sfc(_sfc_main$l, [["render", _sfc_render$k], ["__scopeId", "data-v-9a1e3c32"], ["__file", "D:/code-life/uni-app-components/uni_modules/uni-forms/components/uni-forms/uni-forms.vue"]]);
-  const _sfc_main$k = {
+  const __easycom_2 = /* @__PURE__ */ _export_sfc(_sfc_main$p, [["render", _sfc_render$o], ["__scopeId", "data-v-9a1e3c32"], ["__file", "D:/code/code-life/uni-app-components/uni_modules/uni-forms/components/uni-forms/uni-forms.vue"]]);
+  const _sfc_main$o = {
     __name: "index",
     setup(__props, { expose: __expose }) {
       __expose();
       const formData = vue.reactive({
         picker: "value2",
-        picker1: 4
+        picker1: void 0
       });
       const options = vue.ref([
         {
@@ -3193,17 +3766,17 @@ if (uni.restoreGlobal) {
         4
       ]);
       const pickerSubmit = (val, curData) => {
-        formatAppLog("log", "at pages/componentPage/cl-select-picker/index.vue:47", val, curData);
+        formatAppLog("log", "at pages/componentPage/cl-select-picker/index.vue:61", val, curData);
       };
       const clear = () => {
-        formatAppLog("log", "at pages/componentPage/cl-select-picker/index.vue:50", "点击了清除按钮！");
+        formatAppLog("log", "at pages/componentPage/cl-select-picker/index.vue:64", "点击了清除按钮！");
       };
       const cancel = () => {
-        formatAppLog("log", "at pages/componentPage/cl-select-picker/index.vue:53", "点击了取消按钮！");
+        formatAppLog("log", "at pages/componentPage/cl-select-picker/index.vue:67", "点击了取消按钮！");
       };
       const formRef = vue.ref();
       const formSubmit = async () => {
-        formatAppLog("log", "at pages/componentPage/cl-select-picker/index.vue:57", formRef.value, "formRef");
+        formatAppLog("log", "at pages/componentPage/cl-select-picker/index.vue:71", formRef.value, "formRef");
         await formRef.value.validate();
       };
       const __returned__ = { formData, options, pickerSubmit, clear, cancel, formRef, formSubmit, ref: vue.ref, reactive: vue.reactive };
@@ -3211,9 +3784,9 @@ if (uni.restoreGlobal) {
       return __returned__;
     }
   };
-  function _sfc_render$j(_ctx, _cache, $props, $setup, $data, $options) {
-    const _component_cl_select_picker = resolveEasycom(vue.resolveDynamicComponent("cl-select-picker"), __easycom_0$a);
-    const _component_uni_forms_item = resolveEasycom(vue.resolveDynamicComponent("uni-forms-item"), __easycom_1$1);
+  function _sfc_render$n(_ctx, _cache, $props, $setup, $data, $options) {
+    const _component_cl_select_picker = resolveEasycom(vue.resolveDynamicComponent("cl-select-picker"), __easycom_0$9);
+    const _component_uni_forms_item = resolveEasycom(vue.resolveDynamicComponent("uni-forms-item"), __easycom_1$4);
     const _component_uni_forms = resolveEasycom(vue.resolveDynamicComponent("uni-forms"), __easycom_2);
     return vue.openBlock(), vue.createElementBlock("view", { class: "content" }, [
       vue.createElementVNode("view", { class: "section_title" }, " 基础使用 "),
@@ -3245,8 +3818,21 @@ if (uni.restoreGlobal) {
                 vue.createVNode(_component_cl_select_picker, {
                   modelValue: $setup.formData.picker1,
                   "onUpdate:modelValue": _cache[1] || (_cache[1] = ($event) => $setup.formData.picker1 = $event),
-                  options: []
-                }, null, 8, ["modelValue"])
+                  options: $setup.options
+                }, null, 8, ["modelValue", "options"])
+              ]),
+              _: 1
+              /* STABLE */
+            }),
+            vue.createVNode(_component_uni_forms_item, { label: "获取的值" }, {
+              default: vue.withCtx(() => [
+                vue.createElementVNode(
+                  "view",
+                  { style: { "height": "35px", "line-height": "35px" } },
+                  vue.toDisplayString($setup.formData.picker1),
+                  1
+                  /* TEXT */
+                )
               ]),
               _: 1
               /* STABLE */
@@ -3259,7 +3845,7 @@ if (uni.restoreGlobal) {
       ])
     ]);
   }
-  const PagesComponentPageClSelectPickerIndex = /* @__PURE__ */ _export_sfc(_sfc_main$k, [["render", _sfc_render$j], ["__scopeId", "data-v-17f399f1"], ["__file", "D:/code-life/uni-app-components/pages/componentPage/cl-select-picker/index.vue"]]);
+  const PagesComponentPageClSelectPickerIndex = /* @__PURE__ */ _export_sfc(_sfc_main$o, [["render", _sfc_render$n], ["__scopeId", "data-v-17f399f1"], ["__file", "D:/code/code-life/uni-app-components/pages/componentPage/cl-select-picker/index.vue"]]);
   const isObject = (val) => val !== null && typeof val === "object";
   const defaultDelimiters = ["{", "}"];
   class BaseFormatter {
@@ -3573,7 +4159,7 @@ if (uni.restoreGlobal) {
   const {
     t: t$1
   } = initVueI18n(messages$1);
-  const _sfc_main$j = {
+  const _sfc_main$n = {
     name: "UniLoadMore",
     emits: ["clickLoadMore"],
     props: {
@@ -3655,7 +4241,7 @@ if (uni.restoreGlobal) {
       }
     }
   };
-  function _sfc_render$i(_ctx, _cache, $props, $setup, $data, $options) {
+  function _sfc_render$m(_ctx, _cache, $props, $setup, $data, $options) {
     return vue.openBlock(), vue.createElementBlock("view", {
       class: "uni-load-more",
       onClick: _cache[0] || (_cache[0] = (...args) => $options.onClick && $options.onClick(...args))
@@ -3730,10 +4316,8 @@ if (uni.restoreGlobal) {
       )) : vue.createCommentVNode("v-if", true)
     ]);
   }
-  const __easycom_0$9 = /* @__PURE__ */ _export_sfc(_sfc_main$j, [["render", _sfc_render$i], ["__scopeId", "data-v-9245e42c"], ["__file", "D:/code-life/uni-app-components/uni_modules/uni-load-more/components/uni-load-more/uni-load-more.vue"]]);
-  const listEmpty = "/assets/listEmpty.e9586bdd.png";
-  const listError = "/assets/listError.f7acceb9.png";
-  const _sfc_main$i = {
+  const __easycom_0$8 = /* @__PURE__ */ _export_sfc(_sfc_main$n, [["render", _sfc_render$m], ["__scopeId", "data-v-9245e42c"], ["__file", "D:/code/code-life/uni-app-components/uni_modules/uni-load-more/components/uni-load-more/uni-load-more.vue"]]);
+  const _sfc_main$m = {
     __name: "cl-scroll-view",
     props: {
       // 距底部/右边多远时（单位px），触发 scrolltolower 事件
@@ -3746,12 +4330,17 @@ if (uni.restoreGlobal) {
         type: Boolean,
         default: true
       },
-      // 自动调用接口
+      // 自动调用列表接口
       autoLoad: {
         type: Boolean,
         default: true
       },
-      // 接口api
+      // 参数改变是否刷新列表
+      autoRefreshByParamsChange: {
+        type: Boolean,
+        default: false
+      },
+      // 获取列表的方法
       apiFun: {
         type: Function
       },
@@ -3765,16 +4354,16 @@ if (uni.restoreGlobal) {
         type: String,
         default: "pageNum"
       },
-      // 一次加载条数
+      // 一次加载条数, 用来判断是否加载完成
       loadPageNum: {
         type: Number,
         default: 10
       },
-      // 接口调用之前的钩子
+      // 接口调用之前的钩子（可以在此处理参数）
       beforeHook: {
         type: Function
       },
-      // 接口调用成功之后的钩子
+      // 接口调用成功之后的钩子（可以在此处理拿到的列表）
       afterHook: {
         type: Function
       },
@@ -3787,70 +4376,31 @@ if (uni.restoreGlobal) {
         type: Number,
         default: 200
       },
-      successCodeField: {
+      // 返回的code 字段名
+      codeField: {
         type: String,
         default: "code"
       },
-      messageField: {
+      // 返回的消息字段名
+      msgField: {
         type: String,
         default: ""
       },
-      successDataField: {
+      // 返回列表的字段名
+      resField: {
         type: String,
         default: "data"
-      },
-      errorToastConfig: {
-        type: [Object, Boolean],
-        default: () => ({})
-      },
-      emptyShowConfig: {
-        type: [Object, Boolean],
-        default: () => ({})
-      },
-      errorShowConfig: {
-        type: [Object, Boolean],
-        default: () => ({})
       }
     },
     setup(__props, { expose: __expose }) {
       const props = __props;
-      const mergeEmptyConfig = vue.computed(() => {
-        if (!props.emptyShowConfig) {
-          return false;
-        }
-        return Object.assign(
-          {
-            text: "暂无数据",
-            imgSrc: listEmpty
-          },
-          props.emptyShowConfig
-        );
+      const emptyIconSrc = vue.computed(() => {
+        let svgStr = `<svg height="1024" node-id="1" sillyvg="true" template-height="1024" template-width="1024" version="1.1" viewBox="0 0 1024 1024" width="1024" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><defs node-id="121"><linearGradient gradientUnits="objectBoundingBox" id="SVGID_1_" node-id="4" spreadMethod="pad" x1="512.839" x2="171.1031" y1="442.2524" y2="442.2524"><stop offset="0" stop-color="#f7f7f7"/><stop offset="1" stop-color="#999999"/></linearGradient><linearGradient gradientUnits="objectBoundingBox" id="SVGID_00000116199144698685261360000015423725973091637680_" node-id="8" spreadMethod="pad" x1="173.3316" x2="515.0674" y1="516.155" y2="516.155"><stop offset="0" stop-color="#bababa"/><stop offset="1" stop-color="#141414"/></linearGradient><linearGradient gradientUnits="objectBoundingBox" id="SVGID_00000083070862614037924510000000628518362339878317_" node-id="12" spreadMethod="pad" x1="512" x2="512" y1="1014.0526" y2="676.0316"><stop offset="0" stop-color="#e6e6e6" stop-opacity="0"/><stop offset="0.6023" stop-color="#e9e9e9" stop-opacity="0.6023"/><stop offset="0.9731" stop-color="#f1f1f1" stop-opacity="0.9731"/><stop offset="1" stop-color="#f2f2f2"/></linearGradient><linearGradient gradientUnits="objectBoundingBox" id="SVGID_00000025416269089208609580000015844339951879492742_" node-id="25" spreadMethod="pad" x1="523.6606" x2="168.9489" y1="336.8221" y2="691.5339"><stop offset="0" stop-color="#e6e6e6"/><stop offset="1" stop-color="#cccccc"/></linearGradient><linearGradient gradientUnits="objectBoundingBox" id="SVGID_00000121238018799583366590000015894962820904404612_" node-id="29" spreadMethod="pad" x1="802.4846" x2="506.8559" y1="326.9044" y2="622.5331"><stop offset="0" stop-color="#cccccc"/><stop offset="1" stop-color="#bfbfbf"/></linearGradient><linearGradient gradientUnits="objectBoundingBox" id="SVGID_00000150799950960314982350000001352291566116060074_" node-id="33" spreadMethod="pad" x1="541.9021" x2="246.2735" y1="473.2256" y2="768.8542"><stop offset="0" stop-color="#d9d9d9"/><stop offset="1" stop-color="#b3b3b3"/></linearGradient><linearGradient gradientUnits="objectBoundingBox" id="SVGID_00000047061245032336732200000004521575053988040606_" node-id="38" spreadMethod="pad" x1="879.8091" x2="525.0974" y1="404.2248" y2="758.9366"><stop offset="0" stop-color="#f2f2f2"/><stop offset="1" stop-color="#d9d9d9"/></linearGradient><linearGradient gradientUnits="objectBoundingBox" id="SVGID_00000181770729039587392860000004524561359797775024_" node-id="42" spreadMethod="pad" x1="648.5621" x2="756.3444" y1="446.9919" y2="667.9783"><stop offset="0" stop-color="#757575"/><stop offset="0.1545" stop-color="#7c7c7c" stop-opacity="0.8455"/><stop offset="0.3716" stop-color="#8e8e8e" stop-opacity="0.6284"/><stop offset="0.6258" stop-color="#acacac" stop-opacity="0.3742"/><stop offset="0.906" stop-color="#d5d5d5" stop-opacity="0.094"/><stop offset="1" stop-color="#e5e5e5" stop-opacity="0"/></linearGradient><linearGradient gradientUnits="objectBoundingBox" id="SVGID_00000085936399723253267740000018398373942341193099_" node-id="50" spreadMethod="pad" x1="233.3807" x2="198.6542" y1="721.2305" y2="755.957"><stop offset="0" stop-color="#f7f7f7"/><stop offset="1" stop-color="#cccccc"/></linearGradient><linearGradient gradientUnits="objectBoundingBox" id="SVGID_00000063624321058660435880000012652073042910805438_" node-id="54" spreadMethod="pad" x1="849.839" x2="815.6509" y1="642.5823" y2="676.7703"><stop offset="0" stop-color="#cccccc"/><stop offset="1" stop-color="#bfbfbf"/></linearGradient><linearGradient gradientUnits="objectBoundingBox" id="SVGID_00000086672863825622644460000007126693657907817093_" node-id="58" spreadMethod="pad" x1="233.3807" x2="198.6542" y1="418.7148" y2="453.4412"><stop offset="0" stop-color="#e6e6e6"/><stop offset="1" stop-color="#bfbfbf"/></linearGradient><linearGradient gradientUnits="objectBoundingBox" id="SVGID_00000027564080117729215800000010522641390542830987_" node-id="62" spreadMethod="pad" x1="832.7449" x2="798.5569" y1="357.1606" y2="391.3486"><stop offset="0" stop-color="#f7f7f7"/><stop offset="1" stop-color="#e6e6e6"/></linearGradient><linearGradient gradientUnits="objectBoundingBox" id="SVGID_00000136376106347018527900000009671731726894299839_" node-id="66" spreadMethod="pad" x1="698.2882" x2="350.47" y1="222.7124" y2="570.5306"><stop offset="0" stop-color="#f7f7f7"/><stop offset="1" stop-color="#f2f2f2"/></linearGradient><linearGradient gradientUnits="objectBoundingBox" id="SVGID_00000039120847231166144740000007981438255749824175_" node-id="70" spreadMethod="pad" x1="690.8561" x2="755.6796" y1="401.9951" y2="601.5015"><stop offset="0" stop-color="#f7f7f7"/><stop offset="1" stop-color="#e6e6e6"/></linearGradient><linearGradient gradientUnits="objectBoundingBox" id="SVGID_00000116208746705338207530000006130400711563131024_" node-id="75" spreadMethod="pad" x1="259.8894" x2="497.6373" y1="573.9561" y2="573.9561"><stop offset="0" stop-color="#52769e"/><stop offset="1" stop-color="#9dbbde"/></linearGradient><linearGradient gradientUnits="objectBoundingBox" id="SVGID_00000093156246402116653660000000968238260771894685_" node-id="79" spreadMethod="pad" x1="263.7892" x2="501.5371" y1="571.1332" y2="571.1332"><stop offset="0" stop-color="#a6c8ee"/><stop offset="1" stop-color="#daebff"/></linearGradient><linearGradient gradientUnits="objectBoundingBox" id="SVGID_00000024710881697788089240000010652360430109460377_" node-id="84" spreadMethod="pad" x1="259.8894" x2="417.2701" y1="662.543" y2="662.543"><stop offset="0" stop-color="#52769e"/><stop offset="1" stop-color="#9dbbde"/></linearGradient><linearGradient gradientUnits="objectBoundingBox" id="SVGID_00000115480062542186945410000000577836246689479834_" node-id="88" spreadMethod="pad" x1="263.7892" x2="421.17" y1="659.7202" y2="659.7202"><stop offset="0" stop-color="#a6c8ee"/><stop offset="1" stop-color="#daebff"/></linearGradient><linearGradient gradientUnits="objectBoundingBox" id="SVGID_00000047742451729660573560000015450728746370276025_" node-id="94" spreadMethod="pad" x1="663.6006" x2="840.6651" y1="220.4634" y2="220.4634"><stop offset="0" stop-color="#b3b3b3"/><stop offset="1" stop-color="#787878"/></linearGradient><linearGradient gradientUnits="objectBoundingBox" id="SVGID_00000101084794387251404330000009944907264968946065_" node-id="99" spreadMethod="pad" x1="802.2511" x2="719.8765" y1="126.6161" y2="269.2932"><stop offset="0" stop-color="#f7f7f7"/><stop offset="1" stop-color="#e6e6e6"/></linearGradient><linearGradient gradientUnits="objectBoundingBox" id="SVGID_00000003806273140804513080000012405867157337098411_" node-id="103" spreadMethod="pad" x1="754.3362" x2="675.6898" y1="98.9524" y2="235.172"><stop offset="0" stop-color="#f7f7f7"/><stop offset="1" stop-color="#cccccc"/></linearGradient><clipPath id="SVGID_00000149357926579599006680000012238178433730012842_" node-id="110"><path d="M 663.60 292.10 L 663.60 228.20 L 840.70 148.80 Z" fill="#000000" fill-rule="nonzero" node-id="262" stroke="none" target-height="143.3" target-width="177.10004" target-x="663.6" target-y="148.8"/></clipPath></defs><path d="M 512.80 451.00 L 220.50 435.00 L 476.60 289.80 L 473.00 289.80 L 213.80 434.60 L 171.10 578.40 L 173.30 579.90 L 174.90 578.60 L 470.10 594.80 Z" fill="url(#SVGID_1_)" fill-rule="nonzero" node-id="266" stroke="none" target-height="305" target-width="341.69998" target-x="171.1" target-y="289.8"/><path d="M 216.00 436.10 L 515.10 452.40 L 472.40 596.20 L 173.30 579.90 Z" fill="url(#SVGID_00000116199144698685261360000015423725973091637680_)" fill-rule="nonzero" node-id="268" stroke="none" target-height="160.1" target-width="341.8" target-x="173.3" target-y="436.1"/><path d="M 994.00 845.00 L 993.80 850.50 L 993.00 856.00 L 991.70 861.50 L 989.90 867.00 L 987.60 872.60 L 984.70 878.20 L 980.80 884.30 L 976.20 890.60 L 970.80 896.90 L 964.50 903.30 L 957.30 909.70 L 950.20 915.50 L 942.20 921.30 L 933.40 927.10 L 923.70 932.90 L 913.00 938.80 L 891.50 949.20 L 879.50 954.40 L 852.80 964.50 L 825.10 973.50 L 810.40 977.80 L 795.00 981.90 L 774.40 986.80 L 753.00 991.40 L 730.60 995.70 L 708.20 999.40 L 685.00 1002.80 L 661.20 1005.80 L 637.20 1008.20 L 612.80 1010.30 L 587.90 1011.90 L 562.90 1013.10 L 537.60 1013.80 L 512.00 1014.10 L 486.40 1013.80 L 461.10 1013.10 L 436.10 1011.90 L 411.20 1010.30 L 386.80 1008.20 L 362.80 1005.80 L 339.00 1002.80 L 315.80 999.40 L 293.40 995.70 L 271.00 991.40 L 249.60 986.80 L 229.00 981.90 L 213.60 977.80 L 198.90 973.50 L 171.20 964.50 L 144.50 954.40 L 132.50 949.20 L 111.00 938.80 L 100.30 932.90 L 90.60 927.10 L 81.80 921.30 L 73.80 915.50 L 66.70 909.70 L 59.50 903.30 L 53.20 896.90 L 47.80 890.60 L 43.20 884.30 L 39.30 878.20 L 36.40 872.60 L 34.10 867.00 L 32.30 861.50 L 31.00 856.00 L 30.20 850.50 L 30.00 845.00 L 30.20 839.50 L 31.00 834.00 L 32.30 828.60 L 34.10 823.10 L 36.40 817.50 L 39.30 811.90 L 43.20 805.70 L 47.80 799.50 L 53.20 793.20 L 59.50 786.80 L 66.70 780.40 L 73.80 774.60 L 81.80 768.80 L 90.60 763.00 L 100.30 757.10 L 111.00 751.30 L 132.50 740.80 L 144.50 735.70 L 171.20 725.50 L 198.90 716.60 L 213.60 712.30 L 229.00 708.20 L 249.60 703.30 L 271.00 698.70 L 293.40 694.40 L 315.80 690.70 L 339.00 687.30 L 362.80 684.30 L 386.80 681.80 L 411.20 679.80 L 436.10 678.10 L 461.10 677.00 L 486.40 676.30 L 512.00 676.00 L 537.60 676.30 L 562.90 677.00 L 587.90 678.10 L 612.80 679.80 L 637.20 681.80 L 661.20 684.30 L 685.00 687.30 L 708.20 690.70 L 730.60 694.40 L 753.00 698.70 L 774.40 703.30 L 795.00 708.20 L 810.40 712.30 L 825.10 716.60 L 852.80 725.50 L 879.50 735.70 L 891.50 740.80 L 913.00 751.30 L 923.70 757.10 L 933.40 763.00 L 942.20 768.80 L 950.20 774.60 L 957.30 780.40 L 964.50 786.80 L 970.80 793.20 L 976.20 799.50 L 980.80 805.70 L 984.70 811.90 L 987.60 817.50 L 989.90 823.10 L 991.70 828.60 L 993.00 834.00 L 993.80 839.50 L 994.00 845.00 Z" fill="url(#SVGID_00000083070862614037924510000000628518362339878317_)" fill-rule="nonzero" node-id="270" stroke="none" target-height="338.09998" target-width="964" target-x="30" target-y="676"/><g node-id="361"><path d="M 382.40 896.90 L 371.10 898.20 L 370.90 896.10 L 382.40 894.90 L 382.40 890.20 L 376.20 890.20 L 373.50 890.40 L 372.50 890.80 L 371.70 888.50 L 372.80 887.90 L 374.00 886.50 L 376.90 882.20 L 370.70 882.20 L 370.70 880.30 L 378.00 880.30 L 379.90 876.60 L 382.20 877.40 L 380.60 880.30 L 392.70 880.30 L 392.70 882.20 L 379.40 882.20 L 375.20 888.20 L 382.40 888.20 L 382.40 884.80 L 384.60 884.80 L 384.60 888.20 L 392.70 888.20 L 392.70 890.20 L 384.60 890.20 L 384.60 894.70 L 392.70 893.80 L 392.70 895.70 L 384.60 896.70 L 384.60 901.90 L 382.40 901.90 L 382.40 896.90 Z M 376.80 902.80 L 407.30 902.80 L 407.30 920.20 L 405.10 920.20 L 405.10 918.50 L 379.00 918.50 L 379.00 920.30 L 376.80 920.30 L 376.80 902.80 Z M 379.00 904.80 L 379.00 909.70 L 405.10 909.70 L 405.10 904.80 L 379.00 904.80 Z M 405.10 916.50 L 405.10 911.50 L 379.00 911.50 L 379.00 916.50 L 405.10 916.50 Z M 413.40 887.80 L 413.40 889.80 L 407.30 889.80 L 407.30 901.70 L 405.10 901.70 L 405.10 889.80 L 397.30 889.80 L 396.40 895.90 L 395.30 898.90 L 393.60 901.60 L 391.80 900.40 L 393.10 898.30 L 394.60 893.90 L 395.20 887.40 L 395.20 880.10 L 405.90 878.70 L 410.00 877.70 L 411.70 879.40 L 405.00 880.80 L 397.40 881.80 L 397.40 887.80 L 413.40 887.80 Z" fill="#999999" fill-rule="nonzero" group-id="1" node-id="274" stroke="none" target-height="43.700012" target-width="42.69998" target-x="370.7" target-y="876.6"/><path d="M 456.20 917.00 L 457.40 916.90 L 458.10 916.40 L 458.70 915.70 L 459.10 914.10 L 459.40 909.00 L 461.70 910.00 L 461.10 915.70 L 460.40 917.50 L 459.50 918.50 L 458.30 919.10 L 456.30 919.20 L 446.30 919.20 L 444.20 919.10 L 441.90 918.40 L 440.90 916.50 L 440.80 914.90 L 440.80 896.90 L 439.00 896.90 L 437.80 901.60 L 435.90 906.10 L 434.30 909.00 L 432.30 911.70 L 429.90 914.20 L 427.10 916.50 L 423.80 918.50 L 419.80 920.40 L 418.30 918.50 L 422.10 916.80 L 425.20 915.00 L 427.90 912.90 L 430.20 910.50 L 433.70 905.40 L 435.50 901.20 L 436.70 896.90 L 418.80 896.90 L 418.80 894.60 L 437.10 894.60 L 437.90 888.40 L 438.20 882.40 L 421.80 882.40 L 421.80 880.20 L 458.50 880.20 L 458.50 882.40 L 440.40 882.40 L 440.10 888.40 L 439.40 894.60 L 461.30 894.60 L 461.30 896.90 L 443.10 896.90 L 443.20 916.00 L 443.70 916.60 L 444.60 916.90 L 456.20 917.00 Z" fill="#999999" fill-rule="nonzero" group-id="1" node-id="276" stroke="none" target-height="40.200012" target-width="43.400024" target-x="418.3" target-y="880.2"/><path d="M 477.30 887.30 L 484.60 887.30 L 484.60 889.50 L 477.30 889.50 L 477.30 894.70 L 484.60 902.80 L 483.00 904.80 L 477.30 897.40 L 477.30 920.20 L 475.10 920.20 L 475.10 894.80 L 471.40 903.90 L 469.20 907.90 L 467.10 911.00 L 465.70 909.00 L 467.40 906.70 L 470.90 900.40 L 473.70 893.20 L 474.80 889.50 L 466.80 889.50 L 466.80 887.30 L 475.10 887.30 L 475.10 876.80 L 477.30 876.80 L 477.30 887.30 Z M 508.00 879.80 L 508.00 919.90 L 505.70 919.90 L 505.70 917.00 L 489.20 917.00 L 489.20 920.00 L 486.90 920.00 L 486.90 879.80 L 508.00 879.80 Z M 489.20 882.00 L 489.20 891.30 L 505.70 891.30 L 505.70 882.00 L 489.20 882.00 Z M 489.20 903.00 L 505.70 903.00 L 505.70 893.40 L 489.20 893.40 L 489.20 903.00 Z M 505.70 914.80 L 505.70 905.20 L 489.20 905.20 L 489.20 914.80 L 505.70 914.80 Z" fill="#999999" fill-rule="nonzero" group-id="1" node-id="278" stroke="none" target-height="43.400024" target-width="42.299988" target-x="465.7" target-y="876.8"/><path d="M 538.10 901.70 L 541.40 907.20 L 545.70 911.80 L 551.10 915.40 L 557.50 917.90 L 555.90 920.00 L 551.60 918.30 L 547.70 916.20 L 544.20 913.50 L 541.20 910.50 L 538.50 906.90 L 536.30 903.00 L 535.20 905.90 L 533.40 909.00 L 529.80 912.90 L 527.20 914.90 L 520.90 918.50 L 516.50 920.30 L 514.90 918.30 L 522.80 914.70 L 528.20 911.10 L 531.60 907.40 L 533.20 904.50 L 534.10 901.70 L 515.60 901.70 L 515.60 899.40 L 534.60 899.40 L 534.80 889.60 L 518.20 889.60 L 518.20 887.30 L 541.00 887.30 L 544.10 882.30 L 546.70 877.10 L 549.10 878.00 L 543.50 887.30 L 554.00 887.30 L 554.00 889.60 L 537.30 889.60 L 537.10 899.40 L 556.70 899.40 L 556.70 901.70 L 538.10 901.70 Z M 528.20 886.70 L 526.20 882.70 L 523.40 878.50 L 525.30 877.50 L 528.20 881.60 L 530.20 885.50 L 528.20 886.70 Z" fill="#999999" fill-rule="nonzero" group-id="1" node-id="280" stroke="none" target-height="43.200012" target-width="42.599976" target-x="514.9" target-y="877.1"/><path d="M 603.00 916.70 L 602.80 918.00 L 602.00 919.40 L 599.80 920.10 L 592.40 920.30 L 591.50 917.80 L 599.50 917.90 L 600.10 917.80 L 600.60 917.20 L 600.70 887.40 L 585.20 887.40 L 584.20 894.20 L 594.70 904.10 L 598.70 908.50 L 596.80 910.00 L 593.30 905.90 L 583.50 896.40 L 581.10 901.20 L 579.30 903.60 L 577.20 905.90 L 574.40 908.10 L 571.00 910.30 L 569.40 908.70 L 573.00 906.40 L 575.80 904.10 L 577.90 901.80 L 580.90 896.90 L 581.80 894.50 L 582.50 890.80 L 582.80 887.40 L 567.40 887.40 L 567.40 920.40 L 565.10 920.40 L 565.10 885.20 L 582.90 885.20 L 582.90 876.90 L 585.20 876.90 L 585.20 885.20 L 603.00 885.20 L 603.00 916.70 Z" fill="#999999" fill-rule="nonzero" group-id="1" node-id="282" stroke="none" target-height="43.5" target-width="37.900024" target-x="565.1" target-y="876.9"/><path d="M 634.20 891.80 L 633.30 893.00 L 636.20 896.10 L 639.20 898.80 L 642.60 901.20 L 647.90 904.20 L 653.70 906.90 L 652.10 908.80 L 645.10 905.30 L 645.10 920.10 L 642.80 920.10 L 642.80 918.60 L 621.20 918.60 L 621.20 920.40 L 618.90 920.40 L 618.90 905.80 L 611.70 909.40 L 610.10 907.60 L 614.50 905.70 L 618.70 903.30 L 622.80 900.50 L 626.40 897.50 L 629.60 894.20 L 632.20 890.90 L 634.20 891.80 Z M 626.50 887.50 L 623.80 890.40 L 620.70 893.30 L 614.00 898.00 L 612.20 896.30 L 618.90 892.00 L 621.90 889.40 L 624.40 886.80 L 626.50 887.50 Z M 614.60 889.30 L 612.40 889.30 L 612.40 881.60 L 631.70 881.60 L 629.40 877.20 L 631.70 876.60 L 634.40 881.60 L 651.70 881.60 L 651.70 889.30 L 649.30 889.30 L 649.30 883.70 L 614.60 883.70 L 614.60 889.30 Z M 643.80 904.50 L 637.60 900.10 L 632.10 894.70 L 626.90 899.90 L 620.90 904.50 L 643.80 904.50 Z M 642.80 916.40 L 642.80 906.70 L 621.20 906.70 L 621.20 916.40 L 642.80 916.40 Z M 638.30 886.80 L 647.70 893.20 L 651.30 896.40 L 649.70 897.90 L 646.20 894.80 L 636.90 888.10 L 638.30 886.80 Z" fill="#999999" fill-rule="nonzero" group-id="1" node-id="284" stroke="none" target-height="43.80005" target-width="43.600037" target-x="610.1" target-y="876.6"/></g><path d="M 216.00 738.60 L 476.60 592.30 L 476.60 289.80 L 216.00 436.10 Z" fill="url(#SVGID_00000025416269089208609580000015844339951879492742_)" fill-rule="nonzero" node-id="287" stroke="none" target-height="448.8" target-width="260.6" target-x="216" target-y="289.8"/><path d="M 832.70 659.70 L 476.60 592.30 L 476.60 289.80 L 832.70 357.20 Z" fill="url(#SVGID_00000121238018799583366590000015894962820904404612_)" fill-rule="nonzero" node-id="289" stroke="none" target-height="369.90002" target-width="356.1" target-x="476.6" target-y="289.8"/><path d="M 572.20 806.00 L 216.00 738.60 L 216.00 436.10 L 572.20 503.50 Z" fill="url(#SVGID_00000150799950960314982350000001352291566116060074_)" fill-rule="nonzero" node-id="291" stroke="none" target-height="369.9" target-width="356.2" target-x="216" target-y="436.1"/><path d="M 560.60 794.00 L 227.50 731.00 L 227.50 448.00 L 560.60 511.10 Z" fill="#ffffff" fill-rule="nonzero" node-id="293" stroke="none" target-height="346" target-width="333.09998" target-x="227.5" target-y="448"/><path d="M 572.20 806.00 L 832.70 659.70 L 832.70 357.20 L 572.20 503.50 Z" fill="url(#SVGID_00000047061245032336732200000004521575053988040606_)" fill-rule="nonzero" node-id="295" stroke="none" target-height="448.8" target-width="260.5" target-x="572.2" target-y="357.2"/><path d="M 572.20 757.80 L 832.70 611.50 L 832.70 357.20 L 572.20 503.50 Z" fill="url(#SVGID_00000181770729039587392860000004524561359797775024_)" fill-rule="nonzero" node-id="297" stroke="none" target-height="400.59998" target-width="260.5" target-x="572.2" target-y="357.2"/><path d="M 216.00 738.60 L 216.00 738.60 L 216.00 738.60 Z" fill="url(#SVGID_00000085936399723253267740000018398373942341193099_)" fill-rule="nonzero" node-id="299" stroke="none" target-height="0" target-width="0" target-x="216" target-y="738.6"/><path d="M 216.00 436.10 L 216.00 436.10 Z" fill="url(#SVGID_00000086672863825622644460000007126693657907817093_)" fill-rule="nonzero" node-id="303" stroke="none" target-height="0" target-width="0" target-x="216" target-y="436.1"/><path d="M 477.20 293.20 L 823.20 358.70 L 571.60 500.00 L 225.60 434.50 L 477.20 293.20 M 476.60 289.80 L 216.00 436.10 L 572.20 503.50 L 832.80 357.20 L 476.60 289.80 Z" fill="url(#SVGID_00000136376106347018527900000009671731726894299839_)" fill-rule="nonzero" node-id="307" stroke="none" target-height="213.70001" target-width="616.8" target-x="216" target-y="289.8"/><path d="M 874.40 500.00 L 613.80 647.60 L 572.20 503.50 L 832.70 355.90 Z" fill="url(#SVGID_00000039120847231166144740000007981438255749824175_)" fill-rule="nonzero" node-id="309" stroke="none" target-height="291.69998" target-width="302.2" target-x="572.2" target-y="355.9"/><path d="M 572.20 503.50 L 572.20 509.00 L 610.80 644.10 L 613.80 647.60 Z" fill="#cecece" fill-rule="nonzero" node-id="311" stroke="none" target-height="144.09998" target-width="41.599976" target-x="572.2" target-y="503.5"/><path d="M 472.70 616.60 L 284.80 581.10 L 281.40 580.90 L 278.20 580.20 L 275.10 579.20 L 272.20 577.70 L 269.60 575.90 L 267.20 573.80 L 265.10 571.40 L 263.30 568.80 L 261.80 565.90 L 260.80 562.90 L 260.10 559.60 L 259.90 556.20 L 260.10 552.80 L 260.80 549.60 L 261.80 546.50 L 263.30 543.60 L 265.10 541.00 L 267.20 538.60 L 269.60 536.50 L 272.20 534.70 L 275.10 533.20 L 278.20 532.20 L 281.40 531.50 L 284.80 531.30 L 472.70 566.80 L 477.40 567.90 L 481.70 569.50 L 485.50 571.40 L 488.20 573.20 L 490.60 575.20 L 494.40 579.70 L 495.70 582.30 L 496.80 585.20 L 497.40 588.30 L 497.60 591.70 L 497.40 595.10 L 496.70 598.30 L 495.70 601.40 L 494.20 604.30 L 492.40 606.90 L 490.30 609.30 L 487.90 611.40 L 485.30 613.20 L 482.40 614.70 L 479.40 615.70 L 476.10 616.40 L 472.70 616.60 Z" fill="url(#SVGID_00000116208746705338207530000006130400711563131024_)" fill-rule="nonzero" node-id="313" stroke="none" target-height="85.29999" target-width="237.70001" target-x="259.9" target-y="531.3"/><path d="M 476.60 613.80 L 288.70 578.30 L 285.30 578.10 L 282.10 577.40 L 279.00 576.40 L 276.10 574.90 L 273.50 573.10 L 271.10 571.00 L 269.00 568.60 L 267.20 566.00 L 265.70 563.10 L 264.70 560.00 L 264.00 556.80 L 263.80 553.40 L 264.00 550.00 L 264.70 546.70 L 265.70 543.70 L 267.20 540.80 L 269.00 538.20 L 271.10 535.80 L 273.50 533.70 L 276.10 531.90 L 279.00 530.40 L 282.10 529.40 L 285.30 528.70 L 288.70 528.50 L 476.60 564.00 L 481.30 565.10 L 485.60 566.70 L 489.40 568.60 L 492.10 570.40 L 494.50 572.30 L 498.30 576.90 L 499.60 579.50 L 500.70 582.30 L 501.30 585.50 L 501.50 588.90 L 501.30 592.30 L 500.60 595.50 L 499.60 598.60 L 498.10 601.50 L 496.30 604.10 L 494.20 606.50 L 491.80 608.60 L 489.20 610.40 L 486.30 611.90 L 483.30 612.90 L 480.00 613.60 L 476.60 613.80 Z" fill="url(#SVGID_00000093156246402116653660000000968238260771894685_)" fill-rule="nonzero" node-id="315" stroke="none" target-height="85.29999" target-width="237.70001" target-x="263.8" target-y="528.5"/><g node-id="362"><path d="M 392.30 698.10 L 284.80 676.90 L 281.40 676.60 L 278.20 676.00 L 275.10 674.90 L 272.20 673.50 L 269.60 671.70 L 267.20 669.60 L 265.10 667.20 L 263.30 664.50 L 261.80 661.70 L 260.80 658.60 L 260.10 655.40 L 259.90 652.00 L 260.10 648.50 L 260.80 645.30 L 261.80 642.20 L 263.30 639.40 L 265.10 636.70 L 267.20 634.30 L 269.60 632.20 L 272.20 630.40 L 275.10 629.00 L 278.20 627.90 L 281.40 627.30 L 284.80 627.00 L 392.30 648.20 L 397.10 649.40 L 401.30 650.90 L 405.20 652.80 L 407.90 654.60 L 410.20 656.60 L 414.00 661.20 L 415.40 663.80 L 416.40 666.60 L 417.00 669.70 L 417.30 673.10 L 417.00 676.60 L 416.40 679.80 L 415.30 682.80 L 413.90 685.70 L 412.10 688.40 L 410.00 690.80 L 407.60 692.90 L 404.90 694.60 L 402.00 696.10 L 399.00 697.20 L 395.80 697.80 L 392.30 698.10 Z" fill="url(#SVGID_00000024710881697788089240000010652360430109460377_)" fill-rule="nonzero" group-id="2" node-id="319" stroke="none" target-height="71.099976" target-width="157.4" target-x="259.9" target-y="627"/><path d="M 396.20 695.20 L 288.70 674.10 L 285.30 673.80 L 282.10 673.20 L 279.00 672.10 L 276.10 670.60 L 273.50 668.90 L 271.10 666.80 L 269.00 664.40 L 267.20 661.70 L 265.70 658.80 L 264.70 655.80 L 264.00 652.60 L 263.80 649.10 L 264.00 645.70 L 264.70 642.50 L 265.70 639.40 L 267.20 636.50 L 269.00 633.90 L 271.10 631.50 L 273.50 629.40 L 276.10 627.60 L 279.00 626.20 L 282.10 625.10 L 285.30 624.40 L 288.70 624.20 L 396.20 645.40 L 401.00 646.50 L 405.20 648.10 L 409.10 650.00 L 411.80 651.80 L 414.10 653.80 L 417.90 658.30 L 419.30 660.90 L 420.30 663.80 L 420.90 666.90 L 421.20 670.30 L 420.90 673.70 L 420.30 677.00 L 419.20 680.00 L 417.80 682.90 L 416.00 685.50 L 411.50 690.00 L 408.80 691.80 L 405.90 693.30 L 402.90 694.30 L 399.70 695.00 L 396.20 695.20 Z" fill="url(#SVGID_00000115480062542186945410000000577836246689479834_)" fill-rule="nonzero" group-id="2" node-id="321" stroke="none" target-height="71" target-width="157.40002" target-x="263.8" target-y="624.2"/></g><g node-id="363"><path d="M 597.80 176.10 L 597.90 175.70 L 595.40 174.80 L 595.40 176.30 L 663.60 229.70 L 840.70 150.30 Z" fill="#aaaaaa" fill-rule="nonzero" group-id="3" node-id="326" stroke="none" target-height="79.399994" target-width="245.29999" target-x="595.4" target-y="150.3"/><path d="M 663.60 292.10 L 663.60 228.20 L 840.70 148.80 Z" fill="url(#SVGID_00000047742451729660573560000015450728746370276025_)" fill-rule="nonzero" group-id="3" node-id="328" stroke="none" target-height="143.3" target-width="177.10004" target-x="663.6" target-y="148.8"/><path d="M 685.60 241.70 L 684.70 241.50 L 684.00 242.70 L 751.40 289.10 L 839.90 149.90 Z" fill="#c4c4c4" fill-rule="nonzero" group-id="3" node-id="330" stroke="none" target-height="139.20001" target-width="155.90002" target-x="684" target-y="149.9"/><path d="M 840.70 148.80 L 684.70 241.50 L 752.10 287.90 Z" fill="url(#SVGID_00000101084794387251404330000009944907264968946065_)" fill-rule="nonzero" group-id="3" node-id="332" stroke="none" target-height="139.09999" target-width="156" target-x="684.7" target-y="148.8"/><path d="M 840.70 148.80 L 595.40 174.80 L 663.60 228.20 Z" fill="url(#SVGID_00000003806273140804513080000012405867157337098411_)" fill-rule="nonzero" group-id="3" node-id="334" stroke="none" target-height="79.399994" target-width="245.29999" target-x="595.4" target-y="148.8"/><g node-id="365"><g clip-path="url(#SVGID_00000149357926579599006680000012238178433730012842_)" group-id="3,5" node-id="338"><path d="M 703.70 268.30 L 659.40 224.90 L 652.70 311.70 L 693.40 285.50 Z" fill="#bababa" fill-rule="nonzero" group-id="3,5,9" node-id="340" stroke="none" target-height="86.80002" target-width="51" target-x="652.7" target-y="224.9"/></g></g></g><g node-id="364"><g node-id="366"><path d="M 631.20 239.10 L 630.40 238.90 L 629.80 238.30 L 629.60 237.60 L 629.90 236.50 L 634.90 233.60 L 635.60 233.50 L 636.70 233.90 L 637.30 235.10 L 636.80 236.30 L 631.20 239.10 Z" fill="#adadad" fill-rule="nonzero" group-id="4,6" node-id="349" stroke="none" target-height="5.600006" target-width="7.700012" target-x="629.6" target-y="233.5"/></g><g node-id="367"><path d="M 443.00 442.50 L 441.90 442.10 L 441.50 441.60 L 441.40 440.40 L 444.40 430.90 L 444.80 430.30 L 445.90 429.80 L 447.10 430.20 L 447.60 431.30 L 447.50 432.00 L 444.50 441.30 L 443.90 442.20 L 443.00 442.50 Z M 449.50 423.80 L 448.30 423.40 L 447.80 422.20 L 448.00 421.60 L 451.90 412.40 L 452.80 411.60 L 454.10 411.60 L 454.60 412.00 L 455.10 413.20 L 454.90 413.80 L 451.00 422.80 L 450.40 423.60 L 449.50 423.80 Z M 457.70 405.90 L 456.40 405.30 L 456.10 404.10 L 456.20 403.50 L 460.90 394.70 L 461.90 393.90 L 463.20 394.10 L 463.70 394.50 L 464.00 395.70 L 463.80 396.30 L 459.20 405.00 L 458.60 405.60 L 457.70 405.90 Z M 467.40 388.70 L 466.00 388.00 L 465.80 386.80 L 466.00 386.20 L 471.40 377.80 L 472.40 377.10 L 473.70 377.40 L 474.20 377.80 L 474.40 379.00 L 474.10 379.70 L 468.80 387.90 L 468.20 388.50 L 467.40 388.70 Z M 478.50 372.30 L 477.00 371.50 L 476.90 370.30 L 477.10 369.70 L 483.20 361.80 L 484.30 361.20 L 485.50 361.50 L 485.90 362.00 L 486.10 363.30 L 485.80 363.90 L 479.80 371.70 L 478.50 372.30 Z M 490.80 356.90 L 489.70 356.50 L 489.30 356.00 L 489.20 354.70 L 489.50 354.20 L 496.20 346.80 L 497.30 346.20 L 498.50 346.70 L 498.90 347.20 L 498.90 348.40 L 492.00 356.30 L 490.80 356.90 Z M 585.00 350.10 L 581.40 349.20 L 575.00 346.40 L 574.50 346.00 L 574.10 344.80 L 574.30 344.20 L 575.30 343.40 L 576.60 343.60 L 579.40 345.00 L 585.90 347.00 L 586.60 348.00 L 586.60 348.70 L 586.00 349.70 L 585.00 350.10 Z M 594.80 350.00 L 593.40 349.30 L 593.10 348.20 L 593.30 347.60 L 593.70 347.10 L 596.30 346.00 L 597.90 344.90 L 599.30 343.40 L 600.80 340.80 L 602.00 340.40 L 603.10 340.90 L 603.60 342.10 L 601.90 345.40 L 600.00 347.40 L 597.80 348.90 L 594.80 350.00 Z M 504.20 342.40 L 503.10 341.90 L 502.70 341.40 L 502.70 340.20 L 510.80 332.40 L 512.00 332.40 L 512.60 332.80 L 512.90 333.40 L 512.90 334.60 L 505.40 341.90 L 504.20 342.40 Z M 568.00 340.60 L 566.80 340.10 L 564.60 337.50 L 560.70 331.80 L 560.50 331.20 L 560.90 330.00 L 562.00 329.40 L 563.20 329.70 L 563.60 330.20 L 566.20 334.20 L 569.60 338.30 L 569.50 339.60 L 569.20 340.10 L 568.00 340.60 Z M 603.40 334.10 L 602.80 333.90 L 601.90 333.10 L 600.70 326.50 L 599.60 322.80 L 600.10 321.60 L 601.30 321.20 L 602.40 321.60 L 602.80 322.20 L 604.70 329.00 L 605.00 332.90 L 604.20 333.90 L 603.40 334.10 Z M 518.70 329.00 L 517.50 328.50 L 517.10 327.90 L 517.20 326.60 L 525.90 319.50 L 527.10 319.60 L 527.60 320.00 L 527.90 320.60 L 527.80 321.90 L 519.80 328.60 L 518.70 329.00 Z M 558.50 323.50 L 557.50 323.20 L 556.90 322.30 L 555.70 315.60 L 555.60 311.50 L 556.50 310.60 L 557.20 310.50 L 557.80 310.60 L 558.70 311.50 L 559.10 316.80 L 560.00 321.50 L 559.90 322.70 L 559.50 323.20 L 558.50 323.50 Z M 534.20 316.80 L 532.90 316.10 L 532.60 315.50 L 532.80 314.30 L 537.60 311.00 L 542.40 308.30 L 543.60 308.70 L 544.10 309.20 L 544.30 309.80 L 543.90 311.00 L 535.20 316.60 L 534.20 316.80 Z M 596.40 315.90 L 595.10 315.30 L 593.00 312.80 L 587.90 308.30 L 587.70 307.10 L 587.90 306.50 L 589.00 305.80 L 590.20 306.10 L 592.90 308.20 L 597.70 313.20 L 598.00 313.80 L 597.80 315.10 L 597.40 315.60 L 596.40 315.90 Z M 551.50 307.40 L 550.60 307.10 L 550.00 306.30 L 549.90 305.70 L 550.30 304.50 L 557.00 302.10 L 559.60 295.50 L 561.40 292.60 L 562.40 291.80 L 563.70 292.10 L 564.10 292.50 L 564.40 293.70 L 560.80 301.10 L 561.40 301.10 L 562.30 301.80 L 562.60 303.10 L 562.30 303.60 L 561.30 304.40 L 551.50 307.40 Z M 580.40 304.80 L 577.00 304.00 L 570.10 303.20 L 569.20 302.30 L 569.10 301.70 L 569.60 300.50 L 570.70 300.10 L 574.30 300.30 L 580.90 301.60 L 581.90 302.40 L 582.00 303.60 L 581.40 304.50 L 580.40 304.80 Z M 569.00 287.50 L 567.90 287.10 L 567.50 286.50 L 567.50 285.30 L 567.80 284.70 L 575.40 277.30 L 576.60 277.30 L 577.20 277.70 L 577.50 278.20 L 577.50 279.50 L 570.20 287.00 L 569.00 287.50 Z M 583.30 273.80 L 582.00 273.20 L 581.70 272.70 L 581.80 271.40 L 590.30 264.20 L 591.60 264.30 L 592.10 264.70 L 592.40 265.30 L 592.30 266.60 L 584.30 273.40 L 583.30 273.80 Z M 598.60 261.30 L 597.20 260.70 L 596.90 260.10 L 597.10 258.80 L 606.10 252.10 L 607.30 252.30 L 607.80 252.80 L 608.10 253.40 L 607.90 254.60 L 599.60 261.00 L 598.60 261.30 Z M 614.50 249.70 L 613.20 249.00 L 612.90 248.40 L 613.10 247.20 L 622.50 241.00 L 623.70 241.20 L 624.20 241.70 L 624.40 242.30 L 624.10 243.50 L 615.50 249.40 L 614.50 249.70 Z" fill="#adadad" fill-rule="nonzero" group-id="4,7" node-id="354" stroke="none" target-height="201.5" target-width="183.00003" target-x="441.4" target-y="241"/></g><path d="M 439.50 457.00 L 438.10 456.30 L 437.80 455.10 L 438.80 450.10 L 439.10 449.50 L 440.10 448.80 L 441.40 449.10 L 442.10 450.20 L 442.10 450.80 L 440.90 456.10 L 440.10 456.90 L 439.50 457.00 Z" fill="#adadad" fill-rule="nonzero" group-id="4,8" node-id="359" stroke="none" target-height="8.200012" target-width="4.3000183" target-x="437.8" target-y="448.8"/></g></svg>`;
+        return `data:image/svg+xml,${encodeURIComponent(svgStr)}`;
       });
-      const mergeErrorConfig = vue.computed(() => {
-        if (!props.errorShowConfig) {
-          return false;
-        }
-        return Object.assign(
-          {
-            text: "加载失败，请重试",
-            imgSrc: listError
-          },
-          props.errorShowConfig
-        );
-      });
-      const mergeErrorToastConfig = vue.computed(() => {
-        if (!props.errorToastConfig) {
-          return false;
-        }
-        return Object.assign(
-          {
-            duration: 1e3,
-            icon: "error",
-            title: "加载失败！",
-            mask: true
-          },
-          props.errorToastConfig
-        );
+      const errorIconSrc = vue.computed(() => {
+        let svgStr = `<svg height="1024" node-id="1" sillyvg="true" template-height="1024" template-width="1024" version="1.1" viewBox="0 0 1024 1024" width="1024" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><defs node-id="80"><linearGradient gradientUnits="objectBoundingBox" id="SVGID_1_" node-id="4" spreadMethod="pad" x1="512" x2="512" y1="1014.0526" y2="676.0316"><stop offset="0" stop-color="#e6e6e6" stop-opacity="0"/><stop offset="0.6023" stop-color="#e9e9e9" stop-opacity="0.6023"/><stop offset="0.9731" stop-color="#f1f1f1" stop-opacity="0.9731"/><stop offset="1" stop-color="#f2f2f2"/></linearGradient><linearGradient gradientUnits="objectBoundingBox" id="SVGID_00000002370628650355008590000016647995997477150903_" node-id="15" spreadMethod="pad" x1="335.3474" x2="667.5579" y1="163.5523" y2="163.5523"><stop offset="0" stop-color="#e6e6e6"/><stop offset="1" stop-color="#f2f2f2"/></linearGradient><linearGradient gradientUnits="objectBoundingBox" id="SVGID_00000100376642791671832030000001081993246511528840_" node-id="24" spreadMethod="pad" x1="661.9839" x2="786.6568" y1="130.7626" y2="346.7023"><stop offset="0" stop-color="#f2f2f2"/><stop offset="1" stop-color="#d9d9d9"/></linearGradient><linearGradient gradientUnits="objectBoundingBox" id="SVGID_00000024717494221334300370000014884475135824460682_" node-id="33" spreadMethod="pad" x1="816.1053" x2="816.1053" y1="306.6681" y2="585.5734"><stop offset="0" stop-color="#d9d9d9"/><stop offset="1" stop-color="#bfbfbf"/></linearGradient><linearGradient gradientUnits="objectBoundingBox" id="SVGID_00000124142961439880204620000012074003606482902669_" node-id="42" spreadMethod="pad" x1="724.9053" x2="724.9053" y1="566.8787" y2="780.9839"><stop offset="0" stop-color="#bfbfbf"/><stop offset="1" stop-color="#a6a6a6"/></linearGradient><linearGradient gradientUnits="objectBoundingBox" id="SVGID_00000065786373702946824800000014667706739734211482_" node-id="46" spreadMethod="pad" x1="659.2123" x2="330.4087" y1="175.0632" y2="744.5677"><stop offset="0" stop-color="#f7f7f7"/><stop offset="1" stop-color="#dedede"/></linearGradient><linearGradient gradientUnits="objectBoundingBox" id="SVGID_00000152258586233999714150000004608305050682382213_" node-id="52" spreadMethod="pad" x1="496.9655" x2="496.9655" y1="575.4307" y2="251.707"><stop offset="0" stop-color="#52769e"/><stop offset="1" stop-color="#9dbbde"/></linearGradient><linearGradient gradientUnits="objectBoundingBox" id="SVGID_00000059992187882346747980000013329599187380766635_" node-id="56" spreadMethod="pad" x1="490.5052" x2="490.5052" y1="575.4965" y2="258.3176"><stop offset="0" stop-color="#a6c8ee"/><stop offset="1" stop-color="#daebff"/></linearGradient><linearGradient gradientUnits="objectBoundingBox" id="SVGID_00000105388076934989700070000011562133948401869698_" node-id="60" spreadMethod="pad" x1="497.9655" x2="497.9655" y1="687.0657" y2="600.8965"><stop offset="0" stop-color="#52769e"/><stop offset="1" stop-color="#9dbbde"/></linearGradient><linearGradient gradientUnits="objectBoundingBox" id="SVGID_00000103968888131291422740000001730141782121947797_" node-id="64" spreadMethod="pad" x1="490.5052" x2="490.5052" y1="687.0439" y2="603.6755"><stop offset="0" stop-color="#a6c8ee"/><stop offset="1" stop-color="#daebff"/></linearGradient><clipPath id="SVGID_00000063630464488290712940000000898682393034554496_" node-id="13"><path d="M 828.70 307.90 L 665.90 145.00 L 662.80 142.40 L 659.60 140.20 L 656.00 138.40 L 652.20 137.20 L 648.40 136.40 L 644.40 136.10 L 423.10 136.10 L 416.70 136.30 L 404.00 137.90 L 397.80 139.30 L 391.60 141.10 L 385.60 143.30 L 379.30 146.20 L 372.80 149.80 L 363.20 156.00 L 358.60 159.80 L 357.70 161.20 L 359.10 161.30 L 362.00 160.30 L 362.40 162.40 L 364.30 164.50 L 370.00 167.60 L 229.60 307.90 L 227.00 310.90 L 224.80 314.20 L 223.00 317.80 L 221.80 321.50 L 221.00 325.40 L 220.70 329.40 L 220.70 559.80 L 221.00 563.80 L 221.80 567.70 L 223.00 571.40 L 224.80 575.00 L 227.00 578.20 L 229.60 581.30 L 392.50 744.20 L 395.50 746.80 L 398.80 749.00 L 402.40 750.80 L 406.10 752.00 L 410.00 752.80 L 414.00 753.10 L 606.80 753.10 L 612.30 768.20 L 619.60 767.00 L 630.90 764.10 L 637.60 761.90 L 644.30 759.10 L 651.10 755.60 L 655.40 752.90 L 659.50 749.80 L 665.90 744.10 L 828.80 581.30 L 831.40 578.20 L 833.60 575.00 L 835.40 571.40 L 836.60 567.60 L 837.40 563.80 L 837.70 559.80 L 837.70 329.40 L 837.40 325.40 L 836.60 321.50 L 835.30 317.80 L 833.60 314.20 L 831.40 310.90 L 828.70 307.90 Z" fill="#000000" fill-rule="nonzero" node-id="147" stroke="none" target-height="632.1" target-width="617" target-x="220.7" target-y="136.1"/></clipPath><clipPath id="SVGID_00000181079892347333051480000006203325759635655331_" node-id="22"><path d="M 828.70 307.90 L 665.90 145.00 L 662.80 142.40 L 659.60 140.20 L 656.00 138.40 L 652.20 137.20 L 648.40 136.40 L 644.40 136.10 L 423.10 136.10 L 416.70 136.30 L 404.00 137.90 L 397.80 139.30 L 391.60 141.10 L 385.60 143.30 L 379.30 146.20 L 372.80 149.80 L 363.20 156.00 L 358.60 159.80 L 357.70 161.20 L 359.10 161.30 L 362.00 160.30 L 362.40 162.40 L 364.30 164.50 L 370.00 167.60 L 229.60 307.90 L 227.00 310.90 L 224.80 314.20 L 223.00 317.80 L 221.80 321.50 L 221.00 325.40 L 220.70 329.40 L 220.70 559.80 L 221.00 563.80 L 221.80 567.70 L 223.00 571.40 L 224.80 575.00 L 227.00 578.20 L 229.60 581.30 L 392.50 744.20 L 395.50 746.80 L 398.80 749.00 L 402.40 750.80 L 406.10 752.00 L 410.00 752.80 L 414.00 753.10 L 606.80 753.10 L 612.30 768.20 L 619.60 767.00 L 630.90 764.10 L 637.60 761.90 L 644.30 759.10 L 651.10 755.60 L 655.40 752.90 L 659.50 749.80 L 665.90 744.10 L 828.80 581.30 L 831.40 578.20 L 833.60 575.00 L 835.40 571.40 L 836.60 567.60 L 837.40 563.80 L 837.70 559.80 L 837.70 329.40 L 837.40 325.40 L 836.60 321.50 L 835.30 317.80 L 833.60 314.20 L 831.40 310.90 L 828.70 307.90 Z" fill="#000000" fill-rule="nonzero" node-id="151" stroke="none" target-height="632.1" target-width="617" target-x="220.7" target-y="136.1"/></clipPath><clipPath id="SVGID_00000067201853137775545680000008174338635341860250_" node-id="31"><path d="M 828.70 307.90 L 665.90 145.00 L 662.80 142.40 L 659.60 140.20 L 656.00 138.40 L 652.20 137.20 L 648.40 136.40 L 644.40 136.10 L 423.10 136.10 L 416.70 136.30 L 404.00 137.90 L 397.80 139.30 L 391.60 141.10 L 385.60 143.30 L 379.30 146.20 L 372.80 149.80 L 363.20 156.00 L 358.60 159.80 L 357.70 161.20 L 359.10 161.30 L 362.00 160.30 L 362.40 162.40 L 364.30 164.50 L 370.00 167.60 L 229.60 307.90 L 227.00 310.90 L 224.80 314.20 L 223.00 317.80 L 221.80 321.50 L 221.00 325.40 L 220.70 329.40 L 220.70 559.80 L 221.00 563.80 L 221.80 567.70 L 223.00 571.40 L 224.80 575.00 L 227.00 578.20 L 229.60 581.30 L 392.50 744.20 L 395.50 746.80 L 398.80 749.00 L 402.40 750.80 L 406.10 752.00 L 410.00 752.80 L 414.00 753.10 L 606.80 753.10 L 612.30 768.20 L 619.60 767.00 L 630.90 764.10 L 637.60 761.90 L 644.30 759.10 L 651.10 755.60 L 655.40 752.90 L 659.50 749.80 L 665.90 744.10 L 828.80 581.30 L 831.40 578.20 L 833.60 575.00 L 835.40 571.40 L 836.60 567.60 L 837.40 563.80 L 837.70 559.80 L 837.70 329.40 L 837.40 325.40 L 836.60 321.50 L 835.30 317.80 L 833.60 314.20 L 831.40 310.90 L 828.70 307.90 Z" fill="#000000" fill-rule="nonzero" node-id="155" stroke="none" target-height="632.1" target-width="617" target-x="220.7" target-y="136.1"/></clipPath><clipPath id="SVGID_00000118374120761832055500000011467030641711382203_" node-id="40"><path d="M 828.70 307.90 L 665.90 145.00 L 662.80 142.40 L 659.60 140.20 L 656.00 138.40 L 652.20 137.20 L 648.40 136.40 L 644.40 136.10 L 423.10 136.10 L 416.70 136.30 L 404.00 137.90 L 397.80 139.30 L 391.60 141.10 L 385.60 143.30 L 379.30 146.20 L 372.80 149.80 L 363.20 156.00 L 358.60 159.80 L 357.70 161.20 L 359.10 161.30 L 362.00 160.30 L 362.40 162.40 L 364.30 164.50 L 370.00 167.60 L 229.60 307.90 L 227.00 310.90 L 224.80 314.20 L 223.00 317.80 L 221.80 321.50 L 221.00 325.40 L 220.70 329.40 L 220.70 559.80 L 221.00 563.80 L 221.80 567.70 L 223.00 571.40 L 224.80 575.00 L 227.00 578.20 L 229.60 581.30 L 392.50 744.20 L 395.50 746.80 L 398.80 749.00 L 402.40 750.80 L 406.10 752.00 L 410.00 752.80 L 414.00 753.10 L 606.80 753.10 L 612.30 768.20 L 619.60 767.00 L 630.90 764.10 L 637.60 761.90 L 644.30 759.10 L 651.10 755.60 L 655.40 752.90 L 659.50 749.80 L 665.90 744.10 L 828.80 581.30 L 831.40 578.20 L 833.60 575.00 L 835.40 571.40 L 836.60 567.60 L 837.40 563.80 L 837.70 559.80 L 837.70 329.40 L 837.40 325.40 L 836.60 321.50 L 835.30 317.80 L 833.60 314.20 L 831.40 310.90 L 828.70 307.90 Z" fill="#000000" fill-rule="nonzero" node-id="159" stroke="none" target-height="632.1" target-width="617" target-x="220.7" target-y="136.1"/></clipPath></defs><path d="M 994.00 845.00 L 993.80 850.50 L 993.00 856.00 L 991.70 861.50 L 989.90 867.00 L 987.60 872.60 L 984.70 878.20 L 980.80 884.30 L 976.20 890.60 L 970.80 896.90 L 964.50 903.30 L 957.30 909.70 L 950.20 915.50 L 942.20 921.30 L 933.40 927.10 L 923.70 932.90 L 913.00 938.80 L 891.50 949.20 L 879.50 954.40 L 852.80 964.50 L 825.10 973.50 L 810.40 977.80 L 795.00 981.90 L 774.40 986.80 L 753.00 991.40 L 730.60 995.70 L 708.20 999.40 L 685.00 1002.80 L 661.20 1005.80 L 637.20 1008.20 L 612.80 1010.30 L 587.90 1011.90 L 562.90 1013.10 L 537.60 1013.80 L 512.00 1014.10 L 486.40 1013.80 L 461.10 1013.10 L 436.10 1011.90 L 411.20 1010.30 L 386.80 1008.20 L 362.80 1005.80 L 339.00 1002.80 L 315.80 999.40 L 293.40 995.70 L 271.00 991.40 L 249.60 986.80 L 229.00 981.90 L 213.60 977.80 L 198.90 973.50 L 171.20 964.50 L 144.50 954.40 L 132.50 949.20 L 111.00 938.80 L 100.30 932.90 L 90.60 927.10 L 81.80 921.30 L 73.80 915.50 L 66.70 909.70 L 59.50 903.30 L 53.20 896.90 L 47.80 890.60 L 43.20 884.30 L 39.30 878.20 L 36.40 872.60 L 34.10 867.00 L 32.30 861.50 L 31.00 856.00 L 30.20 850.50 L 30.00 845.00 L 30.20 839.50 L 31.00 834.00 L 32.30 828.60 L 34.10 823.10 L 36.40 817.50 L 39.30 811.90 L 43.20 805.70 L 47.80 799.50 L 53.20 793.20 L 59.50 786.80 L 66.70 780.40 L 73.80 774.60 L 81.80 768.80 L 90.60 763.00 L 100.30 757.10 L 111.00 751.30 L 132.50 740.80 L 144.50 735.70 L 171.20 725.50 L 198.90 716.60 L 213.60 712.30 L 229.00 708.20 L 249.60 703.30 L 271.00 698.70 L 293.40 694.40 L 315.80 690.70 L 339.00 687.30 L 362.80 684.30 L 386.80 681.80 L 411.20 679.80 L 436.10 678.10 L 461.10 677.00 L 486.40 676.30 L 512.00 676.00 L 537.60 676.30 L 562.90 677.00 L 587.90 678.10 L 612.80 679.80 L 637.20 681.80 L 661.20 684.30 L 685.00 687.30 L 708.20 690.70 L 730.60 694.40 L 753.00 698.70 L 774.40 703.30 L 795.00 708.20 L 810.40 712.30 L 825.10 716.60 L 852.80 725.50 L 879.50 735.70 L 891.50 740.80 L 913.00 751.30 L 923.70 757.10 L 933.40 763.00 L 942.20 768.80 L 950.20 774.60 L 957.30 780.40 L 964.50 786.80 L 970.80 793.20 L 976.20 799.50 L 980.80 805.70 L 984.70 811.90 L 987.60 817.50 L 989.90 823.10 L 991.70 828.60 L 993.00 834.00 L 993.80 839.50 L 994.00 845.00 Z" fill="url(#SVGID_1_)" fill-rule="nonzero" node-id="163" stroke="none" target-height="338.09998" target-width="964" target-x="30" target-y="676"/><g node-id="234"><g clip-path="url(#SVGID_00000063630464488290712940000000898682393034554496_)" group-id="1" node-id="167"><path d="M 385.40 123.80 L 335.40 171.80 L 352.50 203.30 L 608.70 167.50 L 667.60 131.60 Z" fill="url(#SVGID_00000002370628650355008590000016647995997477150903_)" fill-rule="nonzero" group-id="1,7" node-id="169" stroke="none" target-height="79.5" target-width="332.19998" target-x="335.4" target-y="123.8"/></g></g><g node-id="235"><g clip-path="url(#SVGID_00000181079892347333051480000006203325759635655331_)" group-id="2" node-id="175"><path d="M 660.90 131.40 L 601.40 166.70 L 791.20 337.20 L 847.70 311.50 Z" fill="url(#SVGID_00000100376642791671832030000001081993246511528840_)" fill-rule="nonzero" group-id="2,8" node-id="177" stroke="none" target-height="205.80002" target-width="246.29999" target-x="601.4" target-y="131.4"/></g></g><g node-id="236"><g clip-path="url(#SVGID_00000067201853137775545680000008174338635341860250_)" group-id="3" node-id="183"><path d="M 852.70 306.70 L 779.50 341.00 L 788.60 585.60 L 849.20 567.90 Z" fill="url(#SVGID_00000024717494221334300370000014884475135824460682_)" fill-rule="nonzero" group-id="3,9" node-id="185" stroke="none" target-height="278.89996" target-width="73.20001" target-x="779.5" target-y="306.7"/></g></g><g node-id="237"><g clip-path="url(#SVGID_00000118374120761832055500000011467030641711382203_)" group-id="4" node-id="191"><path d="M 854.10 566.90 L 780.60 585.10 L 595.70 773.40 L 637.80 781.00 Z" fill="url(#SVGID_00000124142961439880204620000012074003606482902669_)" fill-rule="nonzero" group-id="4,10" node-id="193" stroke="none" target-height="214.09998" target-width="258.39996" target-x="595.7" target-y="566.9"/></g></g><path d="M 610.00 151.30 L 379.70 151.30 L 375.60 151.60 L 371.70 152.40 L 368.00 153.70 L 364.40 155.40 L 361.20 157.60 L 358.10 160.30 L 195.30 323.10 L 192.60 326.20 L 190.40 329.40 L 188.70 333.00 L 187.40 336.80 L 186.60 340.60 L 186.30 344.60 L 186.30 575.00 L 186.60 579.00 L 187.40 582.90 L 188.70 586.60 L 190.40 590.20 L 192.60 593.50 L 195.30 596.50 L 358.10 759.40 L 361.20 762.00 L 364.40 764.20 L 368.00 766.00 L 371.80 767.20 L 375.60 768.00 L 379.70 768.30 L 610.00 768.30 L 614.00 768.00 L 617.90 767.20 L 621.60 766.00 L 625.20 764.20 L 628.50 762.00 L 631.50 759.40 L 794.40 596.50 L 797.00 593.50 L 799.20 590.20 L 801.00 586.60 L 802.20 582.90 L 803.00 579.00 L 803.30 575.00 L 803.30 344.70 L 803.00 340.60 L 802.20 336.80 L 801.00 333.00 L 799.20 329.50 L 797.00 326.20 L 794.40 323.10 L 631.50 160.30 L 628.50 157.60 L 625.20 155.40 L 621.60 153.70 L 617.90 152.40 L 614.00 151.60 L 610.00 151.30 Z" fill="url(#SVGID_00000065786373702946824800000014667706739734211482_)" fill-rule="nonzero" node-id="197" stroke="none" target-height="617" target-width="617" target-x="186.3" target-y="151.3"/><path d="M 596.50 183.80 L 393.10 183.80 L 389.10 184.00 L 385.20 184.80 L 381.40 186.10 L 377.90 187.80 L 374.60 190.00 L 371.60 192.70 L 227.70 336.60 L 225.00 339.60 L 222.80 342.90 L 221.10 346.40 L 219.80 350.20 L 219.00 354.10 L 218.80 358.10 L 218.80 561.50 L 219.00 565.60 L 219.80 569.40 L 221.10 573.20 L 222.80 576.70 L 225.00 580.00 L 227.70 583.10 L 371.60 726.90 L 374.60 729.60 L 377.90 731.80 L 381.40 733.50 L 385.20 734.80 L 389.10 735.60 L 393.10 735.90 L 596.50 735.90 L 600.60 735.60 L 604.40 734.80 L 608.20 733.50 L 611.70 731.80 L 615.00 729.60 L 618.10 726.90 L 761.90 583.10 L 764.60 580.00 L 766.80 576.70 L 768.50 573.20 L 769.80 569.40 L 770.60 565.60 L 770.90 561.50 L 770.90 358.10 L 770.60 354.10 L 769.80 350.20 L 768.50 346.40 L 766.80 342.90 L 764.60 339.60 L 761.90 336.60 L 618.10 192.70 L 615.00 190.00 L 611.70 187.80 L 608.20 186.10 L 604.40 184.80 L 600.60 184.00 L 596.50 183.80 Z" fill="#ffffff" fill-rule="nonzero" node-id="199" stroke="none" target-height="552.10004" target-width="552.10004" target-x="218.8" target-y="183.8"/><g node-id="238"><path d="M 555.30 280.40 L 555.00 276.50 L 554.30 272.80 L 553.00 269.20 L 551.40 265.90 L 549.30 262.90 L 546.90 260.10 L 544.10 257.70 L 541.10 255.60 L 537.80 254.00 L 534.20 252.70 L 530.50 252.00 L 526.60 251.70 L 471.60 251.70 L 468.70 251.80 L 463.30 252.80 L 456.90 255.30 L 451.50 258.60 L 445.20 263.90 L 442.00 267.50 L 438.60 271.90 L 443.70 294.80 L 456.90 540.20 L 457.20 544.10 L 458.00 547.80 L 459.20 551.30 L 460.90 554.70 L 462.90 557.70 L 465.30 560.50 L 468.10 562.90 L 471.10 564.90 L 474.50 566.60 L 478.00 567.90 L 481.70 568.60 L 485.60 568.90 L 504.50 568.90 L 505.90 575.40 L 509.90 575.00 L 516.20 573.30 L 522.60 570.10 L 528.10 566.00 L 533.40 560.40 L 537.30 554.80 L 539.60 549.90 L 541.10 543.60 L 555.30 280.40 Z" fill="url(#SVGID_00000152258586233999714150000004608305050682382213_)" fill-rule="nonzero" group-id="5" node-id="203" stroke="none" target-height="323.7" target-width="116.69998" target-x="438.6" target-y="251.7"/><path d="M 504.00 575.50 L 477.00 575.50 L 473.10 575.20 L 469.40 574.50 L 465.90 573.20 L 462.50 571.60 L 459.50 569.50 L 456.70 567.10 L 454.30 564.30 L 452.30 561.30 L 450.60 558.00 L 449.30 554.40 L 448.60 550.70 L 434.30 287.00 L 434.60 283.10 L 435.30 279.40 L 436.60 275.80 L 438.30 272.50 L 440.30 269.50 L 442.70 266.70 L 445.50 264.30 L 448.50 262.20 L 451.90 260.60 L 455.40 259.30 L 459.10 258.60 L 463.00 258.30 L 518.00 258.30 L 521.90 258.60 L 525.60 259.30 L 529.20 260.60 L 532.50 262.20 L 535.50 264.30 L 538.30 266.70 L 540.70 269.50 L 542.80 272.50 L 544.40 275.80 L 545.70 279.40 L 546.40 283.10 L 546.70 287.00 L 532.40 550.70 L 531.70 554.40 L 530.40 558.00 L 528.80 561.30 L 526.70 564.30 L 524.30 567.10 L 521.50 569.50 L 518.50 571.60 L 515.20 573.20 L 511.60 574.50 L 507.90 575.20 L 504.00 575.50 Z" fill="url(#SVGID_00000059992187882346747980000013329599187380766635_)" fill-rule="nonzero" group-id="5" node-id="205" stroke="none" target-height="317.2" target-width="112.400024" target-x="434.3" target-y="258.3"/><path d="M 539.70 642.60 L 539.40 638.30 L 538.80 634.10 L 537.80 630.20 L 534.60 622.70 L 530.10 616.10 L 524.50 610.40 L 517.90 606.00 L 510.40 602.80 L 506.40 601.80 L 502.30 601.10 L 494.90 601.00 L 490.00 601.70 L 485.40 602.70 L 479.00 604.70 L 472.20 607.90 L 472.60 609.60 L 469.40 612.30 L 466.50 615.20 L 463.90 618.50 L 461.70 622.00 L 459.80 625.80 L 458.30 629.70 L 457.20 633.80 L 456.50 638.10 L 456.30 642.60 L 456.60 647.60 L 457.40 652.30 L 458.80 656.80 L 460.70 661.20 L 463.00 665.20 L 465.70 669.00 L 468.90 672.40 L 472.30 675.40 L 476.20 678.10 L 480.30 680.30 L 484.60 682.10 L 489.30 683.30 L 490.10 687.00 L 496.80 686.60 L 502.10 685.50 L 510.00 682.90 L 518.30 679.00 L 522.40 676.40 L 525.70 673.70 L 528.70 670.70 L 531.50 667.40 L 533.90 663.80 L 535.90 659.90 L 537.50 655.90 L 538.70 651.60 L 539.40 647.20 L 539.70 642.60 Z" fill="url(#SVGID_00000105388076934989700070000011562133948401869698_)" fill-rule="nonzero" group-id="5" node-id="207" stroke="none" target-height="86" target-width="83.400024" target-x="456.3" target-y="601"/><path d="M 532.20 645.40 L 532.00 649.70 L 531.30 653.80 L 530.30 657.80 L 528.90 661.60 L 525.10 668.70 L 520.00 674.80 L 513.80 679.90 L 506.70 683.80 L 502.90 685.20 L 499.00 686.20 L 494.80 686.80 L 490.50 687.00 L 486.20 686.80 L 482.10 686.20 L 478.10 685.20 L 474.30 683.80 L 467.20 679.90 L 461.00 674.80 L 456.00 668.70 L 452.10 661.60 L 450.70 657.80 L 449.70 653.80 L 449.10 649.70 L 448.80 645.40 L 449.10 641.00 L 449.70 636.90 L 450.70 632.90 L 452.10 629.10 L 456.00 622.00 L 461.00 615.90 L 467.20 610.80 L 474.30 607.00 L 478.10 605.60 L 482.10 604.50 L 486.20 603.90 L 490.50 603.70 L 494.80 603.90 L 499.00 604.50 L 502.90 605.60 L 506.70 607.00 L 513.80 610.80 L 520.00 615.90 L 525.10 622.00 L 528.90 629.10 L 530.30 632.90 L 531.30 636.90 L 532.00 641.00 L 532.20 645.40 Z" fill="url(#SVGID_00000103968888131291422740000001730141782121947797_)" fill-rule="nonzero" group-id="5" node-id="209" stroke="none" target-height="83.29999" target-width="83.400024" target-x="448.8" target-y="603.7"/></g><g node-id="239"><path d="M 302.90 917.20 L 302.60 919.00 L 301.40 919.90 L 299.20 920.30 L 295.20 920.30 L 294.50 918.20 L 299.70 918.20 L 300.60 917.60 L 300.70 903.90 L 291.60 903.90 L 290.50 912.60 L 289.40 916.70 L 287.90 920.40 L 286.00 919.30 L 287.50 915.60 L 289.10 907.60 L 289.70 895.70 L 289.70 878.70 L 302.90 878.70 L 302.90 917.20 Z M 300.70 901.70 L 300.70 892.30 L 291.90 892.30 L 291.70 901.70 L 300.70 901.70 Z M 291.90 880.90 L 291.90 890.10 L 300.70 890.10 L 300.70 880.90 L 291.90 880.90 Z M 328.60 895.30 L 327.40 900.10 L 325.70 904.30 L 323.70 908.20 L 321.50 911.50 L 324.20 914.40 L 327.00 916.80 L 330.10 918.60 L 328.50 920.40 L 325.60 918.50 L 322.80 916.10 L 320.20 913.20 L 317.60 915.90 L 312.20 919.90 L 310.80 918.20 L 313.60 916.50 L 316.30 914.30 L 318.90 911.50 L 314.90 904.70 L 312.00 897.10 L 310.30 897.10 L 310.30 920.30 L 308.00 920.30 L 308.00 878.80 L 327.30 878.80 L 327.20 889.10 L 326.60 890.20 L 324.80 890.70 L 318.70 890.90 L 317.90 888.90 L 324.90 888.70 L 325.10 881.00 L 310.30 881.00 L 310.30 894.90 L 327.30 894.80 L 328.60 895.30 Z M 314.10 897.10 L 315.70 901.70 L 317.80 905.90 L 320.20 909.80 L 322.50 906.10 L 324.50 901.90 L 326.10 897.10 L 314.10 897.10 Z" fill="#999999" fill-rule="nonzero" group-id="6" node-id="214" stroke="none" target-height="41.700012" target-width="44.100006" target-x="286" target-y="878.7"/><path d="M 372.20 882.90 L 368.80 886.90 L 366.70 888.70 L 363.20 891.00 L 359.20 893.10 L 367.90 895.50 L 377.80 896.70 L 376.50 898.70 L 365.80 897.20 L 360.90 895.90 L 356.60 894.30 L 351.50 896.10 L 346.10 897.50 L 335.30 899.40 L 334.40 897.30 L 344.40 895.80 L 354.00 893.10 L 350.70 891.10 L 348.00 888.90 L 345.70 886.40 L 342.40 889.10 L 338.50 891.60 L 336.90 890.00 L 340.20 887.90 L 345.50 883.50 L 348.80 880.00 L 351.00 876.80 L 353.50 877.20 L 350.10 882.00 L 370.80 881.80 L 372.20 882.90 Z M 373.00 904.80 L 372.00 912.10 L 370.80 916.50 L 369.40 918.70 L 368.10 919.50 L 366.30 919.80 L 359.60 919.60 L 358.80 917.50 L 365.70 917.80 L 367.60 917.40 L 368.40 916.40 L 369.20 914.00 L 370.60 905.70 L 355.00 905.70 L 353.70 908.70 L 352.10 911.30 L 350.30 913.40 L 348.20 915.30 L 344.90 917.20 L 341.00 918.90 L 336.10 920.30 L 334.90 918.20 L 339.50 917.10 L 343.20 915.70 L 346.20 914.00 L 348.20 912.40 L 349.90 910.50 L 351.40 908.30 L 352.60 905.70 L 338.40 905.70 L 338.40 903.60 L 353.20 903.60 L 354.20 898.40 L 356.60 898.60 L 355.60 903.60 L 373.20 903.60 L 373.00 904.80 Z M 348.20 884.00 L 347.30 885.00 L 349.00 887.00 L 353.60 890.60 L 356.60 892.10 L 363.40 888.60 L 366.30 886.40 L 368.70 884.00 L 348.20 884.00 Z" fill="#999999" fill-rule="nonzero" group-id="6" node-id="216" stroke="none" target-height="43.5" target-width="43.399994" target-x="334.4" target-y="876.8"/><path d="M 387.70 885.10 L 383.70 890.70 L 382.40 888.80 L 384.40 886.40 L 386.20 883.50 L 389.00 877.00 L 391.10 877.50 L 388.90 882.90 L 399.20 882.90 L 399.20 885.10 L 387.70 885.10 Z M 392.60 900.80 L 399.50 900.80 L 399.50 903.00 L 392.60 903.00 L 392.60 914.80 L 398.40 911.50 L 399.00 913.60 L 389.60 919.50 L 388.30 917.50 L 389.60 916.20 L 390.20 915.20 L 390.50 913.70 L 390.50 903.00 L 383.30 903.00 L 383.30 900.80 L 390.50 900.80 L 390.50 893.30 L 385.20 893.30 L 385.20 891.10 L 398.40 891.10 L 398.40 893.30 L 392.60 893.30 L 392.60 900.80 Z M 425.80 893.00 L 425.80 895.20 L 400.40 895.20 L 400.40 893.00 L 406.50 893.00 L 406.50 885.70 L 401.60 885.70 L 401.60 883.60 L 406.50 883.60 L 406.50 876.80 L 408.60 876.80 L 408.60 883.60 L 416.40 883.60 L 416.40 876.80 L 418.60 876.80 L 418.60 883.60 L 424.70 883.60 L 424.70 885.70 L 418.60 885.70 L 418.60 893.00 L 425.80 893.00 Z M 403.00 899.80 L 422.20 899.80 L 422.20 920.00 L 420.00 920.00 L 420.00 918.00 L 405.20 918.00 L 405.20 920.20 L 403.00 920.20 L 403.00 899.80 Z M 405.20 901.90 L 405.20 907.80 L 420.00 907.80 L 420.00 901.90 L 405.20 901.90 Z M 420.00 916.00 L 420.00 909.80 L 405.20 909.80 L 405.20 916.00 L 420.00 916.00 Z M 408.60 893.00 L 416.40 893.00 L 416.40 885.70 L 408.60 885.70 L 408.60 893.00 Z" fill="#999999" fill-rule="nonzero" group-id="6" node-id="218" stroke="none" target-height="43.400024" target-width="43.399994" target-x="382.4" target-y="876.8"/><path d="M 446.10 909.60 L 446.90 911.50 L 437.60 918.40 L 436.40 916.20 L 437.30 915.30 L 437.80 913.20 L 437.80 894.20 L 430.50 894.20 L 430.50 892.00 L 440.00 892.00 L 440.00 913.60 L 446.10 909.60 Z M 440.50 887.30 L 437.40 883.70 L 433.40 879.90 L 435.00 878.50 L 440.80 884.00 L 442.10 885.50 L 440.50 887.30 Z M 460.60 907.10 L 461.90 909.80 L 463.60 912.20 L 465.60 914.30 L 468.00 916.10 L 470.80 917.50 L 473.90 918.50 L 472.50 920.50 L 469.40 919.30 L 466.70 917.80 L 464.30 916.00 L 462.20 913.90 L 460.50 911.50 L 459.00 908.70 L 457.90 911.40 L 456.40 913.70 L 454.60 915.80 L 452.30 917.40 L 449.40 918.90 L 445.60 920.30 L 444.20 918.40 L 448.00 917.20 L 451.00 915.70 L 453.10 914.10 L 454.90 912.10 L 456.30 909.80 L 457.20 907.10 L 445.70 907.10 L 445.70 905.00 L 457.70 905.00 L 458.40 898.70 L 447.50 898.70 L 447.50 896.50 L 471.90 896.50 L 471.90 898.70 L 460.70 898.70 L 459.90 905.00 L 473.90 905.00 L 473.90 907.10 L 460.60 907.10 Z M 470.40 891.40 L 448.90 891.40 L 448.90 879.10 L 470.40 879.10 L 470.40 891.40 Z M 468.20 881.20 L 451.10 881.20 L 451.10 889.30 L 468.20 889.30 L 468.20 881.20 Z" fill="#999999" fill-rule="nonzero" group-id="6" node-id="220" stroke="none" target-height="42" target-width="43.399994" target-x="430.5" target-y="878.5"/><path d="M 478.60 919.30 L 480.40 918.30 L 482.90 916.10 L 484.30 913.30 L 484.60 911.40 L 482.40 911.40 L 481.40 910.90 L 480.80 910.00 L 480.60 908.60 L 480.90 907.30 L 481.50 906.40 L 483.60 905.70 L 484.60 905.90 L 486.20 907.00 L 486.80 908.50 L 487.00 910.60 L 486.80 913.10 L 486.10 915.20 L 484.90 917.10 L 483.40 918.70 L 481.60 920.00 L 479.50 921.10 L 478.60 919.30 Z" fill="#999999" fill-rule="nonzero" group-id="6" node-id="222" stroke="none" target-height="15.399963" target-width="8.399994" target-x="478.6" target-y="905.7"/><path d="M 517.90 909.70 L 518.80 911.60 L 509.40 919.20 L 508.10 917.20 L 509.50 915.90 L 510.00 914.80 L 510.30 913.40 L 510.30 894.30 L 502.30 894.30 L 502.30 892.00 L 512.50 892.00 L 512.50 913.70 L 517.90 909.70 Z M 512.90 886.80 L 509.80 883.30 L 506.00 879.60 L 507.40 878.20 L 511.30 881.70 L 514.50 885.10 L 512.90 886.80 Z M 545.70 892.60 L 545.70 894.50 L 517.10 894.50 L 517.10 892.60 L 530.00 892.60 L 530.00 888.40 L 519.60 888.40 L 519.60 886.60 L 530.00 886.60 L 530.00 882.80 L 518.50 882.80 L 518.50 880.90 L 530.00 880.90 L 530.00 876.90 L 532.30 876.90 L 532.30 880.90 L 544.40 880.90 L 544.40 882.80 L 532.30 882.80 L 532.30 886.60 L 542.80 886.60 L 542.80 888.40 L 532.30 888.40 L 532.30 892.60 L 545.70 892.60 Z M 541.60 917.20 L 541.30 918.80 L 540.20 919.60 L 537.70 920.00 L 533.60 920.00 L 532.80 918.00 L 539.20 917.80 L 539.40 912.60 L 522.90 912.60 L 522.90 920.20 L 520.70 920.20 L 520.70 897.90 L 541.60 897.90 L 541.60 917.20 Z M 522.90 899.80 L 522.90 904.20 L 539.40 904.20 L 539.40 899.80 L 522.90 899.80 Z M 539.40 910.70 L 539.40 906.10 L 522.90 906.10 L 522.90 910.70 L 539.40 910.70 Z" fill="#999999" fill-rule="nonzero" group-id="6" node-id="224" stroke="none" target-height="43.299988" target-width="43.400024" target-x="502.3" target-y="876.9"/><path d="M 593.30 916.70 L 593.30 918.70 L 550.80 918.70 L 550.80 916.70 L 570.70 916.70 L 570.70 911.60 L 554.40 911.60 L 554.40 909.60 L 570.70 909.60 L 570.70 905.50 L 555.90 905.50 L 555.90 890.90 L 570.70 890.90 L 570.70 887.30 L 551.00 887.30 L 551.00 885.30 L 570.70 885.30 L 570.70 881.00 L 555.20 881.80 L 554.70 879.90 L 577.70 878.50 L 586.80 877.30 L 588.30 879.00 L 581.30 880.10 L 573.00 880.90 L 573.00 885.30 L 593.10 885.30 L 593.10 887.30 L 573.00 887.30 L 573.00 890.90 L 588.50 890.90 L 588.50 905.50 L 573.00 905.50 L 573.00 909.60 L 590.30 909.60 L 590.30 911.60 L 573.00 911.60 L 573.00 916.70 L 593.30 916.70 Z M 558.10 897.30 L 570.70 897.30 L 570.70 892.80 L 558.10 892.80 L 558.10 897.30 Z M 570.70 903.70 L 570.70 899.10 L 558.10 899.10 L 558.10 903.70 L 570.70 903.70 Z M 573.00 892.80 L 573.00 897.30 L 586.20 897.30 L 586.20 892.80 L 573.00 892.80 Z M 586.20 899.10 L 573.00 899.10 L 573.00 903.70 L 586.20 903.70 L 586.20 899.10 Z" fill="#999999" fill-rule="nonzero" group-id="6" node-id="226" stroke="none" target-height="41.400024" target-width="42.5" target-x="550.8" target-y="877.3"/><path d="M 605.30 905.70 L 603.10 910.80 L 600.30 915.00 L 598.50 913.70 L 601.20 909.80 L 603.20 905.20 L 605.30 905.70 Z M 610.90 903.10 L 610.90 916.50 L 610.60 918.00 L 609.80 918.80 L 609.00 919.00 L 605.30 919.10 L 604.50 917.00 L 608.20 917.10 L 608.60 917.00 L 608.80 916.50 L 608.80 903.10 L 598.70 903.10 L 598.70 901.00 L 608.80 901.00 L 608.80 895.20 L 598.50 895.20 L 598.50 893.10 L 612.00 893.10 L 614.90 884.60 L 617.10 885.20 L 614.20 893.10 L 620.90 893.10 L 620.90 895.20 L 610.90 895.20 L 610.90 901.00 L 620.50 901.00 L 620.50 903.10 L 610.90 903.10 Z M 620.10 884.10 L 599.20 884.10 L 599.20 882.00 L 609.50 882.00 L 607.00 877.30 L 609.00 876.70 L 611.90 882.00 L 620.10 882.00 L 620.10 884.10 Z M 604.80 892.70 L 604.10 889.00 L 602.70 885.10 L 604.60 884.70 L 606.10 888.50 L 606.90 892.10 L 604.80 892.70 Z M 615.20 905.10 L 617.50 909.20 L 619.30 913.10 L 617.50 914.00 L 615.70 910.10 L 613.40 905.90 L 615.20 905.10 Z M 641.70 895.30 L 635.90 895.30 L 635.90 920.10 L 633.70 920.10 L 633.70 895.30 L 624.90 895.30 L 624.50 905.00 L 623.00 912.80 L 622.10 915.30 L 619.60 919.90 L 617.90 918.50 L 619.80 915.30 L 621.10 911.80 L 622.40 904.60 L 622.70 881.50 L 633.60 879.20 L 637.90 877.90 L 639.90 879.60 L 632.90 881.60 L 624.90 883.00 L 624.90 893.20 L 641.70 893.20 L 641.70 895.30 Z" fill="#999999" fill-rule="nonzero" group-id="6" node-id="228" stroke="none" target-height="43.399963" target-width="43.200012" target-x="598.5" target-y="876.7"/><path d="M 667.20 887.10 L 665.70 909.90 L 664.30 916.30 L 662.90 918.30 L 660.70 919.00 L 655.50 919.00 L 654.80 916.60 L 659.90 916.80 L 660.80 916.70 L 661.60 916.10 L 662.20 915.10 L 662.90 912.40 L 663.90 903.50 L 664.90 888.00 L 656.90 888.00 L 655.80 900.00 L 654.70 905.80 L 653.20 911.10 L 651.80 914.50 L 648.40 920.00 L 646.40 918.60 L 648.20 916.20 L 649.80 913.40 L 651.10 910.20 L 652.60 905.20 L 653.60 899.60 L 654.70 888.00 L 647.40 888.00 L 647.40 885.70 L 654.70 885.70 L 654.80 876.90 L 657.10 876.90 L 657.00 885.70 L 667.20 885.70 L 667.20 887.10 Z M 687.40 883.10 L 687.40 919.40 L 685.00 919.40 L 685.00 916.10 L 673.90 916.10 L 673.90 919.70 L 671.70 919.70 L 671.70 883.10 L 687.40 883.10 Z M 685.00 913.90 L 685.00 885.40 L 673.90 885.40 L 673.90 913.90 L 685.00 913.90 Z" fill="#999999" fill-rule="nonzero" group-id="6" node-id="230" stroke="none" target-height="43.099976" target-width="41" target-x="646.4" target-y="876.9"/><path d="M 734.80 893.30 L 731.70 901.90 L 727.50 909.90 L 728.90 913.40 L 730.30 915.70 L 731.40 916.80 L 732.60 917.50 L 733.80 917.70 L 734.80 917.00 L 735.30 915.80 L 736.00 909.50 L 737.90 910.60 L 737.40 915.40 L 736.70 917.90 L 735.90 919.10 L 734.90 919.70 L 733.60 919.90 L 732.00 919.70 L 730.60 919.00 L 728.10 916.50 L 725.90 912.20 L 723.50 915.30 L 718.30 920.30 L 716.50 918.80 L 719.60 916.10 L 722.50 913.10 L 725.10 909.60 L 723.20 900.80 L 722.10 890.00 L 694.90 890.00 L 694.90 888.00 L 707.20 888.00 L 707.20 883.10 L 697.40 883.10 L 697.40 881.00 L 707.20 881.00 L 707.20 876.80 L 709.40 876.80 L 709.40 881.00 L 718.30 881.00 L 718.30 883.10 L 709.40 883.10 L 709.40 888.00 L 722.10 888.00 L 721.70 876.90 L 724.00 876.90 L 724.20 888.00 L 737.40 888.00 L 737.40 890.00 L 724.30 890.00 L 724.90 896.80 L 726.60 907.10 L 730.10 900.10 L 732.70 892.70 L 734.80 893.30 Z M 720.40 912.40 L 711.00 913.40 L 711.00 920.20 L 708.70 920.20 L 708.70 913.70 L 695.70 915.10 L 695.50 912.90 L 708.70 911.60 L 708.70 905.80 L 702.10 905.80 L 699.30 906.10 L 698.30 906.50 L 697.60 904.20 L 698.60 903.40 L 701.80 897.40 L 695.60 897.40 L 695.60 895.40 L 702.70 895.40 L 704.50 890.40 L 706.90 891.00 L 705.10 895.40 L 720.40 895.40 L 720.40 897.40 L 704.20 897.40 L 700.90 903.70 L 708.70 903.70 L 708.70 899.20 L 711.00 899.20 L 711.00 903.70 L 719.10 903.70 L 719.10 905.80 L 711.00 905.80 L 711.00 911.40 L 720.40 910.50 L 720.40 912.40 Z M 733.50 885.20 L 730.80 882.30 L 727.30 879.30 L 728.90 878.20 L 732.40 881.00 L 735.10 884.00 L 733.50 885.20 Z" fill="#999999" fill-rule="nonzero" group-id="6" node-id="232" stroke="none" target-height="43.5" target-width="43" target-x="694.9" target-y="876.8"/></g></svg>`;
+        return `data:image/svg+xml,${encodeURIComponent(svgStr)}`;
       });
       const list = vue.ref([]);
       const isEnd = vue.ref(false);
@@ -3863,17 +4413,18 @@ if (uni.restoreGlobal) {
         const searchForm = props.beforeHook ? props.beforeHook(JSON.parse(JSON.stringify(props.params))) || props.params : props.params;
         try {
           const res2 = await props.apiFun(searchForm);
-          const code = res2[props.successCodeField];
-          const data = res2[props.successDataField];
+          const code = res2[props.codeField];
+          const data = res2[props.resField];
+          const message = res2[props.msgField];
           isRefresh.value = false;
           if (code === props.successCodeNum) {
-            let formatData = props.afterHook ? props.afterHook(data) || data : data;
+            let newList = props.afterHook ? props.afterHook(data) || data : data;
             if (type === "refresh") {
-              list.value = formatData;
+              list.value = newList;
             } else {
-              list.value = list.value.concat(formatData);
+              list.value = list.value.concat(newList);
             }
-            if (formatData.length < props.loadPageNum) {
+            if (newList.length < props.loadPageNum) {
               isEnd.value = true;
               loadMoreStatus.value = "noMore";
             } else {
@@ -3883,31 +4434,16 @@ if (uni.restoreGlobal) {
               loadMoreStatus.value = "noData";
             }
           } else {
-            props.errorHook && errorHook(res2, "project");
+            props.errorHook && errorHook(res2);
             isRefresh.value = false;
-            if (list.value.length === 0) {
-              loadMoreStatus.value = "noDataLoadError";
-            } else {
-              loadMoreStatus.value = "loadError";
-            }
-            if (mergeErrorToastConfig.value) {
-              uni.showToast({
-                ...mergeErrorToastConfig.value,
-                title: props.messageField ? res2[props.messageField] : mergeErrorToastConfig.value.title
-              });
-            }
+            loadMoreStatus.value = "loadError";
           }
         } catch (error) {
           vue.nextTick(() => {
             isRefresh.value = false;
           });
-          if (list.value.length === 0) {
-            loadMoreStatus.value = "noDataLoadError";
-          } else {
-            loadMoreStatus.value = "loadError";
-          }
-          uni.hideLoading();
-          props.errorHook && errorHook(res, "network");
+          loadMoreStatus.value = "loadError";
+          props.errorHook && errorHook(res);
         }
       };
       const refresherrefresh = () => {
@@ -3939,120 +4475,76 @@ if (uni.restoreGlobal) {
       if (props.autoLoad) {
         refresh();
       }
+      if (props.autoRefreshByParamsChange) {
+        vue.watch(() => props.params, refresh, {
+          deep: true
+        });
+      }
       __expose({
         refresh,
         search
       });
-      const __returned__ = { props, mergeEmptyConfig, mergeErrorConfig, mergeErrorToastConfig, list, isEnd, isRefresh, screenTop, screenOldTop, loadMoreStatus, search, refresherrefresh, scrollView, backTop, bootmScroll, refresh, ref: vue.ref, nextTick: vue.nextTick, computed: vue.computed, isRef: vue.isRef, get listEmpty() {
-        return listEmpty;
-      }, get listError() {
-        return listError;
-      } };
+      const __returned__ = { props, emptyIconSrc, errorIconSrc, list, isEnd, isRefresh, screenTop, screenOldTop, loadMoreStatus, search, refresherrefresh, scrollView, backTop, bootmScroll, refresh, ref: vue.ref, nextTick: vue.nextTick, computed: vue.computed, isRef: vue.isRef, watch: vue.watch };
       Object.defineProperty(__returned__, "__isScriptSetup", { enumerable: false, value: true });
       return __returned__;
     }
   };
-  function _sfc_render$h(_ctx, _cache, $props, $setup, $data, $options) {
-    const _component_uni_load_more = resolveEasycom(vue.resolveDynamicComponent("uni-load-more"), __easycom_0$9);
-    return vue.openBlock(), vue.createElementBlock(
-      vue.Fragment,
-      null,
-      [
-        vue.createCommentVNode(" \r\n	 删除了loading\r\n	 删除了loading\r\n	 删除了loading\r\n	 删除了loading\r\n	 删除了loading\r\n	 删除了loading\r\n	 删除了loading\r\n	 删除了loading\r\n	 删除了loading\r\n	 删除了loading\r\n	 删除了loading\r\n	 删除了loading\r\n	 删除了loading\r\n	 删除了loading\r\n	 删除了loading\r\n	 删除了loading\r\n	 删除了loading\r\n	 删除了loading\r\n	 "),
-        vue.createElementVNode("scroll-view", {
-          style: { "height": "100%" },
-          "scroll-y": true,
-          "refresher-enabled": "",
-          "scroll-top": $setup.screenTop,
-          "refresher-triggered": $setup.isRefresh,
-          "lower-threshold": $props.lowerThreshold,
-          onScroll: $setup.scrollView,
-          onScrolltolower: $setup.bootmScroll,
-          onRefresherrefresh: $setup.refresherrefresh
-        }, [
-          vue.renderSlot(_ctx.$slots, "list", { list: $setup.list }, void 0, true),
-          ["loading", "noMore", "more"].includes($setup.loadMoreStatus) ? (vue.openBlock(), vue.createBlock(_component_uni_load_more, {
-            key: 0,
-            status: $setup.loadMoreStatus
-          }, null, 8, ["status"])) : vue.createCommentVNode("v-if", true),
-          $setup.loadMoreStatus === "noData" && $setup.mergeEmptyConfig ? vue.renderSlot(_ctx.$slots, "empty", { key: 1 }, () => [
-            vue.createElementVNode("view", { class: "error_empty_box" }, [
-              $setup.mergeEmptyConfig.imgSrc ? (vue.openBlock(), vue.createElementBlock("image", {
-                key: 0,
-                class: "image",
-                src: $setup.mergeEmptyConfig.imgSrc,
-                mode: "aspectFit"
-              }, null, 8, ["src"])) : vue.createCommentVNode("v-if", true),
-              $setup.mergeEmptyConfig.text ? (vue.openBlock(), vue.createElementBlock(
-                "text",
-                { key: 1 },
-                vue.toDisplayString($setup.mergeEmptyConfig.text),
-                1
-                /* TEXT */
-              )) : vue.createCommentVNode("v-if", true)
-            ])
-          ], true) : vue.createCommentVNode("v-if", true),
-          ["noDataLoadError", "loadError"].includes($setup.loadMoreStatus) && $setup.mergeErrorConfig ? vue.renderSlot(_ctx.$slots, "error", { key: 2 }, () => [
-            $setup.loadMoreStatus === "noDataLoadError" ? (vue.openBlock(), vue.createElementBlock("view", {
-              key: 0,
-              class: "error_empty_box"
+  function _sfc_render$l(_ctx, _cache, $props, $setup, $data, $options) {
+    const _component_uni_load_more = resolveEasycom(vue.resolveDynamicComponent("uni-load-more"), __easycom_0$8);
+    return vue.openBlock(), vue.createElementBlock("scroll-view", {
+      style: { "height": "100%" },
+      "scroll-y": true,
+      "refresher-enabled": "",
+      "scroll-top": $setup.screenTop,
+      "refresher-triggered": $setup.isRefresh,
+      "lower-threshold": $props.lowerThreshold,
+      onScroll: $setup.scrollView,
+      onScrolltolower: $setup.bootmScroll,
+      onRefresherrefresh: $setup.refresherrefresh
+    }, [
+      vue.renderSlot(_ctx.$slots, "list", { list: $setup.list }, () => [
+        (vue.openBlock(true), vue.createElementBlock(
+          vue.Fragment,
+          null,
+          vue.renderList($setup.list, (item, index) => {
+            return vue.openBlock(), vue.createElementBlock("view", {
+              class: "list_item",
+              key: index
             }, [
-              $setup.mergeErrorConfig.imgSrc ? (vue.openBlock(), vue.createElementBlock("image", {
-                key: 0,
-                class: "image",
-                src: $setup.mergeErrorConfig.imgSrc,
-                mode: "widthFix"
-              }, null, 8, ["src"])) : vue.createCommentVNode("v-if", true),
-              $setup.mergeErrorConfig.text ? (vue.openBlock(), vue.createElementBlock("text", {
-                key: 1,
-                class: "reload_btn",
-                onClick: $setup.search
-              }, [
-                vue.renderSlot(_ctx.$slots, "errorShowText", {
-                  reload: $setup.search,
-                  errorShowText: $setup.mergeErrorConfig.text
-                }, () => [
-                  vue.createElementVNode(
-                    "text",
-                    {
-                      class: "reload_btn",
-                      onClick: $setup.search
-                    },
-                    vue.toDisplayString($setup.mergeErrorConfig.text),
-                    1
-                    /* TEXT */
-                  )
-                ], true)
-              ])) : vue.createCommentVNode("v-if", true)
-            ])) : (vue.openBlock(), vue.createElementBlock("view", {
-              key: 1,
-              class: "error_data_box"
-            }, [
-              vue.renderSlot(_ctx.$slots, "errorShowText", {
-                reload: $setup.search,
-                errorShowText: $setup.mergeErrorConfig.text
-              }, () => [
-                vue.createElementVNode(
-                  "text",
-                  {
-                    class: "reload_btn",
-                    onClick: $setup.search
-                  },
-                  vue.toDisplayString($setup.mergeErrorConfig.text),
-                  1
-                  /* TEXT */
-                )
-              ], true)
-            ]))
-          ], true) : vue.createCommentVNode("v-if", true)
-        ], 40, ["scroll-top", "refresher-triggered", "refresher-enabled", "lower-threshold"])
-      ],
-      2112
-      /* STABLE_FRAGMENT, DEV_ROOT_FRAGMENT */
-    );
+              vue.renderSlot(_ctx.$slots, "list-item", { item }, void 0, true)
+            ]);
+          }),
+          128
+          /* KEYED_FRAGMENT */
+        ))
+      ], true),
+      ["loading", "noMore", "more"].includes($setup.loadMoreStatus) ? (vue.openBlock(), vue.createBlock(_component_uni_load_more, {
+        key: 0,
+        status: $setup.loadMoreStatus
+      }, null, 8, ["status"])) : vue.createCommentVNode("v-if", true),
+      $setup.loadMoreStatus === "noData" ? vue.renderSlot(_ctx.$slots, "empty", { key: 1 }, () => [
+        vue.createElementVNode("view", { class: "icon_box" }, [
+          vue.createElementVNode("image", {
+            class: "image",
+            src: $setup.emptyIconSrc,
+            mode: "aspectFit"
+          }, null, 8, ["src"])
+        ])
+      ], true) : vue.createCommentVNode("v-if", true),
+      $setup.loadMoreStatus === "loadError" ? vue.renderSlot(_ctx.$slots, "error", { key: 2 }, () => [
+        vue.createElementVNode("view", { class: "icon_box" }, [
+          vue.createElementVNode("image", {
+            class: "image",
+            onClick: $setup.search,
+            src: $setup.errorIconSrc,
+            mode: "widthFix"
+          }, null, 8, ["src"])
+        ])
+      ], true) : vue.createCommentVNode("v-if", true)
+    ], 40, ["scroll-top", "refresher-triggered", "refresher-enabled", "lower-threshold"]);
   }
-  const __easycom_0$8 = /* @__PURE__ */ _export_sfc(_sfc_main$i, [["render", _sfc_render$h], ["__scopeId", "data-v-77892465"], ["__file", "D:/code-life/uni-app-components/uni_modules/cl-scroll-view/components/cl-scroll-view/cl-scroll-view.vue"]]);
-  const _sfc_main$h = {
+  const __easycom_0$7 = /* @__PURE__ */ _export_sfc(_sfc_main$m, [["render", _sfc_render$l], ["__scopeId", "data-v-77892465"], ["__file", "D:/code/code-life/uni-app-components/uni_modules/cl-scroll-view/components/cl-scroll-view/cl-scroll-view.vue"]]);
+  const _sfc_main$l = {
     __name: "index",
     setup(__props, { expose: __expose }) {
       __expose();
@@ -4149,10 +4641,10 @@ if (uni.restoreGlobal) {
       return __returned__;
     }
   };
-  function _sfc_render$g(_ctx, _cache, $props, $setup, $data, $options) {
-    const _component_cl_scroll_view = resolveEasycom(vue.resolveDynamicComponent("cl-scroll-view"), __easycom_0$8);
+  function _sfc_render$k(_ctx, _cache, $props, $setup, $data, $options) {
+    const _component_cl_scroll_view = resolveEasycom(vue.resolveDynamicComponent("cl-scroll-view"), __easycom_0$7);
     return vue.openBlock(), vue.createElementBlock("view", { class: "content" }, [
-      vue.createElementVNode("view", { class: "section_title" }, " 基本使用 "),
+      vue.createElementVNode("view", { class: "section_title" }, " 基本使用（使用list插槽） "),
       vue.createElementVNode("view", { style: { "height": "600rpx", "border": "1px solid gainsboro" } }, [
         vue.createVNode(_component_cl_scroll_view, {
           apiFun: $setup.apiFun,
@@ -4184,12 +4676,30 @@ if (uni.restoreGlobal) {
           /* STABLE */
         }, 8, ["params"])
       ]),
-      vue.createElementVNode("view", { class: "section_title" }, " 隐藏loading弹窗，并对请求参数（永远请求pageNum等于10的数据）和接口返回值进行二次处理（将结果包装为“我是处理过的返回值n”） "),
+      vue.createElementVNode("view", { class: "section_title" }, " 基本使用（使用list-item插槽） "),
+      vue.createElementVNode("view", { style: { "height": "600rpx", "border": "1px solid gainsboro" } }, [
+        vue.createVNode(_component_cl_scroll_view, {
+          apiFun: $setup.apiFun,
+          params: $setup.searchParams
+        }, {
+          "list-item": vue.withCtx(({ item }) => [
+            vue.createElementVNode(
+              "view",
+              { class: "item" },
+              vue.toDisplayString(item),
+              1
+              /* TEXT */
+            )
+          ]),
+          _: 1
+          /* STABLE */
+        }, 8, ["params"])
+      ]),
+      vue.createElementVNode("view", { class: "section_title" }, " 对请求参数（永远请求pageNum等于10的数据）和接口返回值进行二次处理（将结果包装为“我是处理过的返回值n”） "),
       vue.createElementVNode("view", { style: { "height": "600rpx", "border": "1px solid gainsboro" } }, [
         vue.createVNode(_component_cl_scroll_view, {
           apiFun: $setup.apiFun1,
           params: $setup.searchParams1,
-          loadToastConfig: false,
           beforeHook: $setup.beforeHook,
           afterHook: $setup.afterHook
         }, {
@@ -4251,79 +4761,20 @@ if (uni.restoreGlobal) {
           /* STABLE */
         }, 8, ["params"])
       ]),
-      vue.createElementVNode("view", { class: "section_title" }, " 自定义无数据页面 "),
+      vue.createElementVNode("view", { class: "section_title" }, " 无数据页面（使用插槽） "),
       vue.createElementVNode("view", { style: { "height": "800rpx", "border": "1px solid gainsboro" } }, [
         vue.createVNode(_component_cl_scroll_view, {
           apiFun: $setup.apiFun2,
-          params: $setup.searchParams2,
-          emptyShowConfig: { text: "好像没有拿到数据哇", imgSrc: "/static/logo.png" }
+          params: $setup.searchParams2
         }, {
-          list: vue.withCtx(({ list }) => [
-            vue.createElementVNode("view", { class: "list_box" }, [
-              (vue.openBlock(true), vue.createElementBlock(
-                vue.Fragment,
-                null,
-                vue.renderList(list, (item) => {
-                  return vue.openBlock(), vue.createElementBlock(
-                    "view",
-                    {
-                      key: item,
-                      class: "item"
-                    },
-                    vue.toDisplayString(item),
-                    1
-                    /* TEXT */
-                  );
-                }),
-                128
-                /* KEYED_FRAGMENT */
-              ))
-            ])
-          ]),
-          _: 1
-          /* STABLE */
-        }, 8, ["params", "emptyShowConfig"])
-      ]),
-      vue.createElementVNode("view", { class: "section_title" }, " 使用插槽控制自定义无数据页面 "),
-      vue.createElementVNode("view", { style: { "height": "800rpx", "border": "1px solid gainsboro" } }, [
-        vue.createVNode(_component_cl_scroll_view, {
-          apiFun: $setup.apiFun2,
-          params: $setup.searchParams2,
-          emptyShowConfig: { text: "好像没有拿到数据哇", imgSrc: "/static/logo.png" }
-        }, {
-          list: vue.withCtx(({ list }) => [
-            list.length > 0 ? (vue.openBlock(), vue.createElementBlock("view", {
-              key: 0,
-              class: "list_box"
-            }, [
-              (vue.openBlock(true), vue.createElementBlock(
-                vue.Fragment,
-                null,
-                vue.renderList(list, (item) => {
-                  return vue.openBlock(), vue.createElementBlock(
-                    "view",
-                    {
-                      key: item,
-                      class: "item"
-                    },
-                    vue.toDisplayString(item),
-                    1
-                    /* TEXT */
-                  );
-                }),
-                128
-                /* KEYED_FRAGMENT */
-              ))
-            ])) : vue.createCommentVNode("v-if", true)
-          ]),
           empty: vue.withCtx(() => [
             vue.createElementVNode("view", { style: { "height": "100%", "background-color": "aquamarine" } }, "我是无数据页面，你可以任意设置")
           ]),
           _: 1
           /* STABLE */
-        }, 8, ["params", "emptyShowConfig"])
+        }, 8, ["params"])
       ]),
-      vue.createElementVNode("view", { class: "section_title" }, " 显示第一次加载直接失败的状态 "),
+      vue.createElementVNode("view", { class: "section_title" }, " 显示加载失败 "),
       vue.createElementVNode("view", { style: { "height": "800rpx", "border": "1px solid gainsboro" } }, [
         vue.createVNode(_component_cl_scroll_view, {
           apiFun: $setup.apiFun3,
@@ -4355,45 +4806,1263 @@ if (uni.restoreGlobal) {
           /* STABLE */
         }, 8, ["params"])
       ]),
-      vue.createElementVNode("view", { class: "section_title" }, " 显示非第一次加载失败的状态，使用messageField字段控制提示信息，使用errorToastConfig隐藏弹窗图标，使用errorShowConfig配置错误时展示的文本 "),
+      vue.createElementVNode("view", { class: "section_title" }, " 显示加载失败（使用插槽） "),
       vue.createElementVNode("view", { style: { "height": "800rpx", "border": "1px solid gainsboro" } }, [
         vue.createVNode(_component_cl_scroll_view, {
-          apiFun: $setup.apiFun4,
-          params: $setup.searchParams4,
-          hideLoad: "",
-          messageField: "message",
-          errorToastConfig: { icon: "none" },
-          errorShowConfig: { text: "好像没有拿到数据哇", imgSrc: "/static/logo.png" }
+          apiFun: $setup.apiFun3,
+          params: $setup.searchParams3
         }, {
-          list: vue.withCtx(({ list }) => [
-            vue.createElementVNode("view", { class: "list_box" }, [
-              (vue.openBlock(true), vue.createElementBlock(
-                vue.Fragment,
-                null,
-                vue.renderList(list, (item) => {
-                  return vue.openBlock(), vue.createElementBlock(
-                    "view",
-                    {
-                      key: item,
-                      class: "item"
-                    },
-                    vue.toDisplayString(item),
-                    1
-                    /* TEXT */
-                  );
-                }),
-                128
-                /* KEYED_FRAGMENT */
-              ))
-            ])
+          error: vue.withCtx(() => [
+            vue.createElementVNode("view", { style: { "height": "100%", "background-color": "aquamarine" } }, "我是错误页面，你可以任意设置")
           ]),
           _: 1
           /* STABLE */
-        }, 8, ["params", "errorShowConfig"])
+        }, 8, ["params"])
       ])
     ]);
   }
-  const PagesComponentPageClScrollViewIndex = /* @__PURE__ */ _export_sfc(_sfc_main$h, [["render", _sfc_render$g], ["__scopeId", "data-v-a70f1c9b"], ["__file", "D:/code-life/uni-app-components/pages/componentPage/cl-scroll-view/index.vue"]]);
+  const PagesComponentPageClScrollViewIndex = /* @__PURE__ */ _export_sfc(_sfc_main$l, [["render", _sfc_render$k], ["__scopeId", "data-v-a70f1c9b"], ["__file", "D:/code/code-life/uni-app-components/pages/componentPage/cl-scroll-view/index.vue"]]);
+  const _sfc_main$k = {
+    name: "UniSection",
+    emits: ["click"],
+    props: {
+      type: {
+        type: String,
+        default: ""
+      },
+      title: {
+        type: String,
+        required: true,
+        default: ""
+      },
+      titleFontSize: {
+        type: String,
+        default: "14px"
+      },
+      titleColor: {
+        type: String,
+        default: "#333"
+      },
+      subTitle: {
+        type: String,
+        default: ""
+      },
+      subTitleFontSize: {
+        type: String,
+        default: "12px"
+      },
+      subTitleColor: {
+        type: String,
+        default: "#999"
+      },
+      padding: {
+        type: [Boolean, String],
+        default: false
+      }
+    },
+    computed: {
+      _padding() {
+        if (typeof this.padding === "string") {
+          return this.padding;
+        }
+        return this.padding ? "10px" : "";
+      }
+    },
+    watch: {
+      title(newVal) {
+        if (uni.report && newVal !== "") {
+          uni.report("title", newVal);
+        }
+      }
+    },
+    methods: {
+      onClick() {
+        this.$emit("click");
+      }
+    }
+  };
+  function _sfc_render$j(_ctx, _cache, $props, $setup, $data, $options) {
+    return vue.openBlock(), vue.createElementBlock("view", { class: "uni-section" }, [
+      vue.createElementVNode("view", {
+        class: "uni-section-header",
+        onClick: _cache[0] || (_cache[0] = (...args) => $options.onClick && $options.onClick(...args))
+      }, [
+        $props.type ? (vue.openBlock(), vue.createElementBlock(
+          "view",
+          {
+            key: 0,
+            class: vue.normalizeClass(["uni-section-header__decoration", $props.type])
+          },
+          null,
+          2
+          /* CLASS */
+        )) : vue.renderSlot(_ctx.$slots, "decoration", { key: 1 }, void 0, true),
+        vue.createElementVNode("view", { class: "uni-section-header__content" }, [
+          vue.createElementVNode(
+            "text",
+            {
+              style: vue.normalizeStyle({ "font-size": $props.titleFontSize, "color": $props.titleColor }),
+              class: vue.normalizeClass(["uni-section__content-title", { "distraction": !$props.subTitle }])
+            },
+            vue.toDisplayString($props.title),
+            7
+            /* TEXT, CLASS, STYLE */
+          ),
+          $props.subTitle ? (vue.openBlock(), vue.createElementBlock(
+            "text",
+            {
+              key: 0,
+              style: vue.normalizeStyle({ "font-size": $props.subTitleFontSize, "color": $props.subTitleColor }),
+              class: "uni-section-header__content-sub"
+            },
+            vue.toDisplayString($props.subTitle),
+            5
+            /* TEXT, STYLE */
+          )) : vue.createCommentVNode("v-if", true)
+        ]),
+        vue.createElementVNode("view", { class: "uni-section-header__slot-right" }, [
+          vue.renderSlot(_ctx.$slots, "right", {}, void 0, true)
+        ])
+      ]),
+      vue.createElementVNode(
+        "view",
+        {
+          class: "uni-section-content",
+          style: vue.normalizeStyle({ padding: $options._padding })
+        },
+        [
+          vue.renderSlot(_ctx.$slots, "default", {}, void 0, true)
+        ],
+        4
+        /* STYLE */
+      )
+    ]);
+  }
+  const __easycom_0$6 = /* @__PURE__ */ _export_sfc(_sfc_main$k, [["render", _sfc_render$j], ["__scopeId", "data-v-637fd36b"], ["__file", "D:/code/code-life/uni-app-components/uni_modules/uni-section/components/uni-section/uni-section.vue"]]);
+  const _sfc_main$j = {
+    __name: "cl-select",
+    props: {
+      options: {
+        type: Array,
+        default: () => []
+      },
+      labelField: {
+        type: String,
+        default: "label"
+      },
+      valueField: {
+        type: String,
+        default: "value"
+      },
+      modelValue: {
+        type: [String, Number],
+        default: void 0
+      },
+      placeholder: {
+        type: String,
+        default: "请选择"
+      },
+      maxHeight: {
+        type: [String, Number],
+        default: 300
+      },
+      placeholderStyle: {
+        type: String,
+        default: ""
+      },
+      disabled: {
+        type: Boolean,
+        default: false
+      },
+      maxlength: {
+        type: Number,
+        default: 20
+      },
+      trim: {
+        type: String,
+        default: "both"
+      },
+      hideBorder: {
+        type: Boolean,
+        default: false
+      },
+      cursorSpacing: {
+        type: Number,
+        default: 0
+      },
+      emptyText: {
+        type: String,
+        default: "暂无数据"
+      },
+      filterable: {
+        type: Boolean,
+        default: true
+      }
+    },
+    emits: ["update:modelValue", "focus", "blur", "selected", "clear", "input"],
+    setup(__props, { expose: __expose, emit: __emit }) {
+      __expose();
+      const curInstance = vue.getCurrentInstance();
+      const props = __props;
+      const emits = __emit;
+      const visible = vue.ref(false);
+      const curSelect = vue.ref({});
+      const curSelectLabel = vue.ref();
+      const curSelectValue = vue.ref();
+      const isSelected = vue.computed(() => {
+        if (Object.keys(curSelect.value).length === 0) {
+          return false;
+        } else {
+          return true;
+        }
+      });
+      const scrollIntoView = vue.ref();
+      const showOptions = vue.ref([]);
+      const formatOptions = vue.computed(() => {
+        return props.options.map((item) => {
+          if (typeof item !== "object") {
+            return {
+              [props.valueField]: item,
+              [props.labelField]: item
+            };
+          } else {
+            return item;
+          }
+        });
+      });
+      const selected = (item) => {
+        curSelect.value = item;
+        visible.value = false;
+        emits("selected", item[props.valueField], item);
+      };
+      const clearHandle = () => {
+        curSelect.value = {};
+        formatAppLog("log", "at uni_modules/cl-select/components/cl-select/cl-select.vue:144", props.options[0][props.valueField]);
+        emits("clear");
+      };
+      const showPlaceholder = vue.ref(props.placeholder);
+      const inputClick = () => {
+        if (props.disabled) {
+          return;
+        }
+        if (isSelected.value) {
+          showPlaceholder.value = curSelect.value[props.labelField];
+        } else {
+          showPlaceholder.value = props.placeholder;
+        }
+        visible.value = true;
+        showOptions.value = formatOptions.value;
+        curSelectLabel.value = void 0;
+      };
+      const focusHandle = (inputVal) => {
+        if (isSelected.value) {
+          showPlaceholder.value = curSelect.value[props.labelField];
+        } else {
+          showPlaceholder.value = props.placeholder;
+        }
+        visible.value = true;
+        showOptions.value = formatOptions.value;
+        curSelectLabel.value = void 0;
+        emits("focus", inputVal);
+      };
+      const blurHandle = () => {
+        if (isSelected.value) {
+          curSelectLabel.value = curSelect.value[props.labelField];
+        } else {
+          curSelectLabel.value = void 0;
+        }
+        emits("blur");
+      };
+      let searchTimer = null;
+      const inputHandle = (e) => {
+        clearTimeout(searchTimer);
+        searchTimer = setTimeout(() => {
+          showOptions.value = formatOptions.value.filter((item) => item[props.labelField].includes(e));
+          emits("input", e);
+        }, 200);
+      };
+      vue.watch(() => visible.value, (val) => {
+        if (val) {
+          vue.nextTick(() => {
+            if (isSelected.value) {
+              showPlaceholder.value = curSelect.value[props.labelField];
+              scrollIntoView.value = curSelect.value[props.valueField];
+            } else {
+              showPlaceholder.value = props.placeholder;
+              if (formatOptions.value.length > 0) {
+                scrollIntoView.value = formatOptions.value[0][props.valueField];
+              }
+            }
+          });
+        }
+      });
+      vue.watch(() => curSelect.value, (val) => {
+        if (Object.keys(val).length === 0) {
+          curSelectLabel.value = void 0;
+          curSelectValue.value = void 0;
+          showPlaceholder.value = props.placeholder;
+        } else {
+          curSelectLabel.value = val[props.labelField];
+          curSelectValue.value = val[props.valueField];
+        }
+        emits("update:modelValue", curSelectValue.value);
+      });
+      const setCurSelect = () => {
+        if (formatOptions.value.length > 0 && !isEmpty(props.modelValue)) {
+          const data = formatOptions.value.find((item) => item[props.valueField] === props.modelValue);
+          if (data) {
+            curSelect.value = data;
+          }
+        }
+      };
+      const isEmpty = (val) => {
+        return val === "" || val === void 0 || val === null;
+      };
+      vue.watch([() => props.options, () => props.modelValue], () => {
+        setCurSelect();
+      }, {
+        deep: true,
+        immediate: true
+      });
+      const maskClick = (e) => {
+        visible.value = false;
+      };
+      const __returned__ = { curInstance, props, emits, visible, curSelect, curSelectLabel, curSelectValue, isSelected, scrollIntoView, showOptions, formatOptions, selected, clearHandle, showPlaceholder, inputClick, focusHandle, blurHandle, get searchTimer() {
+        return searchTimer;
+      }, set searchTimer(v) {
+        searchTimer = v;
+      }, inputHandle, setCurSelect, isEmpty, maskClick, ref: vue.ref, watch: vue.watch, computed: vue.computed, nextTick: vue.nextTick, onMounted: vue.onMounted, getCurrentInstance: vue.getCurrentInstance };
+      Object.defineProperty(__returned__, "__isScriptSetup", { enumerable: false, value: true });
+      return __returned__;
+    }
+  };
+  function _sfc_render$i(_ctx, _cache, $props, $setup, $data, $options) {
+    const _component_uni_icons = resolveEasycom(vue.resolveDynamicComponent("uni-icons"), __easycom_0$c);
+    const _component_cl_input = resolveEasycom(vue.resolveDynamicComponent("cl-input"), __easycom_0$b);
+    return vue.openBlock(), vue.createElementBlock(
+      vue.Fragment,
+      null,
+      [
+        vue.createElementVNode("view", { class: "el_select" }, [
+          vue.createVNode(_component_cl_input, {
+            class: "cl_input",
+            modelValue: $setup.curSelectLabel,
+            "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => $setup.curSelectLabel = $event),
+            placeholder: $setup.showPlaceholder,
+            inputType: $props.filterable ? "input" : "falseInput",
+            placeholderStyle: $props.placeholderStyle,
+            disabled: $props.disabled,
+            maxlength: $props.maxlength,
+            trim: $props.trim,
+            inputBorder: !$props.hideBorder,
+            cursorSpacing: $props.cursorSpacing,
+            onFocus: $setup.focusHandle,
+            onInput: $setup.inputHandle,
+            onBlur: $setup.blurHandle,
+            onInputClick: $setup.inputClick,
+            onClear: $setup.clearHandle
+          }, vue.createSlots({
+            _: 2
+            /* DYNAMIC */
+          }, [
+            $props.filterable ? {
+              name: "right",
+              fn: vue.withCtx(() => [
+                !$props.disabled ? (vue.openBlock(), vue.createElementBlock("view", {
+                  key: 0,
+                  class: "icons"
+                }, [
+                  !$setup.isSelected || $setup.visible ? (vue.openBlock(), vue.createBlock(_component_uni_icons, {
+                    key: 0,
+                    type: $setup.visible ? "top" : "bottom",
+                    size: "14",
+                    color: "#999"
+                  }, null, 8, ["type"])) : vue.createCommentVNode("v-if", true)
+                ])) : vue.createCommentVNode("v-if", true)
+              ]),
+              key: "0"
+            } : void 0
+          ]), 1032, ["modelValue", "placeholder", "inputType", "placeholderStyle", "disabled", "maxlength", "trim", "inputBorder", "cursorSpacing"]),
+          vue.withDirectives(vue.createElementVNode(
+            "view",
+            { class: "scroll_list" },
+            [
+              vue.createElementVNode("view", { class: "triangle_icon" }),
+              vue.createElementVNode("scroll-view", {
+                "scroll-y": "",
+                "scroll-into-view": $setup.scrollIntoView,
+                style: vue.normalizeStyle({ maxHeight: $props.maxHeight + "px" })
+              }, [
+                (vue.openBlock(true), vue.createElementBlock(
+                  vue.Fragment,
+                  null,
+                  vue.renderList($setup.showOptions, (item, index) => {
+                    return vue.openBlock(), vue.createElementBlock("view", {
+                      class: vue.normalizeClass(["select_item", { active: item[$props.valueField] === $setup.curSelect[$props.valueField] }]),
+                      key: index,
+                      onClick: ($event) => $setup.selected(item),
+                      id: item[$props.valueField]
+                    }, vue.toDisplayString(item[$props.labelField]), 11, ["onClick", "id"]);
+                  }),
+                  128
+                  /* KEYED_FRAGMENT */
+                )),
+                $setup.showOptions.length === 0 ? vue.renderSlot(_ctx.$slots, "empty", { key: 0 }, () => [
+                  vue.createElementVNode(
+                    "view",
+                    { class: "empty_text" },
+                    vue.toDisplayString($props.emptyText),
+                    1
+                    /* TEXT */
+                  )
+                ], true) : vue.createCommentVNode("v-if", true)
+              ], 12, ["scroll-into-view"])
+            ],
+            512
+            /* NEED_PATCH */
+          ), [
+            [vue.vShow, $setup.visible]
+          ])
+        ]),
+        $setup.visible ? (vue.openBlock(), vue.createElementBlock("view", {
+          key: 0,
+          class: "mask",
+          onClick: $setup.maskClick
+        })) : vue.createCommentVNode("v-if", true)
+      ],
+      64
+      /* STABLE_FRAGMENT */
+    );
+  }
+  const __easycom_1$3 = /* @__PURE__ */ _export_sfc(_sfc_main$j, [["render", _sfc_render$i], ["__scopeId", "data-v-4bd33685"], ["__file", "D:/code/code-life/uni-app-components/uni_modules/cl-select/components/cl-select/cl-select.vue"]]);
+  const _sfc_main$i = {
+    __name: "index",
+    setup(__props, { expose: __expose }) {
+      __expose();
+      const value = vue.ref();
+      const options = Array.from({
+        length: 100
+      }, (_, index) => {
+        return {
+          label: `我是展示的值${index}`,
+          value: `value${index}`
+        };
+      });
+      const __returned__ = { value, options, ref: vue.ref };
+      Object.defineProperty(__returned__, "__isScriptSetup", { enumerable: false, value: true });
+      return __returned__;
+    }
+  };
+  function _sfc_render$h(_ctx, _cache, $props, $setup, $data, $options) {
+    const _component_uni_section = resolveEasycom(vue.resolveDynamicComponent("uni-section"), __easycom_0$6);
+    const _component_cl_select = resolveEasycom(vue.resolveDynamicComponent("cl-select"), __easycom_1$3);
+    return vue.openBlock(), vue.createElementBlock("view", { class: "content" }, [
+      vue.createVNode(_component_uni_section, null, {
+        default: vue.withCtx(() => [
+          vue.createTextVNode("模仿uni-data-select做的可搜索下拉框，可直接回显数据，并定位到对应的数据项")
+        ]),
+        _: 1
+        /* STABLE */
+      }),
+      vue.createVNode(_component_cl_select, {
+        options: $setup.options,
+        modelValue: $setup.value,
+        "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => $setup.value = $event)
+      }, null, 8, ["options", "modelValue"]),
+      vue.createTextVNode(
+        " " + vue.toDisplayString($setup.value),
+        1
+        /* TEXT */
+      )
+    ]);
+  }
+  const PagesComponentPageClSelectIndex = /* @__PURE__ */ _export_sfc(_sfc_main$i, [["render", _sfc_render$h], ["__scopeId", "data-v-ad7d568c"], ["__file", "D:/code/code-life/uni-app-components/pages/componentPage/cl-select/index.vue"]]);
+  const _sfc_main$h = {
+    name: "UniStatusBar",
+    data() {
+      return {
+        statusBarHeight: uni.getSystemInfoSync().statusBarHeight + "px"
+      };
+    }
+  };
+  function _sfc_render$g(_ctx, _cache, $props, $setup, $data, $options) {
+    return vue.openBlock(), vue.createElementBlock(
+      "view",
+      {
+        style: vue.normalizeStyle({ height: $data.statusBarHeight }),
+        class: "uni-status-bar"
+      },
+      [
+        vue.renderSlot(_ctx.$slots, "default", {}, void 0, true)
+      ],
+      4
+      /* STYLE */
+    );
+  }
+  const statusBar = /* @__PURE__ */ _export_sfc(_sfc_main$h, [["render", _sfc_render$g], ["__scopeId", "data-v-7920e3e0"], ["__file", "D:/code/code-life/uni-app-components/uni_modules/uni-nav-bar/components/uni-nav-bar/uni-status-bar.vue"]]);
+  const getVal = (val) => typeof val === "number" ? val + "px" : val;
+  const _sfc_main$g = {
+    name: "UniNavBar",
+    components: {
+      statusBar
+    },
+    emits: ["clickLeft", "clickRight", "clickTitle"],
+    props: {
+      dark: {
+        type: Boolean,
+        default: false
+      },
+      title: {
+        type: String,
+        default: ""
+      },
+      leftText: {
+        type: String,
+        default: ""
+      },
+      rightText: {
+        type: String,
+        default: ""
+      },
+      leftIcon: {
+        type: String,
+        default: ""
+      },
+      rightIcon: {
+        type: String,
+        default: ""
+      },
+      fixed: {
+        type: [Boolean, String],
+        default: false
+      },
+      color: {
+        type: String,
+        default: ""
+      },
+      backgroundColor: {
+        type: String,
+        default: ""
+      },
+      statusBar: {
+        type: [Boolean, String],
+        default: false
+      },
+      shadow: {
+        type: [Boolean, String],
+        default: false
+      },
+      border: {
+        type: [Boolean, String],
+        default: true
+      },
+      height: {
+        type: [Number, String],
+        default: 44
+      },
+      leftWidth: {
+        type: [Number, String],
+        default: 60
+      },
+      rightWidth: {
+        type: [Number, String],
+        default: 60
+      },
+      stat: {
+        type: [Boolean, String],
+        default: ""
+      }
+    },
+    computed: {
+      themeBgColor() {
+        if (this.dark) {
+          if (this.backgroundColor) {
+            return this.backgroundColor;
+          } else {
+            return this.dark ? "#333" : "#FFF";
+          }
+        }
+        return this.backgroundColor || "#FFF";
+      },
+      themeColor() {
+        if (this.dark) {
+          if (this.color) {
+            return this.color;
+          } else {
+            return this.dark ? "#fff" : "#333";
+          }
+        }
+        return this.color || "#333";
+      },
+      navbarHeight() {
+        return getVal(this.height);
+      },
+      leftIconWidth() {
+        return getVal(this.leftWidth);
+      },
+      rightIconWidth() {
+        return getVal(this.rightWidth);
+      }
+    },
+    mounted() {
+      if (uni.report && this.stat && this.title !== "") {
+        uni.report("title", this.title);
+      }
+    },
+    methods: {
+      onClickLeft() {
+        this.$emit("clickLeft");
+      },
+      onClickRight() {
+        this.$emit("clickRight");
+      },
+      onClickTitle() {
+        this.$emit("clickTitle");
+      }
+    }
+  };
+  function _sfc_render$f(_ctx, _cache, $props, $setup, $data, $options) {
+    const _component_status_bar = vue.resolveComponent("status-bar");
+    const _component_uni_icons = resolveEasycom(vue.resolveDynamicComponent("uni-icons"), __easycom_0$c);
+    return vue.openBlock(), vue.createElementBlock(
+      "view",
+      {
+        class: vue.normalizeClass(["uni-navbar", { "uni-dark": $props.dark, "uni-nvue-fixed": $props.fixed }])
+      },
+      [
+        vue.createElementVNode(
+          "view",
+          {
+            class: vue.normalizeClass(["uni-navbar__content", { "uni-navbar--fixed": $props.fixed, "uni-navbar--shadow": $props.shadow, "uni-navbar--border": $props.border }]),
+            style: vue.normalizeStyle({ "background-color": $options.themeBgColor, "border-bottom-color": $options.themeColor })
+          },
+          [
+            $props.statusBar ? (vue.openBlock(), vue.createBlock(_component_status_bar, { key: 0 })) : vue.createCommentVNode("v-if", true),
+            vue.createElementVNode(
+              "view",
+              {
+                style: vue.normalizeStyle({ color: $options.themeColor, backgroundColor: $options.themeBgColor, height: $options.navbarHeight }),
+                class: "uni-navbar__header"
+              },
+              [
+                vue.createElementVNode(
+                  "view",
+                  {
+                    onClick: _cache[0] || (_cache[0] = (...args) => $options.onClickLeft && $options.onClickLeft(...args)),
+                    class: "uni-navbar__header-btns uni-navbar__header-btns-left",
+                    style: vue.normalizeStyle({ width: $options.leftIconWidth })
+                  },
+                  [
+                    vue.renderSlot(_ctx.$slots, "left", {}, () => [
+                      $props.leftIcon.length > 0 ? (vue.openBlock(), vue.createElementBlock("view", {
+                        key: 0,
+                        class: "uni-navbar__content_view"
+                      }, [
+                        vue.createVNode(_component_uni_icons, {
+                          color: $options.themeColor,
+                          type: $props.leftIcon,
+                          size: "20"
+                        }, null, 8, ["color", "type"])
+                      ])) : vue.createCommentVNode("v-if", true),
+                      $props.leftText.length ? (vue.openBlock(), vue.createElementBlock(
+                        "view",
+                        {
+                          key: 1,
+                          class: vue.normalizeClass([{ "uni-navbar-btn-icon-left": !$props.leftIcon.length > 0 }, "uni-navbar-btn-text"])
+                        },
+                        [
+                          vue.createElementVNode(
+                            "text",
+                            {
+                              style: vue.normalizeStyle({ color: $options.themeColor, fontSize: "12px" })
+                            },
+                            vue.toDisplayString($props.leftText),
+                            5
+                            /* TEXT, STYLE */
+                          )
+                        ],
+                        2
+                        /* CLASS */
+                      )) : vue.createCommentVNode("v-if", true)
+                    ], true)
+                  ],
+                  4
+                  /* STYLE */
+                ),
+                vue.createElementVNode("view", {
+                  class: "uni-navbar__header-container",
+                  onClick: _cache[1] || (_cache[1] = (...args) => $options.onClickTitle && $options.onClickTitle(...args))
+                }, [
+                  vue.renderSlot(_ctx.$slots, "default", {}, () => [
+                    $props.title.length > 0 ? (vue.openBlock(), vue.createElementBlock("view", {
+                      key: 0,
+                      class: "uni-navbar__header-container-inner"
+                    }, [
+                      vue.createElementVNode(
+                        "text",
+                        {
+                          class: "uni-nav-bar-text uni-ellipsis-1",
+                          style: vue.normalizeStyle({ color: $options.themeColor })
+                        },
+                        vue.toDisplayString($props.title),
+                        5
+                        /* TEXT, STYLE */
+                      )
+                    ])) : vue.createCommentVNode("v-if", true)
+                  ], true)
+                ]),
+                vue.createElementVNode(
+                  "view",
+                  {
+                    onClick: _cache[2] || (_cache[2] = (...args) => $options.onClickRight && $options.onClickRight(...args)),
+                    class: "uni-navbar__header-btns uni-navbar__header-btns-right",
+                    style: vue.normalizeStyle({ width: $options.rightIconWidth })
+                  },
+                  [
+                    vue.renderSlot(_ctx.$slots, "right", {}, () => [
+                      $props.rightIcon.length ? (vue.openBlock(), vue.createElementBlock("view", { key: 0 }, [
+                        vue.createVNode(_component_uni_icons, {
+                          color: $options.themeColor,
+                          type: $props.rightIcon,
+                          size: "22"
+                        }, null, 8, ["color", "type"])
+                      ])) : vue.createCommentVNode("v-if", true),
+                      $props.rightText.length && !$props.rightIcon.length ? (vue.openBlock(), vue.createElementBlock("view", {
+                        key: 1,
+                        class: "uni-navbar-btn-text"
+                      }, [
+                        vue.createElementVNode(
+                          "text",
+                          {
+                            class: "uni-nav-bar-right-text",
+                            style: vue.normalizeStyle({ color: $options.themeColor })
+                          },
+                          vue.toDisplayString($props.rightText),
+                          5
+                          /* TEXT, STYLE */
+                        )
+                      ])) : vue.createCommentVNode("v-if", true)
+                    ], true)
+                  ],
+                  4
+                  /* STYLE */
+                )
+              ],
+              4
+              /* STYLE */
+            )
+          ],
+          6
+          /* CLASS, STYLE */
+        ),
+        $props.fixed ? (vue.openBlock(), vue.createElementBlock("view", {
+          key: 0,
+          class: "uni-navbar__placeholder"
+        }, [
+          $props.statusBar ? (vue.openBlock(), vue.createBlock(_component_status_bar, { key: 0 })) : vue.createCommentVNode("v-if", true),
+          vue.createElementVNode(
+            "view",
+            {
+              class: "uni-navbar__placeholder-view",
+              style: vue.normalizeStyle({ height: $options.navbarHeight })
+            },
+            null,
+            4
+            /* STYLE */
+          )
+        ])) : vue.createCommentVNode("v-if", true)
+      ],
+      2
+      /* CLASS */
+    );
+  }
+  const __easycom_0$5 = /* @__PURE__ */ _export_sfc(_sfc_main$g, [["render", _sfc_render$f], ["__scopeId", "data-v-26544265"], ["__file", "D:/code/code-life/uni-app-components/uni_modules/uni-nav-bar/components/uni-nav-bar/uni-nav-bar.vue"]]);
+  const _sfc_main$f = {
+    __name: "cl-nav-bar",
+    props: {
+      title: {
+        type: String,
+        default: ""
+      },
+      statusBar: {
+        type: Boolean,
+        default: true
+      },
+      fixed: {
+        type: Boolean,
+        default: true
+      },
+      leftIcon: {
+        type: String,
+        default: "left"
+      },
+      border: {
+        type: Boolean,
+        default: false
+      },
+      clickLeft: {
+        type: Function
+      },
+      clickright: {
+        type: Function
+      }
+    },
+    emits: ["getHeight"],
+    setup(__props, { expose: __expose, emit: __emit }) {
+      __expose();
+      const props = __props;
+      const $attrs = vue.useAttrs();
+      const emits = __emit;
+      onReady(() => {
+        const pageInstace = vue.getCurrentInstance();
+        const query = uni.createSelectorQuery().in(pageInstace == null ? void 0 : pageInstace.proxy);
+        query.select(".cl-nav-bar").boundingClientRect((data) => {
+          emits("getHeight", data.height);
+        }).exec();
+      });
+      const getCurrentPageTitle = () => {
+        if (props.title) {
+          return props.title;
+        }
+        const pageList = getCurrentPages();
+        const curPage = pageList[pageList.length - 1];
+        if (curPage) {
+          const {
+            $page
+          } = curPage;
+          return $page.meta.navigationBar.titleText;
+        }
+      };
+      const clickLeft = () => {
+        if (typeof props.clickLeft === "function") {
+          props.clickLeft();
+        } else {
+          uni.navigateBack();
+        }
+      };
+      const clickright = () => {
+        if (typeof props.clickright === "function") {
+          props.clickright();
+        }
+      };
+      const __returned__ = { props, $attrs, emits, getCurrentPageTitle, clickLeft, clickright, onMounted: vue.onMounted, getCurrentInstance: vue.getCurrentInstance, useAttrs: vue.useAttrs, useSlots: vue.useSlots, get onReady() {
+        return onReady;
+      } };
+      Object.defineProperty(__returned__, "__isScriptSetup", { enumerable: false, value: true });
+      return __returned__;
+    }
+  };
+  function _sfc_render$e(_ctx, _cache, $props, $setup, $data, $options) {
+    const _component_uni_nav_bar = resolveEasycom(vue.resolveDynamicComponent("uni-nav-bar"), __easycom_0$5);
+    return vue.openBlock(), vue.createBlock(_component_uni_nav_bar, vue.mergeProps({ class: "cl-nav-bar" }, $setup.$attrs, {
+      border: $props.border,
+      statusBar: $props.statusBar,
+      fixed: $props.fixed,
+      leftIcon: $props.leftIcon,
+      title: $setup.getCurrentPageTitle(),
+      onClickLeft: $setup.clickLeft,
+      onClickright: $setup.clickright
+    }), null, 16, ["border", "statusBar", "fixed", "leftIcon", "title"]);
+  }
+  const __easycom_0$4 = /* @__PURE__ */ _export_sfc(_sfc_main$f, [["render", _sfc_render$e], ["__file", "D:/code/code-life/uni-app-components/uni_modules/cl-nav-bar/components/cl-nav-bar/cl-nav-bar.vue"]]);
+  const _sfc_main$e = {};
+  function _sfc_render$d(_ctx, _cache) {
+    const _component_cl_nav_bar = resolveEasycom(vue.resolveDynamicComponent("cl-nav-bar"), __easycom_0$4);
+    return vue.openBlock(), vue.createElementBlock(
+      vue.Fragment,
+      null,
+      [
+        vue.createVNode(_component_cl_nav_bar),
+        vue.createElementVNode("view", { style: { "padding": "30rpx" } }, " cl-nav-bar组件与uni-nav-bar组件并无区别，只是设置了部分属性的常用默认值，添加了自动从page.json获取标题的方法 "),
+        vue.createElementVNode("view", { style: { "height": "1000px" } })
+      ],
+      64
+      /* STABLE_FRAGMENT */
+    );
+  }
+  const PagesComponentPageClNavBarIndex = /* @__PURE__ */ _export_sfc(_sfc_main$e, [["render", _sfc_render$d], ["__file", "D:/code/code-life/uni-app-components/pages/componentPage/cl-nav-bar/index.vue"]]);
+  const _sfc_main$d = {
+    __name: "cl-date-picker",
+    props: /* @__PURE__ */ vue.mergeModels({
+      dateType: {
+        type: String,
+        default: "YYYY-MM-DD"
+      },
+      placeholder: {
+        type: String,
+        default: "请选择"
+      },
+      clearable: {
+        type: Boolean,
+        default: true
+      },
+      // 年份下拉选项
+      yearOptions: {
+        type: Array,
+        default: () => []
+      },
+      // 打开弹窗默认选中当前时间
+      isNow: {
+        type: Boolean,
+        default: true
+      },
+      disabled: {
+        type: Boolean,
+        default: false
+      }
+    }, {
+      "modelValue": {},
+      "modelModifiers": {}
+    }),
+    emits: /* @__PURE__ */ vue.mergeModels(["cancel", "submit"], ["update:modelValue"]),
+    setup(__props, { expose: __expose, emit: __emit }) {
+      const props = __props;
+      const atrrs = vue.useAttrs();
+      const modelValue = vue.useModel(__props, "modelValue");
+      const emits = __emit;
+      const popupRef = vue.ref();
+      const dateOptionList = vue.ref([]);
+      const dateVal = vue.ref([]);
+      const dateLabelMap = {
+        YYYY: "年",
+        MM: "月",
+        DD: "日",
+        hh: "时",
+        mm: "分",
+        ss: "秒"
+      };
+      const dateTypeMap = [
+        {
+          type: "YYYY",
+          regExp: /^\d{4}$/
+        },
+        {
+          type: "YYYY-MM",
+          regExp: /^\d{4}-\d{2}$/
+        },
+        {
+          type: "YYYY-MM-DD",
+          regExp: /^\d{4}-\d{2}-\d{2}/
+        },
+        {
+          type: "YYYY-MM-DD HH",
+          regExp: /^\d{4}-\d{2}-\d{2} \d{2}$/
+        },
+        {
+          type: "YYYY-MM-DD HH:mm",
+          regExp: /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}$/
+        },
+        {
+          type: "YYYY-MM-DD HH:mm:ss",
+          regExp: /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/
+        }
+      ];
+      const isEmpty = (val) => {
+        return val === null || val === "" || val === void 0;
+      };
+      const supplementZero = (num) => {
+        return num >= 10 ? num + "" : "0" + num;
+      };
+      const getNowDate = () => {
+        const now = /* @__PURE__ */ new Date();
+        const YYYY = now.getFullYear() + "";
+        const MM = supplementZero(now.getMonth() + 1);
+        const DD = supplementZero(now.getDate());
+        const hh = supplementZero(now.getHours());
+        const mm = supplementZero(now.getMinutes());
+        const ss = supplementZero(now.getSeconds());
+        return {
+          YYYY,
+          MM,
+          DD,
+          hh,
+          mm,
+          ss
+        };
+      };
+      const dateTypetList = vue.computed(() => {
+        const regex = /(YYYY|MM|DD|hh|mm|ss)/g;
+        const matches = props.dateType.match(regex);
+        return matches || [];
+      });
+      const dataValList = vue.computed(() => {
+        const regex = /(\d{4}|\d{2}|\d{2}|\d{2}|\d{2}|\d{2})/g;
+        const matches = props.modelValue.match(regex);
+        return matches || [];
+      });
+      const createDateOptions = () => {
+        dateOptionList.value = [];
+        if (dateTypetList.value.length === 0) {
+          throw new Error("传入的时间格式无法识别到有效值，有效值包含：YYYY,MM,DD,hh,mm,ss");
+        }
+        dateTypetList.value.forEach((item, index) => {
+          let options = [];
+          if (item === "YYYY") {
+            if (props.yearOptions.length === 0) {
+              for (let i = 1990; i <= 2050; i++) {
+                options.push(i + "");
+              }
+            } else {
+              options = props.yearOptions;
+            }
+          }
+          if (item === "MM") {
+            for (let i = 1; i <= 12; i++) {
+              options.push(supplementZero(i));
+            }
+          }
+          if (item === "DD") {
+            for (let i = 1; i <= 31; i++) {
+              options.push(supplementZero(i));
+            }
+          }
+          if (item === "hh") {
+            for (let i = 0; i <= 23; i++) {
+              options.push(supplementZero(i));
+            }
+          }
+          if (item === "mm" || item === "ss") {
+            for (let i = 0; i <= 59; i++) {
+              options.push(supplementZero(i));
+            }
+          }
+          dateOptionList.value.push({
+            type: item,
+            options
+          });
+        });
+      };
+      const showDate = () => {
+        dateVal.value = [];
+        dateTypetList.value.forEach((item, index) => {
+          const curOption = dateOptionList.value.find((itm) => itm.type === item);
+          const curData = curOption.options.findIndex((itm) => itm === dataValList.value[index]);
+          dateVal.value.push(curData);
+        });
+      };
+      const dateChange = (e) => {
+        const {
+          value
+        } = e.detail;
+        formatAppLog("log", "at uni_modules/cl-date-picker/components/cl-date-picker/cl-date-picker.vue:206", e, "detail");
+        formatAppLog("log", "at uni_modules/cl-date-picker/components/cl-date-picker/cl-date-picker.vue:207", dateTypetList.value, "dateTypetList");
+        const yearIdx = dateTypetList.value.findIndex((item) => item === "YYYY");
+        const monthIdx = dateTypetList.value.findIndex((item) => item === "MM");
+        const dayIdx = dateTypetList.value.findIndex((item) => item === "DD");
+        if (monthIdx > -1 && dayIdx > -1) {
+          let year = Date.now().getFullYear();
+          if (yearIdx > -1) {
+            year = value[yearIdx];
+            const days = new Date(year, month, 0).getDate();
+            formatAppLog("log", "at uni_modules/cl-date-picker/components/cl-date-picker/cl-date-picker.vue:218", days, "days");
+          }
+          dateVal.value = value;
+        } else {
+          dateVal.value = value;
+        }
+      };
+      const cancal = () => {
+        emits("cancel");
+        popupRef.value.close();
+      };
+      const handleSubmit = () => {
+        let str = props.dateType;
+        dateTypetList.value.forEach((item, index) => {
+          const reg = new RegExp(item);
+          const curOption = dateOptionList.value.find((itm) => itm.type === item);
+          formatAppLog("log", "at uni_modules/cl-date-picker/components/cl-date-picker/cl-date-picker.vue:240", curOption, "curOption");
+          const curData = curOption.options[dateVal.value[index]];
+          str = str.replace(reg, curData);
+        });
+        emits("submit", str);
+        modelValue.value = str;
+        popupRef.value.close();
+      };
+      const handleOpen = () => {
+        if (props.disabled) {
+          return;
+        }
+        createDateOptions();
+        if (isEmpty(props.modelValue)) {
+          if (props.isNow) {
+            let nowDateIdxList = [];
+            const nowDateMap = getNowDate();
+            dateTypetList.value.forEach((item) => {
+              const curOption = dateOptionList.value.find((itm) => itm.type === item);
+              let curIdx = curOption.options.findIndex((itm) => itm === nowDateMap[item]);
+              nowDateIdxList.push(curIdx);
+            });
+            dateVal.value = nowDateIdxList;
+          } else {
+            dateVal.value = [];
+          }
+        } else {
+          vue.nextTick(() => showDate());
+        }
+        popupRef.value.open();
+      };
+      const close = () => {
+        popupRef.value.close();
+      };
+      __expose({
+        close,
+        open: handleOpen
+      });
+      const handleClear = () => {
+        modelValue.value = "";
+      };
+      const __returned__ = { props, atrrs, modelValue, emits, popupRef, dateOptionList, dateVal, dateLabelMap, dateTypeMap, isEmpty, supplementZero, getNowDate, dateTypetList, dataValList, createDateOptions, showDate, dateChange, cancal, handleSubmit, handleOpen, close, handleClear, computed: vue.computed, nextTick: vue.nextTick, reactive: vue.reactive, ref: vue.ref, useAttrs: vue.useAttrs, watch: vue.watch, get onLoad() {
+        return onLoad;
+      } };
+      Object.defineProperty(__returned__, "__isScriptSetup", { enumerable: false, value: true });
+      return __returned__;
+    }
+  };
+  function _sfc_render$c(_ctx, _cache, $props, $setup, $data, $options) {
+    const _component_cl_input = resolveEasycom(vue.resolveDynamicComponent("cl-input"), __easycom_0$b);
+    const _component_uni_popup = resolveEasycom(vue.resolveDynamicComponent("uni-popup"), __easycom_2$1);
+    return vue.openBlock(), vue.createElementBlock(
+      vue.Fragment,
+      null,
+      [
+        vue.createVNode(_component_cl_input, vue.mergeProps({
+          modelValue: $setup.modelValue,
+          "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => $setup.modelValue = $event),
+          inputType: "falseInput",
+          placeholder: $props.placeholder,
+          disabled: $props.disabled
+        }, $setup.atrrs, { onInputClick: $setup.handleOpen }), {
+          default: vue.withCtx(() => [
+            vue.createCommentVNode(' <template #right>\r\n			<uni-icons v-if="!modelValue && !disabled" type="bottom" :size="14" color="#999"></uni-icons>\r\n		</template> ')
+          ]),
+          _: 1
+          /* STABLE */
+        }, 16, ["modelValue", "placeholder", "disabled"]),
+        vue.createVNode(
+          _component_uni_popup,
+          {
+            type: "bottom",
+            ref: "popupRef"
+          },
+          {
+            default: vue.withCtx(() => [
+              vue.createElementVNode("view", { class: "btn_box" }, [
+                vue.createElementVNode("text", { onClick: $setup.cancal }, "取消"),
+                vue.createElementVNode("text", {
+                  class: "submit",
+                  onClick: $setup.handleSubmit
+                }, "确认")
+              ]),
+              vue.createElementVNode("picker-view", {
+                class: "picker-view",
+                value: $setup.dateVal,
+                onChange: $setup.dateChange,
+                "mask-class": "mask_class"
+              }, [
+                (vue.openBlock(true), vue.createElementBlock(
+                  vue.Fragment,
+                  null,
+                  vue.renderList($setup.dateOptionList, (item, index) => {
+                    return vue.openBlock(), vue.createElementBlock("picker-view-column", { key: index }, [
+                      (vue.openBlock(true), vue.createElementBlock(
+                        vue.Fragment,
+                        null,
+                        vue.renderList(item.options, (itm, idx) => {
+                          return vue.openBlock(), vue.createElementBlock(
+                            "view",
+                            {
+                              class: "item",
+                              key: idx
+                            },
+                            vue.toDisplayString(itm) + " " + vue.toDisplayString($setup.dateLabelMap[item.type]),
+                            1
+                            /* TEXT */
+                          );
+                        }),
+                        128
+                        /* KEYED_FRAGMENT */
+                      ))
+                    ]);
+                  }),
+                  128
+                  /* KEYED_FRAGMENT */
+                ))
+              ], 40, ["value"])
+            ]),
+            _: 1
+            /* STABLE */
+          },
+          512
+          /* NEED_PATCH */
+        )
+      ],
+      64
+      /* STABLE_FRAGMENT */
+    );
+  }
+  const __easycom_1$2 = /* @__PURE__ */ _export_sfc(_sfc_main$d, [["render", _sfc_render$c], ["__scopeId", "data-v-0657bf93"], ["__file", "D:/code/code-life/uni-app-components/uni_modules/cl-date-picker/components/cl-date-picker/cl-date-picker.vue"]]);
+  const _sfc_main$c = {
+    __name: "index",
+    setup(__props, { expose: __expose }) {
+      __expose();
+      const value1 = vue.ref();
+      const value2 = vue.ref("12:12:12");
+      const value3 = vue.ref();
+      const datePickerRef = vue.ref();
+      const show = () => {
+        datePickerRef.value.open();
+      };
+      const __returned__ = { value1, value2, value3, datePickerRef, show, ref: vue.ref };
+      Object.defineProperty(__returned__, "__isScriptSetup", { enumerable: false, value: true });
+      return __returned__;
+    }
+  };
+  function _sfc_render$b(_ctx, _cache, $props, $setup, $data, $options) {
+    const _component_uni_section = resolveEasycom(vue.resolveDynamicComponent("uni-section"), __easycom_0$6);
+    const _component_cl_date_picker = resolveEasycom(vue.resolveDynamicComponent("cl-date-picker"), __easycom_1$2);
+    return vue.openBlock(), vue.createElementBlock("view", { class: "content" }, [
+      vue.createElementVNode("view", { class: "" }, " 使用picker-view和picker-view-column封装的时间选择器，支持年月日时分秒各种形式的组合搭配。 "),
+      vue.createVNode(_component_uni_section, null, {
+        default: vue.withCtx(() => [
+          vue.createTextVNode("基础使用")
+        ]),
+        _: 1
+        /* STABLE */
+      }),
+      vue.createVNode(_component_cl_date_picker, {
+        modelValue: $setup.value1,
+        "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => $setup.value1 = $event),
+        ref: "datePickerRef"
+      }, null, 8, ["modelValue"]),
+      vue.createVNode(_component_uni_section, null, {
+        default: vue.withCtx(() => [
+          vue.createTextVNode("切换时间格式")
+        ]),
+        _: 1
+        /* STABLE */
+      }),
+      vue.createVNode(_component_cl_date_picker, {
+        modelValue: $setup.value2,
+        "onUpdate:modelValue": _cache[1] || (_cache[1] = ($event) => $setup.value2 = $event),
+        ref: "datePickerRef",
+        dateType: "hh:mm:ss"
+      }, null, 8, ["modelValue"]),
+      vue.createVNode(_component_uni_section, null, {
+        default: vue.withCtx(() => [
+          vue.createTextVNode("禁用状态")
+        ]),
+        _: 1
+        /* STABLE */
+      }),
+      vue.createVNode(_component_cl_date_picker, {
+        modelValue: $setup.value3,
+        "onUpdate:modelValue": _cache[2] || (_cache[2] = ($event) => $setup.value3 = $event),
+        ref: "datePickerRef",
+        disabled: ""
+      }, null, 8, ["modelValue"])
+    ]);
+  }
+  const PagesComponentPageClDatePickerIndex = /* @__PURE__ */ _export_sfc(_sfc_main$c, [["render", _sfc_render$b], ["__scopeId", "data-v-fc709b23"], ["__file", "D:/code/code-life/uni-app-components/pages/componentPage/cl-date-picker/index.vue"]]);
   function obj2strClass(obj) {
     let classess = "";
     for (let key in obj) {
@@ -4412,7 +6081,7 @@ if (uni.restoreGlobal) {
     }
     return style;
   }
-  const _sfc_main$g = {
+  const _sfc_main$b = {
     name: "uni-easyinput",
     emits: [
       "click",
@@ -4769,7 +6438,7 @@ if (uni.restoreGlobal) {
       }
     }
   };
-  function _sfc_render$f(_ctx, _cache, $props, $setup, $data, $options) {
+  function _sfc_render$a(_ctx, _cache, $props, $setup, $data, $options) {
     const _component_uni_icons = resolveEasycom(vue.resolveDynamicComponent("uni-icons"), __easycom_0$c);
     return vue.openBlock(), vue.createElementBlock(
       "view",
@@ -4894,1062 +6563,8 @@ if (uni.restoreGlobal) {
       /* CLASS, STYLE */
     );
   }
-  const __easycom_0$7 = /* @__PURE__ */ _export_sfc(_sfc_main$g, [["render", _sfc_render$f], ["__scopeId", "data-v-09fd5285"], ["__file", "D:/code-life/uni-app-components/uni_modules/uni-easyinput/components/uni-easyinput/uni-easyinput.vue"]]);
-  const _sfc_main$f = {
-    __name: "cl-select",
-    props: {
-      options: {
-        type: Array,
-        default: () => []
-      },
-      labelField: {
-        type: String,
-        default: "label"
-      },
-      valueField: {
-        type: String,
-        default: "value"
-      },
-      modelValue: {
-        type: [String, Number],
-        default: void 0
-      },
-      placeholder: {
-        type: String,
-        default: "请选择"
-      },
-      maxHeight: {
-        type: [String, Number],
-        default: 300
-      },
-      placeholderStyle: {
-        type: String,
-        default: ""
-      },
-      disabled: {
-        type: Boolean,
-        default: false
-      },
-      maxlength: {
-        type: Number,
-        default: 20
-      },
-      trim: {
-        type: String,
-        default: "both"
-      },
-      hideBorder: {
-        type: Boolean,
-        default: false
-      },
-      cursorSpacing: {
-        type: Number,
-        default: 0
-      },
-      emptyText: {
-        type: String,
-        default: "暂无数据"
-      }
-    },
-    emits: ["update:modelValue", "focus", "blur", "selected", "clear", "input"],
-    setup(__props, { expose: __expose, emit: __emit }) {
-      __expose();
-      const props = __props;
-      const emits = __emit;
-      const visible = vue.ref(false);
-      const curSelect = vue.ref({});
-      const curSelectLabel = vue.ref();
-      const curSelectValue = vue.ref();
-      const isSelected = vue.computed(() => {
-        if (Object.keys(curSelect.value).length === 0) {
-          return false;
-        } else {
-          return true;
-        }
-      });
-      const scrollIntoView = vue.ref();
-      const showOptions = vue.ref([]);
-      const selected = (item) => {
-        curSelect.value = item;
-        visible.value = false;
-        emits("update:modelValue", item[props.valueField]);
-        emits("selected", item[props.valueField], item);
-      };
-      const clearHandle = () => {
-        curSelect.value = {};
-        scrollIntoView.value = void 0;
-        emits("clear");
-      };
-      const showPlaceholder = vue.ref(props.placeholder);
-      const focusHandle = (inputVal) => {
-        if (isSelected.value) {
-          showPlaceholder.value = curSelect.value[props.labelField];
-        } else {
-          showPlaceholder.value = props.placeholder;
-        }
-        visible.value = true;
-        showOptions.value = props.options.map((item) => {
-          if (["string", "number"].includes(typeof item)) {
-            return {
-              [props.valueField]: item,
-              [props.labelField]: item
-            };
-          } else {
-            return item;
-          }
-        });
-        curSelectLabel.value = void 0;
-        emits("focus", inputVal);
-      };
-      const blurHandle = () => {
-        if (isSelected.value) {
-          curSelectLabel.value = curSelect.value[props.labelField];
-        } else {
-          curSelectLabel.value = void 0;
-        }
-        emits("blur");
-      };
-      let searchTimer = null;
-      const inputHandle = (e) => {
-        clearTimeout(searchTimer);
-        searchTimer = setTimeout(() => {
-          showOptions.value = props.options.filter((item) => item[props.labelField].includes(e));
-          emits("input", e);
-        }, 200);
-      };
-      vue.watch(() => visible.value, (val) => {
-        if (val) {
-          if (isSelected.value) {
-            showPlaceholder.value = curSelect.value[props.labelField];
-            scrollIntoView.value = curSelect.value[props.valueField];
-          } else {
-            showPlaceholder.value = props.placeholder;
-            scrollIntoView.value = void 0;
-          }
-        }
-      });
-      vue.watch(() => curSelect.value, (val) => {
-        if (Object.keys(val).length === 0) {
-          curSelectLabel.value = void 0;
-          curSelectValue.value = void 0;
-          showPlaceholder.value = props.placeholder;
-        } else {
-          curSelectLabel.value = val[props.labelField];
-          curSelectValue.value = val[props.valueField];
-        }
-      });
-      const setCurSelect = () => {
-        if (props.options.length > 0 && !isEmpty(props.modelValue)) {
-          const data = props.options.find((item) => item[props.valueField] === props.modelValue);
-          if (data) {
-            curSelect.value = data;
-          }
-        }
-      };
-      const isEmpty = (val) => {
-        return val === "" || val === void 0 || val === null;
-      };
-      vue.watch([() => props.options, () => props.modelValue], () => {
-        setCurSelect();
-      }, {
-        deep: true,
-        immediate: true
-      });
-      const maskClick = (e) => {
-        visible.value = false;
-      };
-      const __returned__ = { props, emits, visible, curSelect, curSelectLabel, curSelectValue, isSelected, scrollIntoView, showOptions, selected, clearHandle, showPlaceholder, focusHandle, blurHandle, get searchTimer() {
-        return searchTimer;
-      }, set searchTimer(v) {
-        searchTimer = v;
-      }, inputHandle, setCurSelect, isEmpty, maskClick, ref: vue.ref, watch: vue.watch, computed: vue.computed, nextTick: vue.nextTick, onMounted: vue.onMounted };
-      Object.defineProperty(__returned__, "__isScriptSetup", { enumerable: false, value: true });
-      return __returned__;
-    }
-  };
-  function _sfc_render$e(_ctx, _cache, $props, $setup, $data, $options) {
-    const _component_uni_icons = resolveEasycom(vue.resolveDynamicComponent("uni-icons"), __easycom_0$c);
-    const _component_uni_easyinput = resolveEasycom(vue.resolveDynamicComponent("uni-easyinput"), __easycom_0$7);
-    return vue.openBlock(), vue.createElementBlock(
-      vue.Fragment,
-      null,
-      [
-        vue.createElementVNode("view", { class: "el_select" }, [
-          vue.createVNode(_component_uni_easyinput, {
-            modelValue: $setup.curSelectLabel,
-            "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => $setup.curSelectLabel = $event),
-            clearable: false,
-            placeholder: $setup.showPlaceholder,
-            placeholderStyle: $props.placeholderStyle,
-            disabled: $props.disabled,
-            maxlength: $props.maxlength,
-            trim: $props.trim,
-            inputBorder: !$props.hideBorder,
-            cursorSpacing: $props.cursorSpacing,
-            onFocus: $setup.focusHandle,
-            onInput: $setup.inputHandle,
-            onBlur: $setup.blurHandle
-          }, {
-            right: vue.withCtx(() => [
-              !$props.disabled ? (vue.openBlock(), vue.createElementBlock("view", {
-                key: 0,
-                class: "icons"
-              }, [
-                !$setup.isSelected || $setup.visible ? (vue.openBlock(), vue.createBlock(_component_uni_icons, {
-                  key: 0,
-                  type: $setup.visible ? "top" : "bottom",
-                  size: "14"
-                }, null, 8, ["type"])) : (vue.openBlock(), vue.createBlock(_component_uni_icons, {
-                  key: 1,
-                  type: "clear",
-                  size: "24",
-                  onClick: $setup.clearHandle,
-                  color: "#c0c4cc"
-                }))
-              ])) : vue.createCommentVNode("v-if", true)
-            ]),
-            _: 1
-            /* STABLE */
-          }, 8, ["modelValue", "placeholder", "placeholderStyle", "disabled", "maxlength", "trim", "inputBorder", "cursorSpacing"]),
-          vue.withDirectives(vue.createElementVNode(
-            "view",
-            { class: "scroll_list" },
-            [
-              vue.createElementVNode("view", { class: "triangle_icon" }),
-              vue.createElementVNode("scroll-view", {
-                "scroll-y": "",
-                "scroll-into-view": $setup.scrollIntoView,
-                style: vue.normalizeStyle({ maxHeight: $props.maxHeight + "px" })
-              }, [
-                (vue.openBlock(true), vue.createElementBlock(
-                  vue.Fragment,
-                  null,
-                  vue.renderList($setup.showOptions, (item, index) => {
-                    return vue.openBlock(), vue.createElementBlock("view", {
-                      class: vue.normalizeClass(["select_item", { active: item[$props.valueField] === $setup.curSelect[$props.valueField] }]),
-                      key: index,
-                      onClick: ($event) => $setup.selected(item),
-                      id: item[$props.valueField]
-                    }, vue.toDisplayString(item[$props.labelField]), 11, ["onClick", "id"]);
-                  }),
-                  128
-                  /* KEYED_FRAGMENT */
-                )),
-                $setup.showOptions.length === 0 ? vue.renderSlot(_ctx.$slots, "empty", { key: 0 }, () => [
-                  vue.createElementVNode(
-                    "view",
-                    { class: "empty_text" },
-                    vue.toDisplayString($props.emptyText),
-                    1
-                    /* TEXT */
-                  )
-                ], true) : vue.createCommentVNode("v-if", true)
-              ], 12, ["scroll-into-view"])
-            ],
-            512
-            /* NEED_PATCH */
-          ), [
-            [vue.vShow, $setup.visible]
-          ])
-        ]),
-        $setup.visible ? (vue.openBlock(), vue.createElementBlock("view", {
-          key: 0,
-          class: "mask",
-          onClick: $setup.maskClick
-        })) : vue.createCommentVNode("v-if", true)
-      ],
-      64
-      /* STABLE_FRAGMENT */
-    );
-  }
-  const __easycom_0$6 = /* @__PURE__ */ _export_sfc(_sfc_main$f, [["render", _sfc_render$e], ["__scopeId", "data-v-4bd33685"], ["__file", "D:/code-life/uni-app-components/uni_modules/cl-select/components/cl-select/cl-select.vue"]]);
-  const _sfc_main$e = {
-    __name: "index",
-    setup(__props, { expose: __expose }) {
-      __expose();
-      const value = vue.ref("value50");
-      const options = Array.from({
-        length: 100
-      }, (_, index) => {
-        return {
-          label: `我是展示的值${index}`,
-          value: `value${index}`
-        };
-      });
-      const __returned__ = { value, options, ref: vue.ref };
-      Object.defineProperty(__returned__, "__isScriptSetup", { enumerable: false, value: true });
-      return __returned__;
-    }
-  };
-  function _sfc_render$d(_ctx, _cache, $props, $setup, $data, $options) {
-    const _component_cl_select = resolveEasycom(vue.resolveDynamicComponent("cl-select"), __easycom_0$6);
-    return vue.openBlock(), vue.createElementBlock("view", { class: "content" }, [
-      vue.createElementVNode("text", null, "模仿uni-data-select做的可搜索下拉框，可直接回显数据，并定位到对应的数据项"),
-      vue.createVNode(_component_cl_select, {
-        options: $setup.options,
-        modelValue: $setup.value,
-        "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => $setup.value = $event)
-      }, null, 8, ["options", "modelValue"])
-    ]);
-  }
-  const PagesComponentPageClSelectIndex = /* @__PURE__ */ _export_sfc(_sfc_main$e, [["render", _sfc_render$d], ["__scopeId", "data-v-ad7d568c"], ["__file", "D:/code-life/uni-app-components/pages/componentPage/cl-select/index.vue"]]);
-  const _sfc_main$d = {
-    name: "UniStatusBar",
-    data() {
-      return {
-        statusBarHeight: uni.getSystemInfoSync().statusBarHeight + "px"
-      };
-    }
-  };
-  function _sfc_render$c(_ctx, _cache, $props, $setup, $data, $options) {
-    return vue.openBlock(), vue.createElementBlock(
-      "view",
-      {
-        style: vue.normalizeStyle({ height: $data.statusBarHeight }),
-        class: "uni-status-bar"
-      },
-      [
-        vue.renderSlot(_ctx.$slots, "default", {}, void 0, true)
-      ],
-      4
-      /* STYLE */
-    );
-  }
-  const statusBar = /* @__PURE__ */ _export_sfc(_sfc_main$d, [["render", _sfc_render$c], ["__scopeId", "data-v-7920e3e0"], ["__file", "D:/code-life/uni-app-components/uni_modules/uni-nav-bar/components/uni-nav-bar/uni-status-bar.vue"]]);
-  const getVal = (val) => typeof val === "number" ? val + "px" : val;
-  const _sfc_main$c = {
-    name: "UniNavBar",
-    components: {
-      statusBar
-    },
-    emits: ["clickLeft", "clickRight", "clickTitle"],
-    props: {
-      dark: {
-        type: Boolean,
-        default: false
-      },
-      title: {
-        type: String,
-        default: ""
-      },
-      leftText: {
-        type: String,
-        default: ""
-      },
-      rightText: {
-        type: String,
-        default: ""
-      },
-      leftIcon: {
-        type: String,
-        default: ""
-      },
-      rightIcon: {
-        type: String,
-        default: ""
-      },
-      fixed: {
-        type: [Boolean, String],
-        default: false
-      },
-      color: {
-        type: String,
-        default: ""
-      },
-      backgroundColor: {
-        type: String,
-        default: ""
-      },
-      statusBar: {
-        type: [Boolean, String],
-        default: false
-      },
-      shadow: {
-        type: [Boolean, String],
-        default: false
-      },
-      border: {
-        type: [Boolean, String],
-        default: true
-      },
-      height: {
-        type: [Number, String],
-        default: 44
-      },
-      leftWidth: {
-        type: [Number, String],
-        default: 60
-      },
-      rightWidth: {
-        type: [Number, String],
-        default: 60
-      },
-      stat: {
-        type: [Boolean, String],
-        default: ""
-      }
-    },
-    computed: {
-      themeBgColor() {
-        if (this.dark) {
-          if (this.backgroundColor) {
-            return this.backgroundColor;
-          } else {
-            return this.dark ? "#333" : "#FFF";
-          }
-        }
-        return this.backgroundColor || "#FFF";
-      },
-      themeColor() {
-        if (this.dark) {
-          if (this.color) {
-            return this.color;
-          } else {
-            return this.dark ? "#fff" : "#333";
-          }
-        }
-        return this.color || "#333";
-      },
-      navbarHeight() {
-        return getVal(this.height);
-      },
-      leftIconWidth() {
-        return getVal(this.leftWidth);
-      },
-      rightIconWidth() {
-        return getVal(this.rightWidth);
-      }
-    },
-    mounted() {
-      if (uni.report && this.stat && this.title !== "") {
-        uni.report("title", this.title);
-      }
-    },
-    methods: {
-      onClickLeft() {
-        this.$emit("clickLeft");
-      },
-      onClickRight() {
-        this.$emit("clickRight");
-      },
-      onClickTitle() {
-        this.$emit("clickTitle");
-      }
-    }
-  };
-  function _sfc_render$b(_ctx, _cache, $props, $setup, $data, $options) {
-    const _component_status_bar = vue.resolveComponent("status-bar");
-    const _component_uni_icons = resolveEasycom(vue.resolveDynamicComponent("uni-icons"), __easycom_0$c);
-    return vue.openBlock(), vue.createElementBlock(
-      "view",
-      {
-        class: vue.normalizeClass(["uni-navbar", { "uni-dark": $props.dark, "uni-nvue-fixed": $props.fixed }])
-      },
-      [
-        vue.createElementVNode(
-          "view",
-          {
-            class: vue.normalizeClass(["uni-navbar__content", { "uni-navbar--fixed": $props.fixed, "uni-navbar--shadow": $props.shadow, "uni-navbar--border": $props.border }]),
-            style: vue.normalizeStyle({ "background-color": $options.themeBgColor, "border-bottom-color": $options.themeColor })
-          },
-          [
-            $props.statusBar ? (vue.openBlock(), vue.createBlock(_component_status_bar, { key: 0 })) : vue.createCommentVNode("v-if", true),
-            vue.createElementVNode(
-              "view",
-              {
-                style: vue.normalizeStyle({ color: $options.themeColor, backgroundColor: $options.themeBgColor, height: $options.navbarHeight }),
-                class: "uni-navbar__header"
-              },
-              [
-                vue.createElementVNode(
-                  "view",
-                  {
-                    onClick: _cache[0] || (_cache[0] = (...args) => $options.onClickLeft && $options.onClickLeft(...args)),
-                    class: "uni-navbar__header-btns uni-navbar__header-btns-left",
-                    style: vue.normalizeStyle({ width: $options.leftIconWidth })
-                  },
-                  [
-                    vue.renderSlot(_ctx.$slots, "left", {}, () => [
-                      $props.leftIcon.length > 0 ? (vue.openBlock(), vue.createElementBlock("view", {
-                        key: 0,
-                        class: "uni-navbar__content_view"
-                      }, [
-                        vue.createVNode(_component_uni_icons, {
-                          color: $options.themeColor,
-                          type: $props.leftIcon,
-                          size: "20"
-                        }, null, 8, ["color", "type"])
-                      ])) : vue.createCommentVNode("v-if", true),
-                      $props.leftText.length ? (vue.openBlock(), vue.createElementBlock(
-                        "view",
-                        {
-                          key: 1,
-                          class: vue.normalizeClass([{ "uni-navbar-btn-icon-left": !$props.leftIcon.length > 0 }, "uni-navbar-btn-text"])
-                        },
-                        [
-                          vue.createElementVNode(
-                            "text",
-                            {
-                              style: vue.normalizeStyle({ color: $options.themeColor, fontSize: "12px" })
-                            },
-                            vue.toDisplayString($props.leftText),
-                            5
-                            /* TEXT, STYLE */
-                          )
-                        ],
-                        2
-                        /* CLASS */
-                      )) : vue.createCommentVNode("v-if", true)
-                    ], true)
-                  ],
-                  4
-                  /* STYLE */
-                ),
-                vue.createElementVNode("view", {
-                  class: "uni-navbar__header-container",
-                  onClick: _cache[1] || (_cache[1] = (...args) => $options.onClickTitle && $options.onClickTitle(...args))
-                }, [
-                  vue.renderSlot(_ctx.$slots, "default", {}, () => [
-                    $props.title.length > 0 ? (vue.openBlock(), vue.createElementBlock("view", {
-                      key: 0,
-                      class: "uni-navbar__header-container-inner"
-                    }, [
-                      vue.createElementVNode(
-                        "text",
-                        {
-                          class: "uni-nav-bar-text uni-ellipsis-1",
-                          style: vue.normalizeStyle({ color: $options.themeColor })
-                        },
-                        vue.toDisplayString($props.title),
-                        5
-                        /* TEXT, STYLE */
-                      )
-                    ])) : vue.createCommentVNode("v-if", true)
-                  ], true)
-                ]),
-                vue.createElementVNode(
-                  "view",
-                  {
-                    onClick: _cache[2] || (_cache[2] = (...args) => $options.onClickRight && $options.onClickRight(...args)),
-                    class: "uni-navbar__header-btns uni-navbar__header-btns-right",
-                    style: vue.normalizeStyle({ width: $options.rightIconWidth })
-                  },
-                  [
-                    vue.renderSlot(_ctx.$slots, "right", {}, () => [
-                      $props.rightIcon.length ? (vue.openBlock(), vue.createElementBlock("view", { key: 0 }, [
-                        vue.createVNode(_component_uni_icons, {
-                          color: $options.themeColor,
-                          type: $props.rightIcon,
-                          size: "22"
-                        }, null, 8, ["color", "type"])
-                      ])) : vue.createCommentVNode("v-if", true),
-                      $props.rightText.length && !$props.rightIcon.length ? (vue.openBlock(), vue.createElementBlock("view", {
-                        key: 1,
-                        class: "uni-navbar-btn-text"
-                      }, [
-                        vue.createElementVNode(
-                          "text",
-                          {
-                            class: "uni-nav-bar-right-text",
-                            style: vue.normalizeStyle({ color: $options.themeColor })
-                          },
-                          vue.toDisplayString($props.rightText),
-                          5
-                          /* TEXT, STYLE */
-                        )
-                      ])) : vue.createCommentVNode("v-if", true)
-                    ], true)
-                  ],
-                  4
-                  /* STYLE */
-                )
-              ],
-              4
-              /* STYLE */
-            )
-          ],
-          6
-          /* CLASS, STYLE */
-        ),
-        $props.fixed ? (vue.openBlock(), vue.createElementBlock("view", {
-          key: 0,
-          class: "uni-navbar__placeholder"
-        }, [
-          $props.statusBar ? (vue.openBlock(), vue.createBlock(_component_status_bar, { key: 0 })) : vue.createCommentVNode("v-if", true),
-          vue.createElementVNode(
-            "view",
-            {
-              class: "uni-navbar__placeholder-view",
-              style: vue.normalizeStyle({ height: $options.navbarHeight })
-            },
-            null,
-            4
-            /* STYLE */
-          )
-        ])) : vue.createCommentVNode("v-if", true)
-      ],
-      2
-      /* CLASS */
-    );
-  }
-  const __easycom_0$5 = /* @__PURE__ */ _export_sfc(_sfc_main$c, [["render", _sfc_render$b], ["__scopeId", "data-v-26544265"], ["__file", "D:/code-life/uni-app-components/uni_modules/uni-nav-bar/components/uni-nav-bar/uni-nav-bar.vue"]]);
-  const _sfc_main$b = {
-    __name: "cl-nav-bar",
-    props: {
-      title: {
-        type: String,
-        default: ""
-      },
-      statusBar: {
-        type: Boolean,
-        default: true
-      },
-      fixed: {
-        type: Boolean,
-        default: true
-      },
-      leftIcon: {
-        type: String,
-        default: "left"
-      },
-      border: {
-        type: Boolean,
-        default: false
-      },
-      clickLeft: {
-        type: Function
-      },
-      clickright: {
-        type: Function
-      }
-    },
-    emits: ["getHeight"],
-    setup(__props, { expose: __expose, emit: __emit }) {
-      __expose();
-      const props = __props;
-      const $attrs = vue.useAttrs();
-      const emits = __emit;
-      onReady(() => {
-        const pageInstace = vue.getCurrentInstance();
-        const query = uni.createSelectorQuery().in(pageInstace == null ? void 0 : pageInstace.proxy);
-        query.select(".cl-nav-bar").boundingClientRect((data) => {
-          emits("getHeight", data.height);
-        }).exec();
-      });
-      const getCurrentPageTitle = () => {
-        if (props.title) {
-          return props.title;
-        }
-        const pageList = getCurrentPages();
-        const curPage = pageList[pageList.length - 1];
-        if (curPage) {
-          const {
-            $page
-          } = curPage;
-          return $page.meta.navigationBar.titleText;
-        }
-      };
-      const clickLeft = () => {
-        if (typeof props.clickLeft === "function") {
-          props.clickLeft();
-        } else {
-          uni.navigateBack();
-        }
-      };
-      const clickright = () => {
-        if (typeof props.clickright === "function") {
-          props.clickright();
-        }
-      };
-      const __returned__ = { props, $attrs, emits, getCurrentPageTitle, clickLeft, clickright, onMounted: vue.onMounted, getCurrentInstance: vue.getCurrentInstance, useAttrs: vue.useAttrs, useSlots: vue.useSlots, get onReady() {
-        return onReady;
-      } };
-      Object.defineProperty(__returned__, "__isScriptSetup", { enumerable: false, value: true });
-      return __returned__;
-    }
-  };
-  function _sfc_render$a(_ctx, _cache, $props, $setup, $data, $options) {
-    const _component_uni_nav_bar = resolveEasycom(vue.resolveDynamicComponent("uni-nav-bar"), __easycom_0$5);
-    return vue.openBlock(), vue.createBlock(_component_uni_nav_bar, vue.mergeProps({ class: "cl-nav-bar" }, $setup.$attrs, {
-      border: $props.border,
-      statusBar: $props.statusBar,
-      fixed: $props.fixed,
-      leftIcon: $props.leftIcon,
-      title: $setup.getCurrentPageTitle(),
-      onClickLeft: $setup.clickLeft,
-      onClickright: $setup.clickright
-    }), null, 16, ["border", "statusBar", "fixed", "leftIcon", "title"]);
-  }
-  const __easycom_0$4 = /* @__PURE__ */ _export_sfc(_sfc_main$b, [["render", _sfc_render$a], ["__file", "D:/code-life/uni-app-components/uni_modules/cl-nav-bar/components/cl-nav-bar/cl-nav-bar.vue"]]);
-  const _sfc_main$a = {};
-  function _sfc_render$9(_ctx, _cache) {
-    const _component_cl_nav_bar = resolveEasycom(vue.resolveDynamicComponent("cl-nav-bar"), __easycom_0$4);
-    return vue.openBlock(), vue.createElementBlock(
-      vue.Fragment,
-      null,
-      [
-        vue.createVNode(_component_cl_nav_bar),
-        vue.createElementVNode("view", { style: { "padding": "30rpx" } }, " cl-nav-bar组件与uni-nav-bar组件并无区别，只是设置了部分属性的常用默认值，添加了自动从page.json获取标题的方法 ")
-      ],
-      64
-      /* STABLE_FRAGMENT */
-    );
-  }
-  const PagesComponentPageClNavBarIndex = /* @__PURE__ */ _export_sfc(_sfc_main$a, [["render", _sfc_render$9], ["__file", "D:/code-life/uni-app-components/pages/componentPage/cl-nav-bar/index.vue"]]);
-  const _sfc_main$9 = {
-    __name: "cl-date-picker",
-    props: {
-      dateType: {
-        type: String,
-        default: "YYYY-MM-DD"
-      },
-      modelValue: {
-        type: String,
-        default: ""
-      },
-      placeholder: {
-        type: String,
-        default: "请选择"
-      },
-      disabled: {
-        type: Boolean,
-        default: false
-      },
-      // 隐藏border
-      hideBorder: {
-        type: Boolean,
-        default: false
-      },
-      // 年份下拉选项
-      yearOptions: {
-        type: Array,
-        default: () => []
-      },
-      // 打开弹窗默认选中当前时间
-      isNow: {
-        type: Boolean,
-        default: true
-      }
-    },
-    emits: ["update:modelValue", "cancel", "submit"],
-    setup(__props, { expose: __expose, emit: __emit }) {
-      const props = __props;
-      const emits = __emit;
-      const popupRef = vue.ref();
-      const dateOptionList = vue.ref([]);
-      const dateVal = vue.ref([]);
-      const dateLabelMap = {
-        YYYY: "年",
-        MM: "月",
-        DD: "日",
-        hh: "时",
-        mm: "分",
-        ss: "秒"
-      };
-      const dateTypeMap = [
-        {
-          type: "YYYY",
-          regExp: /^\d{4}$/
-        },
-        {
-          type: "YYYY-MM",
-          regExp: /^\d{4}-\d{2}$/
-        },
-        {
-          type: "YYYY-MM-DD",
-          regExp: /^\d{4}-\d{2}-\d{2}/
-        },
-        {
-          type: "YYYY-MM-DD HH",
-          regExp: /^\d{4}-\d{2}-\d{2} \d{2}$/
-        },
-        {
-          type: "YYYY-MM-DD HH:mm",
-          regExp: /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}$/
-        },
-        {
-          type: "YYYY-MM-DD HH:mm:ss",
-          regExp: /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/
-        }
-      ];
-      const isEmpty = (val) => {
-        return val === null || val === "" || val === void 0;
-      };
-      const supplementZero = (num) => {
-        return num >= 10 ? num + "" : "0" + num;
-      };
-      const getNowDate = () => {
-        const now = /* @__PURE__ */ new Date();
-        const YYYY = now.getFullYear() + "";
-        const MM = supplementZero(now.getMonth() + 1);
-        const DD = supplementZero(now.getDate());
-        const hh = supplementZero(now.getHours());
-        const mm = supplementZero(now.getMinutes());
-        const ss = supplementZero(now.getSeconds());
-        return {
-          YYYY,
-          MM,
-          DD,
-          hh,
-          mm,
-          ss
-        };
-      };
-      const dateTypetList = vue.computed(() => {
-        const regex = /(YYYY|MM|DD|hh|mm|ss)/g;
-        const matches = props.dateType.match(regex);
-        return matches || [];
-      });
-      const dataValList = vue.computed(() => {
-        const regex = /(\d{4}|\d{2}|\d{2}|\d{2}|\d{2}|\d{2})/g;
-        const matches = props.modelValue.match(regex);
-        return matches || [];
-      });
-      const createDateOptions = () => {
-        dateOptionList.value = [];
-        if (dateTypetList.value.length === 0) {
-          throw new Error("传入的时间格式无法识别到有效值，有效值包含：YYYY,MM,DD,hh,mm,ss");
-        }
-        dateTypetList.value.forEach((item, index) => {
-          let options = [];
-          if (item === "YYYY") {
-            if (props.yearOptions.length === 0) {
-              for (let i = 1990; i <= 2050; i++) {
-                options.push(i + "");
-              }
-            } else {
-              options = props.yearOptions;
-            }
-          }
-          if (item === "MM") {
-            for (let i = 1; i <= 12; i++) {
-              options.push(supplementZero(i));
-            }
-          }
-          if (item === "DD") {
-            for (let i = 1; i <= 31; i++) {
-              options.push(supplementZero(i));
-            }
-          }
-          if (item === "hh") {
-            for (let i = 0; i <= 23; i++) {
-              options.push(supplementZero(i));
-            }
-          }
-          if (item === "mm" || item === "ss") {
-            for (let i = 0; i <= 59; i++) {
-              options.push(supplementZero(i));
-            }
-          }
-          dateOptionList.value.push({
-            type: item,
-            options
-          });
-        });
-      };
-      const showDate = () => {
-        dateVal.value = [];
-        dateTypetList.value.forEach((item, index) => {
-          const curOption = dateOptionList.value.find((itm) => itm.type === item);
-          const curData = curOption.options.findIndex((itm) => itm === dataValList.value[index]);
-          dateVal.value.push(curData);
-        });
-      };
-      const dateChange = ({
-        detail
-      }) => {
-        formatAppLog("log", "at uni_modules/cl-date-picker/components/cl-date-picker/cl-date-picker.vue:209", detail, "detail");
-        dateVal.value = detail.value;
-      };
-      const cancal = () => {
-        emits("cancel");
-        popupRef.value.close();
-      };
-      const handleSubmit = () => {
-        let str = props.dateType;
-        dateTypetList.value.forEach((item, index) => {
-          const reg = new RegExp(item);
-          const curOption = dateOptionList.value.find((itm) => itm.type === item);
-          const curData = curOption.options[dateVal.value[index]];
-          str = str.replace(reg, curData);
-        });
-        emits("submit", str);
-        emits("update:modelValue", str);
-        popupRef.value.close();
-      };
-      const handleOpen = () => {
-        if (isEmpty(props.modelValue)) {
-          if (props.isNow) {
-            let nowDateIdxList = [];
-            const nowDateMap = getNowDate();
-            dateTypetList.value.forEach((item) => {
-              const curOption = dateOptionList.value.find((itm) => itm.type === item);
-              let curIdx = curOption.options.findIndex((itm) => itm === nowDateMap[item]);
-              nowDateIdxList.push(curIdx);
-            });
-            dateVal.value = nowDateIdxList;
-          } else {
-            dateVal.value = [];
-          }
-        } else {
-          vue.nextTick(() => showDate());
-        }
-        popupRef.value.open();
-      };
-      onLoad(() => {
-        createDateOptions();
-      });
-      const close = () => {
-        popupRef.value.close();
-      };
-      __expose({
-        close,
-        open: handleOpen
-      });
-      const handleClear = () => {
-        emits("update:modelValue", "");
-      };
-      const __returned__ = { props, emits, popupRef, dateOptionList, dateVal, dateLabelMap, dateTypeMap, isEmpty, supplementZero, getNowDate, dateTypetList, dataValList, createDateOptions, showDate, dateChange, cancal, handleSubmit, handleOpen, close, handleClear, computed: vue.computed, nextTick: vue.nextTick, reactive: vue.reactive, ref: vue.ref, watch: vue.watch, get onLoad() {
-        return onLoad;
-      } };
-      Object.defineProperty(__returned__, "__isScriptSetup", { enumerable: false, value: true });
-      return __returned__;
-    }
-  };
-  function _sfc_render$8(_ctx, _cache, $props, $setup, $data, $options) {
-    const _component_uni_icons = resolveEasycom(vue.resolveDynamicComponent("uni-icons"), __easycom_0$c);
-    const _component_uni_popup = resolveEasycom(vue.resolveDynamicComponent("uni-popup"), __easycom_1$2);
-    return vue.openBlock(), vue.createElementBlock(
-      vue.Fragment,
-      null,
-      [
-        vue.createElementVNode(
-          "view",
-          {
-            class: vue.normalizeClass(["input_box", { disabled: $props.disabled, hideBorder: $props.hideBorder }])
-          },
-          [
-            vue.createElementVNode(
-              "view",
-              {
-                class: vue.normalizeClass(["input_ele", `input ${!$props.modelValue && "placeholder"}`]),
-                onClick: vue.withModifiers($setup.handleOpen, ["stop"])
-              },
-              vue.toDisplayString($props.modelValue || $props.placeholder),
-              3
-              /* TEXT, CLASS */
-            ),
-            $props.modelValue && !$props.disabled ? (vue.openBlock(), vue.createBlock(_component_uni_icons, {
-              key: 0,
-              class: "clear_icon",
-              type: "clear",
-              size: 22,
-              color: "#c0c4cc",
-              onClick: $setup.handleClear
-            })) : vue.createCommentVNode("v-if", true),
-            !$props.modelValue && !$props.disabled ? (vue.openBlock(), vue.createBlock(_component_uni_icons, {
-              key: 1,
-              class: "clear_icon",
-              type: "bottom",
-              size: 20,
-              color: "#c0c4cc"
-            })) : vue.createCommentVNode("v-if", true)
-          ],
-          2
-          /* CLASS */
-        ),
-        vue.createVNode(
-          _component_uni_popup,
-          {
-            type: "bottom",
-            ref: "popupRef"
-          },
-          {
-            default: vue.withCtx(() => [
-              vue.createElementVNode("view", { class: "btn_box" }, [
-                vue.createElementVNode("text", { onClick: $setup.cancal }, "取消"),
-                vue.createElementVNode("text", {
-                  class: "submit",
-                  onClick: $setup.handleSubmit
-                }, "确认")
-              ]),
-              vue.createElementVNode("picker-view", {
-                class: "picker-view",
-                value: $setup.dateVal,
-                onChange: $setup.dateChange,
-                "mask-class": "mask_class"
-              }, [
-                (vue.openBlock(true), vue.createElementBlock(
-                  vue.Fragment,
-                  null,
-                  vue.renderList($setup.dateOptionList, (item, index) => {
-                    return vue.openBlock(), vue.createElementBlock("picker-view-column", { key: index }, [
-                      (vue.openBlock(true), vue.createElementBlock(
-                        vue.Fragment,
-                        null,
-                        vue.renderList(item.options, (itm, idx) => {
-                          return vue.openBlock(), vue.createElementBlock(
-                            "view",
-                            {
-                              class: "item",
-                              key: idx
-                            },
-                            vue.toDisplayString(itm) + " " + vue.toDisplayString($setup.dateLabelMap[item.type]),
-                            1
-                            /* TEXT */
-                          );
-                        }),
-                        128
-                        /* KEYED_FRAGMENT */
-                      ))
-                    ]);
-                  }),
-                  128
-                  /* KEYED_FRAGMENT */
-                ))
-              ], 40, ["value"])
-            ]),
-            _: 1
-            /* STABLE */
-          },
-          512
-          /* NEED_PATCH */
-        )
-      ],
-      64
-      /* STABLE_FRAGMENT */
-    );
-  }
-  const __easycom_0$3 = /* @__PURE__ */ _export_sfc(_sfc_main$9, [["render", _sfc_render$8], ["__scopeId", "data-v-0657bf93"], ["__file", "D:/code-life/uni-app-components/uni_modules/cl-date-picker/components/cl-date-picker/cl-date-picker.vue"]]);
-  const _sfc_main$8 = {
-    __name: "index",
-    setup(__props, { expose: __expose }) {
-      __expose();
-      const value = vue.ref("2022-12-12");
-      const datePickerRef = vue.ref();
-      const show = () => {
-        datePickerRef.value.open();
-      };
-      const __returned__ = { value, datePickerRef, show, ref: vue.ref };
-      Object.defineProperty(__returned__, "__isScriptSetup", { enumerable: false, value: true });
-      return __returned__;
-    }
-  };
-  function _sfc_render$7(_ctx, _cache, $props, $setup, $data, $options) {
-    const _component_cl_date_picker = resolveEasycom(vue.resolveDynamicComponent("cl-date-picker"), __easycom_0$3);
-    return vue.openBlock(), vue.createElementBlock("view", { class: "content" }, [
-      vue.createElementVNode("view", { class: "" }, " 使用picker-view和picker-view-column封装的时间选择器，支持年月日时分秒各种形式的组合搭配。 "),
-      vue.createVNode(_component_cl_date_picker, {
-        modelValue: $setup.value,
-        "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => $setup.value = $event),
-        ref: "datePickerRef",
-        isNow: "",
-        dateType: "YYYY-MM-DD"
-      }, null, 8, ["modelValue"])
-    ]);
-  }
-  const PagesComponentPageClDatePickerIndex = /* @__PURE__ */ _export_sfc(_sfc_main$8, [["render", _sfc_render$7], ["__scopeId", "data-v-fc709b23"], ["__file", "D:/code-life/uni-app-components/pages/componentPage/cl-date-picker/index.vue"]]);
-  const _sfc_main$7 = {
+  const __easycom_0$3 = /* @__PURE__ */ _export_sfc(_sfc_main$b, [["render", _sfc_render$a], ["__scopeId", "data-v-09fd5285"], ["__file", "D:/code/code-life/uni-app-components/uni_modules/uni-easyinput/components/uni-easyinput/uni-easyinput.vue"]]);
+  const _sfc_main$a = {
     __name: "cl-more-select-picker",
     props: {
       options: {
@@ -5987,17 +6602,33 @@ if (uni.restoreGlobal) {
       disabled: {
         type: Boolean,
         default: false
+      },
+      // checkbox  点击勾选框  row  点击行数据
+      selectTarget: {
+        type: String,
+        default: "row"
+      },
+      isFilter: {
+        type: Boolean,
+        default: true
+      },
+      maxLength: {
+        type: Number,
+        default: void 0
       }
     },
     emits: ["update:modelValue", "cancel", "submit", "clear", "change"],
     setup(__props, { expose: __expose, emit: __emit }) {
       __expose();
       const props = __props;
+      const isType = (type, val) => `[object ${type}]` === Object.prototype.toString.call(val);
       const emits = __emit;
-      const selectList = vue.ref([]);
-      const formatOptions = vue.computed(() => {
-        return props.options.map((item) => {
-          if (typeof item !== "object") {
+      const formatList = vue.ref([]);
+      const filterList = vue.ref([]);
+      const keywords = vue.ref("");
+      vue.watch(() => props.options, () => {
+        formatList.value = props.options.map((item) => {
+          if (isType("Number", item) || isType("String", item)) {
             return {
               [props.labelField]: item,
               [props.valueField]: item
@@ -6006,18 +6637,33 @@ if (uni.restoreGlobal) {
             return item;
           }
         });
+        filterList.value = formatList.value;
+        keywords.value = "";
+      }, {
+        deep: true,
+        immediate: true
       });
+      vue.watch(() => keywords.value, (newV) => {
+        filterList.value = formatList.value.filter((item) => item[props.labelField].includes(keywords.value));
+        formatAppLog("log", "at uni_modules/cl-more-select-picker/components/cl-more-select-picker/cl-more-select-picker.vue:113", filterList.value);
+      }, {
+        deep: true,
+        immediate: true
+      });
+      const selectList = vue.ref([]);
       const showLabel = vue.computed(() => {
         if (props.modelValue.length > 0) {
-          return formatOptions.value.filter((item) => props.modelValue.includes(item[props.valueField])).map((item) => item[props.labelField]).join(props.interval);
+          return formatList.value.filter((item) => props.modelValue.includes(item[props.valueField])).map((item) => item[props.labelField]).join(props.interval);
         } else {
           return props.placeholder;
         }
       });
       const hasSelect = vue.computed(() => {
-        return props.modelValue.length > 0;
+        var _a;
+        return ((_a = props.modelValue) == null ? void 0 : _a.length) > 0;
       });
       const handleClear = () => {
+        formatAppLog("log", "at uni_modules/cl-more-select-picker/components/cl-more-select-picker/cl-more-select-picker.vue:135", 123213);
         emits("update:modelValue", []);
       };
       const handleCancel = () => {
@@ -6031,28 +6677,40 @@ if (uni.restoreGlobal) {
         selectList.value = [];
         emits("submit", selectList.value);
       };
-      const handleToggle = (item) => {
+      const handleToggle = (item, type) => {
+        if (props.selectTarget === "checkbox" && type !== "checkbox")
+          return;
         const idx = selectList.value.findIndex((itm) => itm === item[props.valueField]);
+        if (idx === -1 && typeof props.maxLength === "number" && selectList.value.length === props.maxLength) {
+          uni.showToast({
+            title: `最多只能选择${props.maxLength}条数据`,
+            icon: "none",
+            duration: 500
+          });
+          return;
+        }
         if (idx > -1) {
           selectList.value.splice(idx, 1);
         } else {
           selectList.value.push(item[props.valueField]);
         }
-        emits("submit", item, idx === -1, selectList.value);
+        emits("change", item, idx === -1, selectList.value);
       };
       const popupRef = vue.ref();
       const handleOpenPicker = () => {
+        keywords.value = "";
         selectList.value = JSON.parse(JSON.stringify(props.modelValue));
         popupRef.value.open();
       };
-      const __returned__ = { props, emits, selectList, formatOptions, showLabel, hasSelect, handleClear, handleCancel, handleSubmit, handleToggle, popupRef, handleOpenPicker, computed: vue.computed, ref: vue.ref };
+      const __returned__ = { props, isType, emits, formatList, filterList, keywords, selectList, showLabel, hasSelect, handleClear, handleCancel, handleSubmit, handleToggle, popupRef, handleOpenPicker, computed: vue.computed, ref: vue.ref, watch: vue.watch };
       Object.defineProperty(__returned__, "__isScriptSetup", { enumerable: false, value: true });
       return __returned__;
     }
   };
-  function _sfc_render$6(_ctx, _cache, $props, $setup, $data, $options) {
+  function _sfc_render$9(_ctx, _cache, $props, $setup, $data, $options) {
     const _component_uni_icons = resolveEasycom(vue.resolveDynamicComponent("uni-icons"), __easycom_0$c);
-    const _component_uni_popup = resolveEasycom(vue.resolveDynamicComponent("uni-popup"), __easycom_1$2);
+    const _component_uni_easyinput = resolveEasycom(vue.resolveDynamicComponent("uni-easyinput"), __easycom_0$3);
+    const _component_uni_popup = resolveEasycom(vue.resolveDynamicComponent("uni-popup"), __easycom_2$1);
     return vue.openBlock(), vue.createElementBlock(
       vue.Fragment,
       null,
@@ -6061,14 +6719,14 @@ if (uni.restoreGlobal) {
           vue.createElementVNode(
             "view",
             {
-              class: vue.normalizeClass(["input_box", { hideBorder: $props.hideBorder, disabled: $props.disabled }]),
-              onClick: $setup.handleOpenPicker
+              class: vue.normalizeClass(["input_box", { hideBorder: $props.hideBorder, disabled: $props.disabled }])
             },
             [
               vue.createElementVNode(
                 "view",
                 {
-                  class: vue.normalizeClass(["input_ele", { placeholder: !$setup.hasSelect }])
+                  class: vue.normalizeClass(["input_ele", { placeholder: !$setup.hasSelect }]),
+                  onClick: $setup.handleOpenPicker
                 },
                 vue.toDisplayString($setup.hasSelect ? $setup.showLabel : $setup.props.placeholder),
                 3
@@ -6080,7 +6738,7 @@ if (uni.restoreGlobal) {
                 type: "clear",
                 size: 24,
                 color: "#c0c4cc",
-                onClick: vue.withModifiers($setup.handleClear, ["stop"])
+                onClick: $setup.handleClear
               })) : (vue.openBlock(), vue.createBlock(_component_uni_icons, {
                 key: 1,
                 class: "clear_icon",
@@ -6102,23 +6760,34 @@ if (uni.restoreGlobal) {
           {
             default: vue.withCtx(() => [
               vue.createElementVNode("view", { class: "btn_box" }, [
-                vue.createElementVNode("text", { onClick: $setup.handleCancel }, "取消"),
+                vue.createElementVNode("text", {
+                  class: "cancel_btn",
+                  onClick: $setup.handleCancel
+                }, "取消"),
+                $props.isFilter ? (vue.openBlock(), vue.createBlock(_component_uni_easyinput, {
+                  key: 0,
+                  style: { "margin": "0 20rpx" },
+                  modelValue: $setup.keywords,
+                  "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => $setup.keywords = $event),
+                  placeholder: "请输入关键字查询"
+                }, null, 8, ["modelValue"])) : vue.createCommentVNode("v-if", true),
                 vue.createElementVNode("text", {
                   class: "submit_btn",
                   onClick: $setup.handleSubmit
-                }, "确实")
+                }, "确定")
               ]),
-              $props.options.length > 0 ? (vue.openBlock(), vue.createElementBlock("view", {
+              $setup.filterList.length > 0 ? (vue.openBlock(), vue.createElementBlock("view", {
                 key: 0,
                 class: "scoll_box"
               }, [
                 (vue.openBlock(true), vue.createElementBlock(
                   vue.Fragment,
                   null,
-                  vue.renderList($setup.formatOptions, (item, index) => {
+                  vue.renderList($setup.filterList, (item, index) => {
                     return vue.openBlock(), vue.createElementBlock("view", {
                       key: index,
-                      class: "scoll_box_item"
+                      class: "scoll_box_item",
+                      onClick: ($event) => $setup.handleToggle(item, "row")
                     }, [
                       vue.createElementVNode(
                         "text",
@@ -6129,11 +6798,11 @@ if (uni.restoreGlobal) {
                       ),
                       vue.createElementVNode("view", {
                         class: vue.normalizeClass(["select_icon", { active: $setup.selectList.includes(item[$props.valueField]) }]),
-                        onClick: ($event) => $setup.handleToggle(item)
+                        onClick: vue.withModifiers(($event) => $setup.handleToggle(item, "checkbox"), ["stop"])
                       }, [
                         $setup.selectList.includes(item[$props.valueField]) ? (vue.openBlock(), vue.createElementBlock("text", { key: 0 }, "√")) : vue.createCommentVNode("v-if", true)
                       ], 10, ["onClick"])
-                    ]);
+                    ], 8, ["onClick"]);
                   }),
                   128
                   /* KEYED_FRAGMENT */
@@ -6160,8 +6829,8 @@ if (uni.restoreGlobal) {
       /* STABLE_FRAGMENT */
     );
   }
-  const __easycom_0$2 = /* @__PURE__ */ _export_sfc(_sfc_main$7, [["render", _sfc_render$6], ["__scopeId", "data-v-3f537ef0"], ["__file", "D:/code-life/uni-app-components/uni_modules/cl-more-select-picker/components/cl-more-select-picker/cl-more-select-picker.vue"]]);
-  const _sfc_main$6 = {
+  const __easycom_0$2 = /* @__PURE__ */ _export_sfc(_sfc_main$a, [["render", _sfc_render$9], ["__scopeId", "data-v-3f537ef0"], ["__file", "D:/code/code-life/uni-app-components/uni_modules/cl-more-select-picker/components/cl-more-select-picker/cl-more-select-picker.vue"]]);
+  const _sfc_main$9 = {
     __name: "index",
     setup(__props, { expose: __expose }) {
       __expose();
@@ -6182,7 +6851,7 @@ if (uni.restoreGlobal) {
       return __returned__;
     }
   };
-  function _sfc_render$5(_ctx, _cache, $props, $setup, $data, $options) {
+  function _sfc_render$8(_ctx, _cache, $props, $setup, $data, $options) {
     const _component_cl_more_select_picker = resolveEasycom(vue.resolveDynamicComponent("cl-more-select-picker"), __easycom_0$2);
     return vue.openBlock(), vue.createElementBlock("view", { class: "content" }, [
       vue.createVNode(_component_cl_more_select_picker, {
@@ -6192,8 +6861,8 @@ if (uni.restoreGlobal) {
       }, null, 8, ["modelValue", "options"])
     ]);
   }
-  const PagesComponentPageClMoreSelectPickerIndex = /* @__PURE__ */ _export_sfc(_sfc_main$6, [["render", _sfc_render$5], ["__scopeId", "data-v-6318dc36"], ["__file", "D:/code-life/uni-app-components/pages/componentPage/cl-more-select-picker/index.vue"]]);
-  const _sfc_main$5 = {
+  const PagesComponentPageClMoreSelectPickerIndex = /* @__PURE__ */ _export_sfc(_sfc_main$9, [["render", _sfc_render$8], ["__scopeId", "data-v-6318dc36"], ["__file", "D:/code/code-life/uni-app-components/pages/componentPage/cl-more-select-picker/index.vue"]]);
+  const _sfc_main$8 = {
     __name: "cl-autocomplete",
     props: {
       options: {
@@ -6298,8 +6967,8 @@ if (uni.restoreGlobal) {
       return __returned__;
     }
   };
-  function _sfc_render$4(_ctx, _cache, $props, $setup, $data, $options) {
-    const _component_uni_easyinput = resolveEasycom(vue.resolveDynamicComponent("uni-easyinput"), __easycom_0$7);
+  function _sfc_render$7(_ctx, _cache, $props, $setup, $data, $options) {
+    const _component_uni_easyinput = resolveEasycom(vue.resolveDynamicComponent("uni-easyinput"), __easycom_0$3);
     return vue.openBlock(), vue.createElementBlock(
       vue.Fragment,
       null,
@@ -6360,8 +7029,8 @@ if (uni.restoreGlobal) {
       /* STABLE_FRAGMENT */
     );
   }
-  const __easycom_0$1 = /* @__PURE__ */ _export_sfc(_sfc_main$5, [["render", _sfc_render$4], ["__scopeId", "data-v-2d848f96"], ["__file", "D:/code-life/uni-app-components/uni_modules/cl-autocomplete/components/cl-autocomplete/cl-autocomplete.vue"]]);
-  const _sfc_main$4 = {
+  const __easycom_0$1 = /* @__PURE__ */ _export_sfc(_sfc_main$8, [["render", _sfc_render$7], ["__scopeId", "data-v-2d848f96"], ["__file", "D:/code/code-life/uni-app-components/uni_modules/cl-autocomplete/components/cl-autocomplete/cl-autocomplete.vue"]]);
+  const _sfc_main$7 = {
     __name: "index",
     setup(__props, { expose: __expose }) {
       __expose();
@@ -6372,7 +7041,7 @@ if (uni.restoreGlobal) {
       return __returned__;
     }
   };
-  function _sfc_render$3(_ctx, _cache, $props, $setup, $data, $options) {
+  function _sfc_render$6(_ctx, _cache, $props, $setup, $data, $options) {
     const _component_cl_autocomplete = resolveEasycom(vue.resolveDynamicComponent("cl-autocomplete"), __easycom_0$1);
     return vue.openBlock(), vue.createElementBlock("view", { class: "content" }, [
       vue.createElementVNode("text", null, "模仿uni-data-select做的提示输入框，并可以根据输入内容进行过滤"),
@@ -6385,7 +7054,7 @@ if (uni.restoreGlobal) {
       }, null, 8, ["modelValue"])
     ]);
   }
-  const PagesComponentPageClAutocompleteIndex = /* @__PURE__ */ _export_sfc(_sfc_main$4, [["render", _sfc_render$3], ["__scopeId", "data-v-80363e37"], ["__file", "D:/code-life/uni-app-components/pages/componentPage/cl-autocomplete/index.vue"]]);
+  const PagesComponentPageClAutocompleteIndex = /* @__PURE__ */ _export_sfc(_sfc_main$7, [["render", _sfc_render$6], ["__scopeId", "data-v-80363e37"], ["__file", "D:/code/code-life/uni-app-components/pages/componentPage/cl-autocomplete/index.vue"]]);
   const en = {
     "uni-search-bar.cancel": "cancel",
     "uni-search-bar.placeholder": "Search enter content"
@@ -6406,7 +7075,7 @@ if (uni.restoreGlobal) {
   const {
     t
   } = initVueI18n(messages);
-  const _sfc_main$3 = {
+  const _sfc_main$6 = {
     name: "UniSearchBar",
     emits: ["input", "update:modelValue", "clear", "cancel", "confirm", "blur", "focus"],
     props: {
@@ -6548,7 +7217,7 @@ if (uni.restoreGlobal) {
       }
     }
   };
-  function _sfc_render$2(_ctx, _cache, $props, $setup, $data, $options) {
+  function _sfc_render$5(_ctx, _cache, $props, $setup, $data, $options) {
     const _component_uni_icons = resolveEasycom(vue.resolveDynamicComponent("uni-icons"), __easycom_0$c);
     return vue.openBlock(), vue.createElementBlock("view", { class: "uni-searchbar" }, [
       vue.createElementVNode(
@@ -6624,8 +7293,8 @@ if (uni.restoreGlobal) {
       )) : vue.createCommentVNode("v-if", true)
     ]);
   }
-  const __easycom_0 = /* @__PURE__ */ _export_sfc(_sfc_main$3, [["render", _sfc_render$2], ["__scopeId", "data-v-f07ef577"], ["__file", "D:/code-life/uni-app-components/uni_modules/uni-search-bar/components/uni-search-bar/uni-search-bar.vue"]]);
-  const _sfc_main$2 = {
+  const __easycom_0 = /* @__PURE__ */ _export_sfc(_sfc_main$6, [["render", _sfc_render$5], ["__scopeId", "data-v-f07ef577"], ["__file", "D:/code/code-life/uni-app-components/uni_modules/uni-search-bar/components/uni-search-bar/uni-search-bar.vue"]]);
+  const _sfc_main$5 = {
     __name: "cl-auto-page-list",
     props: {
       // 距底部/右边多远时（单位px），触发 scrolltolower 事件
@@ -6780,8 +7449,8 @@ if (uni.restoreGlobal) {
       return __returned__;
     }
   };
-  function _sfc_render$1(_ctx, _cache, $props, $setup, $data, $options) {
-    const _component_uni_load_more = resolveEasycom(vue.resolveDynamicComponent("uni-load-more"), __easycom_0$9);
+  function _sfc_render$4(_ctx, _cache, $props, $setup, $data, $options) {
+    const _component_uni_load_more = resolveEasycom(vue.resolveDynamicComponent("uni-load-more"), __easycom_0$8);
     return vue.openBlock(), vue.createElementBlock("scroll-view", {
       style: { "height": "100%" },
       "scroll-y": true,
@@ -6816,8 +7485,8 @@ if (uni.restoreGlobal) {
       ], true) : vue.createCommentVNode("v-if", true)
     ], 40, ["scroll-top", "refresher-triggered", "lower-threshold"]);
   }
-  const __easycom_1 = /* @__PURE__ */ _export_sfc(_sfc_main$2, [["render", _sfc_render$1], ["__scopeId", "data-v-40e80ac4"], ["__file", "D:/code-life/uni-app-components/uni_modules/cl-auto-page-list/components/cl-auto-page-list/cl-auto-page-list.vue"]]);
-  const _sfc_main$1 = {
+  const __easycom_1$1 = /* @__PURE__ */ _export_sfc(_sfc_main$5, [["render", _sfc_render$4], ["__scopeId", "data-v-40e80ac4"], ["__file", "D:/code/code-life/uni-app-components/uni_modules/cl-auto-page-list/components/cl-auto-page-list/cl-auto-page-list.vue"]]);
+  const _sfc_main$4 = {
     __name: "index",
     setup(__props, { expose: __expose }) {
       __expose();
@@ -6825,7 +7494,7 @@ if (uni.restoreGlobal) {
         label: ""
       });
       const list = Array.from({
-        length: 500
+        length: 20
       }, (_, index) => {
         return {
           label: `我是展示的值${index}`,
@@ -6841,9 +7510,9 @@ if (uni.restoreGlobal) {
       return __returned__;
     }
   };
-  function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
+  function _sfc_render$3(_ctx, _cache, $props, $setup, $data, $options) {
     const _component_uni_search_bar = resolveEasycom(vue.resolveDynamicComponent("uni-search-bar"), __easycom_0);
-    const _component_cl_auto_page_list = resolveEasycom(vue.resolveDynamicComponent("cl-auto-page-list"), __easycom_1);
+    const _component_cl_auto_page_list = resolveEasycom(vue.resolveDynamicComponent("cl-auto-page-list"), __easycom_1$1);
     return vue.openBlock(), vue.createElementBlock("view", { class: "cl_flex_page" }, [
       vue.createVNode(_component_uni_search_bar, {
         modelValue: $setup.params.label,
@@ -6880,13 +7549,312 @@ if (uni.restoreGlobal) {
         ]),
         _: 1
         /* STABLE */
-      }, 8, ["list", "params"]),
-      vue.createElementVNode("view", { class: "cl_bottom_box" }, [
-        vue.createElementVNode("view", { class: "cl_bottom_box_btn" }, " 新增模板 ")
-      ])
+      }, 8, ["list", "params"])
     ]);
   }
-  const PagesComponentPageClAutoPageListIndex = /* @__PURE__ */ _export_sfc(_sfc_main$1, [["render", _sfc_render], ["__scopeId", "data-v-9bdff03b"], ["__file", "D:/code-life/uni-app-components/pages/componentPage/cl-auto-page-list/index.vue"]]);
+  const PagesComponentPageClAutoPageListIndex = /* @__PURE__ */ _export_sfc(_sfc_main$4, [["render", _sfc_render$3], ["__scopeId", "data-v-9bdff03b"], ["__file", "D:/code/code-life/uni-app-components/pages/componentPage/cl-auto-page-list/index.vue"]]);
+  const _sfc_main$3 = {
+    __name: "cl-ftabs",
+    props: /* @__PURE__ */ vue.mergeModels({
+      option: {
+        type: Array,
+        default: () => []
+      },
+      labelField: {
+        type: String,
+        default: "label"
+      },
+      valueField: {
+        type: String,
+        default: "value"
+      },
+      // 组件风格 button、text
+      styleType: {
+        type: String,
+        default: "button"
+      }
+    }, {
+      "modelValue": {},
+      "modelModifiers": {}
+    }),
+    emits: /* @__PURE__ */ vue.mergeModels(["change"], ["update:modelValue"]),
+    setup(__props, { expose: __expose, emit: __emit }) {
+      __expose();
+      const props = __props;
+      const formatOption = vue.computed(() => {
+        return props.option.map((item) => {
+          if (typeof item !== "object") {
+            return {
+              [props.labelField]: item,
+              [props.valueField]: item
+            };
+          } else {
+            return item;
+          }
+        });
+      });
+      const emits = __emit;
+      const modelVal = vue.useModel(__props, "modelValue");
+      const handleToggle = (item, index) => {
+        let newVal = item[props.valueField];
+        if (newVal === modelVal.value) {
+          return;
+        }
+        modelVal.value = newVal;
+        emits("change", newVal, item, index);
+      };
+      const __returned__ = { props, formatOption, emits, modelVal, handleToggle, computed: vue.computed };
+      Object.defineProperty(__returned__, "__isScriptSetup", { enumerable: false, value: true });
+      return __returned__;
+    }
+  };
+  function _sfc_render$2(_ctx, _cache, $props, $setup, $data, $options) {
+    return vue.openBlock(), vue.createElementBlock(
+      "view",
+      {
+        class: vue.normalizeClass(["tabs", $props.styleType])
+      },
+      [
+        (vue.openBlock(true), vue.createElementBlock(
+          vue.Fragment,
+          null,
+          vue.renderList($setup.formatOption, (item, index) => {
+            return vue.openBlock(), vue.createElementBlock("view", {
+              key: index,
+              class: vue.normalizeClass(["tabs_item", $setup.modelVal === item[$props.valueField] && "tabs_item_active"]),
+              onClick: ($event) => $setup.handleToggle(item, index)
+            }, [
+              vue.renderSlot(_ctx.$slots, "label", {
+                label: item[$props.labelField],
+                tabItem: item,
+                isActive: $setup.modelVal === item[$props.valueField]
+              }, () => [
+                vue.createElementVNode(
+                  "view",
+                  { class: "tabs_item_text" },
+                  vue.toDisplayString(item[$props.labelField]),
+                  1
+                  /* TEXT */
+                )
+              ], true)
+            ], 10, ["onClick"]);
+          }),
+          128
+          /* KEYED_FRAGMENT */
+        ))
+      ],
+      2
+      /* CLASS */
+    );
+  }
+  const __easycom_1 = /* @__PURE__ */ _export_sfc(_sfc_main$3, [["render", _sfc_render$2], ["__scopeId", "data-v-f3f60d72"], ["__file", "D:/code/code-life/uni-app-components/uni_modules/cl-ftabs/components/cl-ftabs/cl-ftabs.vue"]]);
+  const _sfc_main$2 = {
+    __name: "index",
+    setup(__props, { expose: __expose }) {
+      __expose();
+      const option = [
+        {
+          value: "1",
+          label: "数据1"
+        },
+        {
+          value: "2",
+          label: "数据2"
+        },
+        "数据3"
+      ];
+      const value1 = vue.ref("1");
+      const value2 = vue.ref("2");
+      const handleChange = (val, item, index) => {
+        formatAppLog("log", "at pages/componentPage/cl-tabs/index.vue:35", val, item, index);
+      };
+      const __returned__ = { option, value1, value2, handleChange, ref: vue.ref };
+      Object.defineProperty(__returned__, "__isScriptSetup", { enumerable: false, value: true });
+      return __returned__;
+    }
+  };
+  function _sfc_render$1(_ctx, _cache, $props, $setup, $data, $options) {
+    const _component_uni_section = resolveEasycom(vue.resolveDynamicComponent("uni-section"), __easycom_0$6);
+    const _component_cl_ftabs = resolveEasycom(vue.resolveDynamicComponent("cl-ftabs"), __easycom_1);
+    return vue.openBlock(), vue.createElementBlock("view", { class: "content" }, [
+      vue.createVNode(_component_uni_section, null, {
+        default: vue.withCtx(() => [
+          vue.createTextVNode("按钮样式")
+        ]),
+        _: 1
+        /* STABLE */
+      }),
+      vue.createVNode(_component_cl_ftabs, {
+        modelValue: $setup.value1,
+        "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => $setup.value1 = $event),
+        option: $setup.option
+      }, null, 8, ["modelValue"]),
+      vue.createVNode(_component_uni_section, null, {
+        default: vue.withCtx(() => [
+          vue.createTextVNode("文本样式")
+        ]),
+        _: 1
+        /* STABLE */
+      }),
+      vue.createVNode(_component_cl_ftabs, {
+        modelValue: $setup.value2,
+        "onUpdate:modelValue": _cache[1] || (_cache[1] = ($event) => $setup.value2 = $event),
+        option: $setup.option,
+        styleType: "text",
+        onChange: $setup.handleChange
+      }, null, 8, ["modelValue"]),
+      vue.createVNode(_component_uni_section, null, {
+        default: vue.withCtx(() => [
+          vue.createTextVNode("插槽")
+        ]),
+        _: 1
+        /* STABLE */
+      }),
+      vue.createVNode(_component_cl_ftabs, {
+        modelValue: $setup.value2,
+        "onUpdate:modelValue": _cache[2] || (_cache[2] = ($event) => $setup.value2 = $event),
+        option: $setup.option,
+        styleType: "text",
+        onChange: $setup.handleChange
+      }, {
+        label: vue.withCtx(({ label, tabItem, isActive }) => [
+          !isActive ? (vue.openBlock(), vue.createElementBlock(
+            "text",
+            {
+              key: 0,
+              style: { "color": "blueviolet" }
+            },
+            vue.toDisplayString(label) + "~" + vue.toDisplayString(tabItem.value),
+            1
+            /* TEXT */
+          )) : (vue.openBlock(), vue.createElementBlock(
+            "text",
+            {
+              key: 1,
+              style: { "color": "red" }
+            },
+            vue.toDisplayString(label) + "~" + vue.toDisplayString(tabItem.value),
+            1
+            /* TEXT */
+          ))
+        ]),
+        _: 1
+        /* STABLE */
+      }, 8, ["modelValue"])
+    ]);
+  }
+  const PagesComponentPageClTabsIndex = /* @__PURE__ */ _export_sfc(_sfc_main$2, [["render", _sfc_render$1], ["__scopeId", "data-v-c34bfe67"], ["__file", "D:/code/code-life/uni-app-components/pages/componentPage/cl-tabs/index.vue"]]);
+  const _sfc_main$1 = {
+    __name: "index",
+    setup(__props, { expose: __expose }) {
+      __expose();
+      const expandKeys1 = vue.ref([]);
+      const expandKeys2 = vue.ref([]);
+      const treeData = [
+        {
+          id: "1",
+          name: "电子产品",
+          children: [
+            {
+              id: 2,
+              name: "手机",
+              children: [
+                {
+                  id: 3,
+                  name: "智能手机",
+                  children: []
+                },
+                {
+                  id: 4,
+                  name: "功能手机",
+                  children: []
+                }
+              ]
+            },
+            {
+              id: 5,
+              name: "电脑",
+              children: [
+                {
+                  id: 6,
+                  name: "笔记本",
+                  children: []
+                },
+                {
+                  id: 7,
+                  name: "台式机",
+                  children: []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          id: 8,
+          name: "家居用品",
+          children: [
+            {
+              id: 9,
+              name: "家具",
+              children: [
+                {
+                  id: 10,
+                  name: "沙发",
+                  children: []
+                },
+                {
+                  id: 11,
+                  name: "桌椅",
+                  children: []
+                }
+              ]
+            },
+            {
+              id: 12,
+              name: "家电",
+              children: [
+                {
+                  id: 13,
+                  name: "冰箱",
+                  children: []
+                },
+                {
+                  id: 14,
+                  name: "电视",
+                  children: []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          id: 15,
+          name: "图书音像",
+          children: []
+        }
+      ];
+      const columns = [{
+        prop: "id",
+        label: "id",
+        style: {
+          flex: "0 0 140rpx",
+          textAlign: "left"
+        }
+      }, {
+        prop: "name",
+        label: "名称"
+      }];
+      const __returned__ = { expandKeys1, expandKeys2, treeData, columns, ref: vue.ref };
+      Object.defineProperty(__returned__, "__isScriptSetup", { enumerable: false, value: true });
+      return __returned__;
+    }
+  };
+  function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
+    return vue.openBlock(), vue.createElementBlock("view", { class: "content" }, [
+      vue.createCommentVNode(' <uni-section>普通用法</uni-section>\r\n		<cl-table style="max-height: 300px;" :columns="columns" :data="treeData" overHidden>\r\n		</cl-table>\r\n		<uni-section>\r\n			<text>表格树</text>\r\n		</uni-section>\r\n		<cl-table style="max-height: 300px;" v-model:expandKeys="expandKeys1" :columns="columns" :data="treeData"\r\n			isTableTree overHidden>\r\n		</cl-table>\r\n		<view>展开数据{{expandKeys1}}</view>\r\n		<uni-section>\r\n			<text>表格树（默认展开数据）</text>\r\n		</uni-section>\r\n		<cl-table style="max-height: 300px;" v-model:expandKeys="expandKeys2" :columns="columns" :data="treeData"\r\n			isTableTree overHidden defaultExpandAll>\r\n		</cl-table>\r\n		<view>展开数据{{expandKeys2}}</view>\r\n		<uni-section>\r\n			<text>表格树（表头和内容插槽）</text>\r\n		</uni-section>\r\n		<cl-table style="max-height: 300px;" :columns="columns" :data="treeData" isTableTree overHidden defaultExpandAll>\r\n			<template #id-header="{column}">\r\n				<text style="color: red;">我是{{column.label}}</text>\r\n			</template>\r\n			<template #name="{text}">\r\n				<text style="color: green;">我使用了插槽：{{text}}</text>\r\n			</template>\r\n		</cl-table> ')
+    ]);
+  }
+  const PagesComponentPageClTableIndex = /* @__PURE__ */ _export_sfc(_sfc_main$1, [["render", _sfc_render], ["__scopeId", "data-v-314957e2"], ["__file", "D:/code/code-life/uni-app-components/pages/componentPage/cl-table/index.vue"]]);
   __definePage("pages/index/index", PagesIndexIndex);
   __definePage("pages/componentPage/cl-select-picker/index", PagesComponentPageClSelectPickerIndex);
   __definePage("pages/componentPage/cl-scroll-view/index", PagesComponentPageClScrollViewIndex);
@@ -6896,6 +7864,8 @@ if (uni.restoreGlobal) {
   __definePage("pages/componentPage/cl-more-select-picker/index", PagesComponentPageClMoreSelectPickerIndex);
   __definePage("pages/componentPage/cl-autocomplete/index", PagesComponentPageClAutocompleteIndex);
   __definePage("pages/componentPage/cl-auto-page-list/index", PagesComponentPageClAutoPageListIndex);
+  __definePage("pages/componentPage/cl-tabs/index", PagesComponentPageClTabsIndex);
+  __definePage("pages/componentPage/cl-table/index", PagesComponentPageClTableIndex);
   const _sfc_main = {
     onLaunch: function() {
       formatAppLog("log", "at App.vue:4", "App Launch");
@@ -6907,9 +7877,25 @@ if (uni.restoreGlobal) {
       formatAppLog("log", "at App.vue:10", "App Hide");
     }
   };
-  const App = /* @__PURE__ */ _export_sfc(_sfc_main, [["__file", "D:/code-life/uni-app-components/App.vue"]]);
+  const App = /* @__PURE__ */ _export_sfc(_sfc_main, [["__file", "D:/code/code-life/uni-app-components/App.vue"]]);
+  const allowSharePageList = ["pages/course/detail"];
+  const disabledShare = {
+    onLoad: () => {
+      const pages = getCurrentPages();
+      let nowPage = pages[pages.length - 1];
+      formatAppLog("log", "at hooks/disabledShare.js:9", nowPage, "nowPage");
+      if (!allowSharePageList.includes(nowPage.route || "")) {
+        uni.hideShareMenu({ hideShareItems: [] });
+      }
+    },
+    onShareAppMessage: () => {
+    },
+    onShareTimeline: () => {
+    }
+  };
   function createApp() {
     const app = vue.createVueApp(App);
+    app.mixin(disabledShare);
     return {
       app
     };

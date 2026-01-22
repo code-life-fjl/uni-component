@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "cl-select",
+  "usingComponents": {
+    "uni-section": "../../../uni_modules/uni-section/components/uni-section/uni-section",
+    "cl-select": "../../../uni_modules/cl-select/components/cl-select/cl-select"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "tabs组件",
+  "usingComponents": {
+    "uni-section": "../../../uni_modules/uni-section/components/uni-section/uni-section",
+    "cl-ftabs": "../../../uni_modules/cl-ftabs/components/cl-ftabs/cl-ftabs"
+  }
+}

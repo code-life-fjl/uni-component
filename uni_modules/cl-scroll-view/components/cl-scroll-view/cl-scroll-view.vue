@@ -240,8 +240,8 @@
 	}
 
 	.icon_box .image {
-		width: 460rpx;
-		height: 460rpx;
+		width: 400rpx;
+		height: 400rpx;
 	}
 
 	.icon_box .text {

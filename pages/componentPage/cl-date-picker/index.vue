@@ -4,12 +4,11 @@
 			使用picker-view和picker-view-column封装的时间选择器，支持年月日时分秒各种形式的组合搭配。
 		</view>
 		<uni-section>基础使用</uni-section>
-		<cl-date-picker v-model="value1" ref="datePickerRef"></cl-date-picker>
+		<cl-date-picker v-model="value1" ref="datePickerRef" ></cl-date-picker>
 		<uni-section>切换时间格式</uni-section>
 		<cl-date-picker v-model="value2" ref="datePickerRef" dateType="hh:mm:ss"></cl-date-picker>
 		<uni-section>禁用状态</uni-section>
 		<cl-date-picker v-model="value3" ref="datePickerRef" disabled></cl-date-picker>
-		<uni-data-select v-model="value" :localdata="range" @change="change"></uni-data-select>
 	</view>
 </template>
 
