@@ -66,6 +66,12 @@
 			"style": {
 				"navigationBarTitleText": "表格组件"
 			}
+		},
+		{
+			"path": "pages/componentPage/cl-video/index",
+			"style": {
+				"navigationBarTitleText": "视频组件"
+			}
 		}
 	],
 	"globalStyle": {

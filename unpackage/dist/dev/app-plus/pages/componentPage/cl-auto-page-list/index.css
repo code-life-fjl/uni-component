@@ -787,20 +787,20 @@
 }
 
 .empty_box[data-v-40e80ac4] {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-		font-size: 0.9375rem;
-		height: 80%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9375rem;
+  height: 80%;
 }
-.empty_box>.empty_box_image[data-v-40e80ac4] {
-		width: 9.375rem;
-		height: 6.25rem;
+.empty_box > .empty_box_image[data-v-40e80ac4] {
+  width: 9.375rem;
+  height: 6.25rem;
 }
-.empty_box>.empty_box_text[data-v-40e80ac4] {
-		margin-top: 20px;
-		color: #999;
+.empty_box > .empty_box_text[data-v-40e80ac4] {
+  margin-top: 20px;
+  color: #999;
 }
 
 /**
@@ -828,6 +828,12 @@
 /* 垂直间距 */
 /* 透明度 */
 /* 文章场景相关 */
+.cl_flex_page[data-v-9bdff03b] {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 2.75rem);
+  overflow: hidden;
+}
 .list_box[data-v-9bdff03b] {
   flex: 1;
   overflow-y: auto;

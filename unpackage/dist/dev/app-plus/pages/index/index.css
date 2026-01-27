@@ -1,12 +1,12 @@
 
 .content[data-v-1cf27b2a] {
-		padding: 50px;
+  padding: 50px;
 }
-.content>.button[data-v-1cf27b2a] {
-		margin-bottom: 0.625rem;
+.content > .button[data-v-1cf27b2a] {
+  margin-bottom: 0.625rem;
 }
 .table[data-v-1cf27b2a],
-	.td[data-v-1cf27b2a] {
-		box-sizing: border-box;
-		border: 1px solid #dadada;
+.td[data-v-1cf27b2a] {
+  box-sizing: border-box;
+  border: 1px solid #dadada;
 }

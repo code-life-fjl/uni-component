@@ -69,7 +69,7 @@ if (uni.restoreGlobal) {
     }
     return target;
   };
-  const _sfc_main$w = {
+  const _sfc_main$A = {
     __name: "index",
     setup(__props, { expose: __expose }) {
       __expose();
@@ -117,6 +117,10 @@ if (uni.restoreGlobal) {
         {
           componentName: "cl-table",
           componentPath: "/pages/componentPage/cl-table/index"
+        },
+        {
+          componentName: "cl-video",
+          componentPath: "/pages/componentPage/cl-video/index"
         }
       ]);
       const toPage = (url) => {
@@ -131,7 +135,7 @@ if (uni.restoreGlobal) {
         });
       });
       onShareAppMessage((res2) => {
-        formatAppLog("log", "at pages/index/index.vue:71", res2);
+        formatAppLog("log", "at pages/index/index.vue:80", res2);
         return {
           title: "243"
         };
@@ -143,7 +147,7 @@ if (uni.restoreGlobal) {
       return __returned__;
     }
   };
-  function _sfc_render$v(_ctx, _cache, $props, $setup, $data, $options) {
+  function _sfc_render$z(_ctx, _cache, $props, $setup, $data, $options) {
     return vue.openBlock(), vue.createElementBlock("view", { class: "content" }, [
       (vue.openBlock(true), vue.createElementBlock(
         vue.Fragment,
@@ -160,7 +164,7 @@ if (uni.restoreGlobal) {
       ))
     ]);
   }
-  const PagesIndexIndex = /* @__PURE__ */ _export_sfc(_sfc_main$w, [["render", _sfc_render$v], ["__scopeId", "data-v-1cf27b2a"], ["__file", "D:/code/code-life/uni-app-components/pages/index/index.vue"]]);
+  const PagesIndexIndex = /* @__PURE__ */ _export_sfc(_sfc_main$A, [["render", _sfc_render$z], ["__scopeId", "data-v-1cf27b2a"], ["__file", "D:/code/code-life/uni-app-components/pages/index/index.vue"]]);
   const fontData = [
     {
       "font_class": "arrow-down",
@@ -811,7 +815,7 @@ if (uni.restoreGlobal) {
     const reg = /^[0-9]*$/g;
     return typeof val === "number" || reg.test(val) ? val + "px" : val;
   };
-  const _sfc_main$v = {
+  const _sfc_main$z = {
     name: "UniIcons",
     emits: ["click"],
     props: {
@@ -865,7 +869,7 @@ if (uni.restoreGlobal) {
       }
     }
   };
-  function _sfc_render$u(_ctx, _cache, $props, $setup, $data, $options) {
+  function _sfc_render$y(_ctx, _cache, $props, $setup, $data, $options) {
     return vue.openBlock(), vue.createElementBlock(
       "text",
       {
@@ -880,7 +884,7 @@ if (uni.restoreGlobal) {
       /* CLASS, STYLE */
     );
   }
-  const __easycom_0$c = /* @__PURE__ */ _export_sfc(_sfc_main$v, [["render", _sfc_render$u], ["__scopeId", "data-v-d31e1c47"], ["__file", "D:/code/code-life/uni-app-components/uni_modules/uni-icons/components/uni-icons/uni-icons.vue"]]);
+  const __easycom_0$d = /* @__PURE__ */ _export_sfc(_sfc_main$z, [["render", _sfc_render$y], ["__scopeId", "data-v-d31e1c47"], ["__file", "D:/code/code-life/uni-app-components/uni_modules/uni-icons/components/uni-icons/uni-icons.vue"]]);
   function obj2strClass$1(obj) {
     let classess = "";
     for (let key in obj) {
@@ -899,7 +903,7 @@ if (uni.restoreGlobal) {
     }
     return style;
   }
-  const _sfc_main$u = {
+  const _sfc_main$y = {
     name: "uni-easyinput",
     emits: [
       "click",
@@ -1275,8 +1279,8 @@ if (uni.restoreGlobal) {
       }
     }
   };
-  function _sfc_render$t(_ctx, _cache, $props, $setup, $data, $options) {
-    const _component_uni_icons = resolveEasycom(vue.resolveDynamicComponent("uni-icons"), __easycom_0$c);
+  function _sfc_render$x(_ctx, _cache, $props, $setup, $data, $options) {
+    const _component_uni_icons = resolveEasycom(vue.resolveDynamicComponent("uni-icons"), __easycom_0$d);
     return vue.openBlock(), vue.createElementBlock(
       "view",
       {
@@ -1440,7 +1444,7 @@ if (uni.restoreGlobal) {
       /* CLASS, STYLE */
     );
   }
-  const __easycom_0$b = /* @__PURE__ */ _export_sfc(_sfc_main$u, [["render", _sfc_render$t], ["__scopeId", "data-v-ed66538f"], ["__file", "D:/code/code-life/uni-app-components/uni_modules/cl-input/components/cl-input/cl-input.vue"]]);
+  const __easycom_0$c = /* @__PURE__ */ _export_sfc(_sfc_main$y, [["render", _sfc_render$x], ["__scopeId", "data-v-ed66538f"], ["__file", "D:/code/code-life/uni-app-components/uni_modules/cl-input/components/cl-input/cl-input.vue"]]);
   class MPAnimation {
     constructor(options, _this) {
       this.options = options;
@@ -1553,7 +1557,7 @@ if (uni.restoreGlobal) {
     clearTimeout(_this.timer);
     return new MPAnimation(option, _this);
   }
-  const _sfc_main$t = {
+  const _sfc_main$x = {
     name: "uniTransition",
     emits: ["click", "change"],
     props: {
@@ -1804,7 +1808,7 @@ if (uni.restoreGlobal) {
       }
     }
   };
-  function _sfc_render$s(_ctx, _cache, $props, $setup, $data, $options) {
+  function _sfc_render$w(_ctx, _cache, $props, $setup, $data, $options) {
     return vue.withDirectives((vue.openBlock(), vue.createElementBlock("view", {
       ref: "ani",
       animation: $data.animationData,
@@ -1817,8 +1821,8 @@ if (uni.restoreGlobal) {
       [vue.vShow, $data.isShow]
     ]);
   }
-  const __easycom_0$a = /* @__PURE__ */ _export_sfc(_sfc_main$t, [["render", _sfc_render$s], ["__file", "D:/code/code-life/uni-app-components/uni_modules/uni-transition/components/uni-transition/uni-transition.vue"]]);
-  const _sfc_main$s = {
+  const __easycom_0$b = /* @__PURE__ */ _export_sfc(_sfc_main$x, [["render", _sfc_render$w], ["__file", "D:/code/code-life/uni-app-components/uni_modules/uni-transition/components/uni-transition/uni-transition.vue"]]);
+  const _sfc_main$w = {
     name: "uniPopup",
     components: {},
     emits: ["change", "maskClick"],
@@ -2171,8 +2175,8 @@ if (uni.restoreGlobal) {
       }
     }
   };
-  function _sfc_render$r(_ctx, _cache, $props, $setup, $data, $options) {
-    const _component_uni_transition = resolveEasycom(vue.resolveDynamicComponent("uni-transition"), __easycom_0$a);
+  function _sfc_render$v(_ctx, _cache, $props, $setup, $data, $options) {
+    const _component_uni_transition = resolveEasycom(vue.resolveDynamicComponent("uni-transition"), __easycom_0$b);
     return $data.showPopup ? (vue.openBlock(), vue.createElementBlock(
       "view",
       {
@@ -2231,9 +2235,9 @@ if (uni.restoreGlobal) {
       /* CLASS */
     )) : vue.createCommentVNode("v-if", true);
   }
-  const __easycom_2$1 = /* @__PURE__ */ _export_sfc(_sfc_main$s, [["render", _sfc_render$r], ["__scopeId", "data-v-4dd3c44b"], ["__file", "D:/code/code-life/uni-app-components/uni_modules/uni-popup/components/uni-popup/uni-popup.vue"]]);
+  const __easycom_2$1 = /* @__PURE__ */ _export_sfc(_sfc_main$w, [["render", _sfc_render$v], ["__scopeId", "data-v-4dd3c44b"], ["__file", "D:/code/code-life/uni-app-components/uni_modules/uni-popup/components/uni-popup/uni-popup.vue"]]);
   const noDataValue = "#codeLife_noData#";
-  const _sfc_main$r = {
+  const _sfc_main$v = {
     __name: "cl-select-picker",
     props: /* @__PURE__ */ vue.mergeModels({
       // 数据列表
@@ -2404,8 +2408,8 @@ if (uni.restoreGlobal) {
       return __returned__;
     }
   };
-  function _sfc_render$q(_ctx, _cache, $props, $setup, $data, $options) {
-    const _component_cl_input = resolveEasycom(vue.resolveDynamicComponent("cl-input"), __easycom_0$b);
+  function _sfc_render$u(_ctx, _cache, $props, $setup, $data, $options) {
+    const _component_cl_input = resolveEasycom(vue.resolveDynamicComponent("cl-input"), __easycom_0$c);
     const _component_uni_popup = resolveEasycom(vue.resolveDynamicComponent("uni-popup"), __easycom_2$1);
     return vue.openBlock(), vue.createElementBlock(
       vue.Fragment,
@@ -2479,8 +2483,8 @@ if (uni.restoreGlobal) {
       /* STABLE_FRAGMENT */
     );
   }
-  const __easycom_0$9 = /* @__PURE__ */ _export_sfc(_sfc_main$r, [["render", _sfc_render$q], ["__scopeId", "data-v-7036e199"], ["__file", "D:/code/code-life/uni-app-components/uni_modules/cl-select-picker/components/cl-select-picker/cl-select-picker.vue"]]);
-  const _sfc_main$q = {
+  const __easycom_0$a = /* @__PURE__ */ _export_sfc(_sfc_main$v, [["render", _sfc_render$u], ["__scopeId", "data-v-7036e199"], ["__file", "D:/code/code-life/uni-app-components/uni_modules/cl-select-picker/components/cl-select-picker/cl-select-picker.vue"]]);
+  const _sfc_main$u = {
     name: "uniFormsItem",
     options: {
       virtualHost: true
@@ -2812,7 +2816,7 @@ if (uni.restoreGlobal) {
       }
     }
   };
-  function _sfc_render$p(_ctx, _cache, $props, $setup, $data, $options) {
+  function _sfc_render$t(_ctx, _cache, $props, $setup, $data, $options) {
     return vue.openBlock(), vue.createElementBlock(
       "view",
       {
@@ -2868,7 +2872,7 @@ if (uni.restoreGlobal) {
       /* CLASS */
     );
   }
-  const __easycom_1$4 = /* @__PURE__ */ _export_sfc(_sfc_main$q, [["render", _sfc_render$p], ["__scopeId", "data-v-462874dd"], ["__file", "D:/code/code-life/uni-app-components/uni_modules/uni-forms/components/uni-forms-item/uni-forms-item.vue"]]);
+  const __easycom_1$5 = /* @__PURE__ */ _export_sfc(_sfc_main$u, [["render", _sfc_render$t], ["__scopeId", "data-v-462874dd"], ["__file", "D:/code/code-life/uni-app-components/uni_modules/uni-forms/components/uni-forms-item/uni-forms-item.vue"]]);
   var pattern = {
     email: /^\S+?@\S+?\.\S+?$/,
     idcard: /^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/,
@@ -3432,7 +3436,7 @@ if (uni.restoreGlobal) {
       return false;
     }
   };
-  const _sfc_main$p = {
+  const _sfc_main$t = {
     name: "uniForms",
     emits: ["validate", "submit"],
     options: {
@@ -3734,15 +3738,15 @@ if (uni.restoreGlobal) {
       _isEqual: isEqual
     }
   };
-  function _sfc_render$o(_ctx, _cache, $props, $setup, $data, $options) {
+  function _sfc_render$s(_ctx, _cache, $props, $setup, $data, $options) {
     return vue.openBlock(), vue.createElementBlock("view", { class: "uni-forms" }, [
       vue.createElementVNode("form", null, [
         vue.renderSlot(_ctx.$slots, "default", {}, void 0, true)
       ])
     ]);
   }
-  const __easycom_2 = /* @__PURE__ */ _export_sfc(_sfc_main$p, [["render", _sfc_render$o], ["__scopeId", "data-v-9a1e3c32"], ["__file", "D:/code/code-life/uni-app-components/uni_modules/uni-forms/components/uni-forms/uni-forms.vue"]]);
-  const _sfc_main$o = {
+  const __easycom_2 = /* @__PURE__ */ _export_sfc(_sfc_main$t, [["render", _sfc_render$s], ["__scopeId", "data-v-9a1e3c32"], ["__file", "D:/code/code-life/uni-app-components/uni_modules/uni-forms/components/uni-forms/uni-forms.vue"]]);
+  const _sfc_main$s = {
     __name: "index",
     setup(__props, { expose: __expose }) {
       __expose();
@@ -3784,9 +3788,9 @@ if (uni.restoreGlobal) {
       return __returned__;
     }
   };
-  function _sfc_render$n(_ctx, _cache, $props, $setup, $data, $options) {
-    const _component_cl_select_picker = resolveEasycom(vue.resolveDynamicComponent("cl-select-picker"), __easycom_0$9);
-    const _component_uni_forms_item = resolveEasycom(vue.resolveDynamicComponent("uni-forms-item"), __easycom_1$4);
+  function _sfc_render$r(_ctx, _cache, $props, $setup, $data, $options) {
+    const _component_cl_select_picker = resolveEasycom(vue.resolveDynamicComponent("cl-select-picker"), __easycom_0$a);
+    const _component_uni_forms_item = resolveEasycom(vue.resolveDynamicComponent("uni-forms-item"), __easycom_1$5);
     const _component_uni_forms = resolveEasycom(vue.resolveDynamicComponent("uni-forms"), __easycom_2);
     return vue.openBlock(), vue.createElementBlock("view", { class: "content" }, [
       vue.createElementVNode("view", { class: "section_title" }, " 基础使用 "),
@@ -3845,7 +3849,7 @@ if (uni.restoreGlobal) {
       ])
     ]);
   }
-  const PagesComponentPageClSelectPickerIndex = /* @__PURE__ */ _export_sfc(_sfc_main$o, [["render", _sfc_render$n], ["__scopeId", "data-v-17f399f1"], ["__file", "D:/code/code-life/uni-app-components/pages/componentPage/cl-select-picker/index.vue"]]);
+  const PagesComponentPageClSelectPickerIndex = /* @__PURE__ */ _export_sfc(_sfc_main$s, [["render", _sfc_render$r], ["__scopeId", "data-v-17f399f1"], ["__file", "D:/code/code-life/uni-app-components/pages/componentPage/cl-select-picker/index.vue"]]);
   const isObject = (val) => val !== null && typeof val === "object";
   const defaultDelimiters = ["{", "}"];
   class BaseFormatter {
@@ -4159,7 +4163,7 @@ if (uni.restoreGlobal) {
   const {
     t: t$1
   } = initVueI18n(messages$1);
-  const _sfc_main$n = {
+  const _sfc_main$r = {
     name: "UniLoadMore",
     emits: ["clickLoadMore"],
     props: {
@@ -4241,7 +4245,7 @@ if (uni.restoreGlobal) {
       }
     }
   };
-  function _sfc_render$m(_ctx, _cache, $props, $setup, $data, $options) {
+  function _sfc_render$q(_ctx, _cache, $props, $setup, $data, $options) {
     return vue.openBlock(), vue.createElementBlock("view", {
       class: "uni-load-more",
       onClick: _cache[0] || (_cache[0] = (...args) => $options.onClick && $options.onClick(...args))
@@ -4316,8 +4320,8 @@ if (uni.restoreGlobal) {
       )) : vue.createCommentVNode("v-if", true)
     ]);
   }
-  const __easycom_0$8 = /* @__PURE__ */ _export_sfc(_sfc_main$n, [["render", _sfc_render$m], ["__scopeId", "data-v-9245e42c"], ["__file", "D:/code/code-life/uni-app-components/uni_modules/uni-load-more/components/uni-load-more/uni-load-more.vue"]]);
-  const _sfc_main$m = {
+  const __easycom_0$9 = /* @__PURE__ */ _export_sfc(_sfc_main$r, [["render", _sfc_render$q], ["__scopeId", "data-v-9245e42c"], ["__file", "D:/code/code-life/uni-app-components/uni_modules/uni-load-more/components/uni-load-more/uni-load-more.vue"]]);
+  const _sfc_main$q = {
     __name: "cl-scroll-view",
     props: {
       // 距底部/右边多远时（单位px），触发 scrolltolower 事件
@@ -4489,8 +4493,8 @@ if (uni.restoreGlobal) {
       return __returned__;
     }
   };
-  function _sfc_render$l(_ctx, _cache, $props, $setup, $data, $options) {
-    const _component_uni_load_more = resolveEasycom(vue.resolveDynamicComponent("uni-load-more"), __easycom_0$8);
+  function _sfc_render$p(_ctx, _cache, $props, $setup, $data, $options) {
+    const _component_uni_load_more = resolveEasycom(vue.resolveDynamicComponent("uni-load-more"), __easycom_0$9);
     return vue.openBlock(), vue.createElementBlock("scroll-view", {
       style: { "height": "100%" },
       "scroll-y": true,
@@ -4543,8 +4547,8 @@ if (uni.restoreGlobal) {
       ], true) : vue.createCommentVNode("v-if", true)
     ], 40, ["scroll-top", "refresher-triggered", "refresher-enabled", "lower-threshold"]);
   }
-  const __easycom_0$7 = /* @__PURE__ */ _export_sfc(_sfc_main$m, [["render", _sfc_render$l], ["__scopeId", "data-v-77892465"], ["__file", "D:/code/code-life/uni-app-components/uni_modules/cl-scroll-view/components/cl-scroll-view/cl-scroll-view.vue"]]);
-  const _sfc_main$l = {
+  const __easycom_0$8 = /* @__PURE__ */ _export_sfc(_sfc_main$q, [["render", _sfc_render$p], ["__scopeId", "data-v-77892465"], ["__file", "D:/code/code-life/uni-app-components/uni_modules/cl-scroll-view/components/cl-scroll-view/cl-scroll-view.vue"]]);
+  const _sfc_main$p = {
     __name: "index",
     setup(__props, { expose: __expose }) {
       __expose();
@@ -4641,8 +4645,8 @@ if (uni.restoreGlobal) {
       return __returned__;
     }
   };
-  function _sfc_render$k(_ctx, _cache, $props, $setup, $data, $options) {
-    const _component_cl_scroll_view = resolveEasycom(vue.resolveDynamicComponent("cl-scroll-view"), __easycom_0$7);
+  function _sfc_render$o(_ctx, _cache, $props, $setup, $data, $options) {
+    const _component_cl_scroll_view = resolveEasycom(vue.resolveDynamicComponent("cl-scroll-view"), __easycom_0$8);
     return vue.openBlock(), vue.createElementBlock("view", { class: "content" }, [
       vue.createElementVNode("view", { class: "section_title" }, " 基本使用（使用list插槽） "),
       vue.createElementVNode("view", { style: { "height": "600rpx", "border": "1px solid gainsboro" } }, [
@@ -4821,8 +4825,8 @@ if (uni.restoreGlobal) {
       ])
     ]);
   }
-  const PagesComponentPageClScrollViewIndex = /* @__PURE__ */ _export_sfc(_sfc_main$l, [["render", _sfc_render$k], ["__scopeId", "data-v-a70f1c9b"], ["__file", "D:/code/code-life/uni-app-components/pages/componentPage/cl-scroll-view/index.vue"]]);
-  const _sfc_main$k = {
+  const PagesComponentPageClScrollViewIndex = /* @__PURE__ */ _export_sfc(_sfc_main$p, [["render", _sfc_render$o], ["__scopeId", "data-v-a70f1c9b"], ["__file", "D:/code/code-life/uni-app-components/pages/componentPage/cl-scroll-view/index.vue"]]);
+  const _sfc_main$o = {
     name: "UniSection",
     emits: ["click"],
     props: {
@@ -4881,7 +4885,7 @@ if (uni.restoreGlobal) {
       }
     }
   };
-  function _sfc_render$j(_ctx, _cache, $props, $setup, $data, $options) {
+  function _sfc_render$n(_ctx, _cache, $props, $setup, $data, $options) {
     return vue.openBlock(), vue.createElementBlock("view", { class: "uni-section" }, [
       vue.createElementVNode("view", {
         class: "uni-section-header",
@@ -4938,8 +4942,8 @@ if (uni.restoreGlobal) {
       )
     ]);
   }
-  const __easycom_0$6 = /* @__PURE__ */ _export_sfc(_sfc_main$k, [["render", _sfc_render$j], ["__scopeId", "data-v-637fd36b"], ["__file", "D:/code/code-life/uni-app-components/uni_modules/uni-section/components/uni-section/uni-section.vue"]]);
-  const _sfc_main$j = {
+  const __easycom_0$7 = /* @__PURE__ */ _export_sfc(_sfc_main$o, [["render", _sfc_render$n], ["__scopeId", "data-v-637fd36b"], ["__file", "D:/code/code-life/uni-app-components/uni_modules/uni-section/components/uni-section/uni-section.vue"]]);
+  const _sfc_main$n = {
     __name: "cl-select",
     props: {
       options: {
@@ -5136,9 +5140,9 @@ if (uni.restoreGlobal) {
       return __returned__;
     }
   };
-  function _sfc_render$i(_ctx, _cache, $props, $setup, $data, $options) {
-    const _component_uni_icons = resolveEasycom(vue.resolveDynamicComponent("uni-icons"), __easycom_0$c);
-    const _component_cl_input = resolveEasycom(vue.resolveDynamicComponent("cl-input"), __easycom_0$b);
+  function _sfc_render$m(_ctx, _cache, $props, $setup, $data, $options) {
+    const _component_uni_icons = resolveEasycom(vue.resolveDynamicComponent("uni-icons"), __easycom_0$d);
+    const _component_cl_input = resolveEasycom(vue.resolveDynamicComponent("cl-input"), __easycom_0$c);
     return vue.openBlock(), vue.createElementBlock(
       vue.Fragment,
       null,
@@ -5234,8 +5238,8 @@ if (uni.restoreGlobal) {
       /* STABLE_FRAGMENT */
     );
   }
-  const __easycom_1$3 = /* @__PURE__ */ _export_sfc(_sfc_main$j, [["render", _sfc_render$i], ["__scopeId", "data-v-4bd33685"], ["__file", "D:/code/code-life/uni-app-components/uni_modules/cl-select/components/cl-select/cl-select.vue"]]);
-  const _sfc_main$i = {
+  const __easycom_1$4 = /* @__PURE__ */ _export_sfc(_sfc_main$n, [["render", _sfc_render$m], ["__scopeId", "data-v-4bd33685"], ["__file", "D:/code/code-life/uni-app-components/uni_modules/cl-select/components/cl-select/cl-select.vue"]]);
+  const _sfc_main$m = {
     __name: "index",
     setup(__props, { expose: __expose }) {
       __expose();
@@ -5253,9 +5257,9 @@ if (uni.restoreGlobal) {
       return __returned__;
     }
   };
-  function _sfc_render$h(_ctx, _cache, $props, $setup, $data, $options) {
-    const _component_uni_section = resolveEasycom(vue.resolveDynamicComponent("uni-section"), __easycom_0$6);
-    const _component_cl_select = resolveEasycom(vue.resolveDynamicComponent("cl-select"), __easycom_1$3);
+  function _sfc_render$l(_ctx, _cache, $props, $setup, $data, $options) {
+    const _component_uni_section = resolveEasycom(vue.resolveDynamicComponent("uni-section"), __easycom_0$7);
+    const _component_cl_select = resolveEasycom(vue.resolveDynamicComponent("cl-select"), __easycom_1$4);
     return vue.openBlock(), vue.createElementBlock("view", { class: "content" }, [
       vue.createVNode(_component_uni_section, null, {
         default: vue.withCtx(() => [
@@ -5276,8 +5280,8 @@ if (uni.restoreGlobal) {
       )
     ]);
   }
-  const PagesComponentPageClSelectIndex = /* @__PURE__ */ _export_sfc(_sfc_main$i, [["render", _sfc_render$h], ["__scopeId", "data-v-ad7d568c"], ["__file", "D:/code/code-life/uni-app-components/pages/componentPage/cl-select/index.vue"]]);
-  const _sfc_main$h = {
+  const PagesComponentPageClSelectIndex = /* @__PURE__ */ _export_sfc(_sfc_main$m, [["render", _sfc_render$l], ["__scopeId", "data-v-ad7d568c"], ["__file", "D:/code/code-life/uni-app-components/pages/componentPage/cl-select/index.vue"]]);
+  const _sfc_main$l = {
     name: "UniStatusBar",
     data() {
       return {
@@ -5285,7 +5289,7 @@ if (uni.restoreGlobal) {
       };
     }
   };
-  function _sfc_render$g(_ctx, _cache, $props, $setup, $data, $options) {
+  function _sfc_render$k(_ctx, _cache, $props, $setup, $data, $options) {
     return vue.openBlock(), vue.createElementBlock(
       "view",
       {
@@ -5299,9 +5303,9 @@ if (uni.restoreGlobal) {
       /* STYLE */
     );
   }
-  const statusBar = /* @__PURE__ */ _export_sfc(_sfc_main$h, [["render", _sfc_render$g], ["__scopeId", "data-v-7920e3e0"], ["__file", "D:/code/code-life/uni-app-components/uni_modules/uni-nav-bar/components/uni-nav-bar/uni-status-bar.vue"]]);
+  const statusBar = /* @__PURE__ */ _export_sfc(_sfc_main$l, [["render", _sfc_render$k], ["__scopeId", "data-v-7920e3e0"], ["__file", "D:/code/code-life/uni-app-components/uni_modules/uni-nav-bar/components/uni-nav-bar/uni-status-bar.vue"]]);
   const getVal = (val) => typeof val === "number" ? val + "px" : val;
-  const _sfc_main$g = {
+  const _sfc_main$k = {
     name: "UniNavBar",
     components: {
       statusBar
@@ -5421,9 +5425,9 @@ if (uni.restoreGlobal) {
       }
     }
   };
-  function _sfc_render$f(_ctx, _cache, $props, $setup, $data, $options) {
+  function _sfc_render$j(_ctx, _cache, $props, $setup, $data, $options) {
     const _component_status_bar = vue.resolveComponent("status-bar");
-    const _component_uni_icons = resolveEasycom(vue.resolveDynamicComponent("uni-icons"), __easycom_0$c);
+    const _component_uni_icons = resolveEasycom(vue.resolveDynamicComponent("uni-icons"), __easycom_0$d);
     return vue.openBlock(), vue.createElementBlock(
       "view",
       {
@@ -5576,8 +5580,8 @@ if (uni.restoreGlobal) {
       /* CLASS */
     );
   }
-  const __easycom_0$5 = /* @__PURE__ */ _export_sfc(_sfc_main$g, [["render", _sfc_render$f], ["__scopeId", "data-v-26544265"], ["__file", "D:/code/code-life/uni-app-components/uni_modules/uni-nav-bar/components/uni-nav-bar/uni-nav-bar.vue"]]);
-  const _sfc_main$f = {
+  const __easycom_0$6 = /* @__PURE__ */ _export_sfc(_sfc_main$k, [["render", _sfc_render$j], ["__scopeId", "data-v-26544265"], ["__file", "D:/code/code-life/uni-app-components/uni_modules/uni-nav-bar/components/uni-nav-bar/uni-nav-bar.vue"]]);
+  const _sfc_main$j = {
     __name: "cl-nav-bar",
     props: {
       title: {
@@ -5652,8 +5656,8 @@ if (uni.restoreGlobal) {
       return __returned__;
     }
   };
-  function _sfc_render$e(_ctx, _cache, $props, $setup, $data, $options) {
-    const _component_uni_nav_bar = resolveEasycom(vue.resolveDynamicComponent("uni-nav-bar"), __easycom_0$5);
+  function _sfc_render$i(_ctx, _cache, $props, $setup, $data, $options) {
+    const _component_uni_nav_bar = resolveEasycom(vue.resolveDynamicComponent("uni-nav-bar"), __easycom_0$6);
     return vue.openBlock(), vue.createBlock(_component_uni_nav_bar, vue.mergeProps({ class: "cl-nav-bar" }, $setup.$attrs, {
       border: $props.border,
       statusBar: $props.statusBar,
@@ -5664,10 +5668,10 @@ if (uni.restoreGlobal) {
       onClickright: $setup.clickright
     }), null, 16, ["border", "statusBar", "fixed", "leftIcon", "title"]);
   }
-  const __easycom_0$4 = /* @__PURE__ */ _export_sfc(_sfc_main$f, [["render", _sfc_render$e], ["__file", "D:/code/code-life/uni-app-components/uni_modules/cl-nav-bar/components/cl-nav-bar/cl-nav-bar.vue"]]);
-  const _sfc_main$e = {};
-  function _sfc_render$d(_ctx, _cache) {
-    const _component_cl_nav_bar = resolveEasycom(vue.resolveDynamicComponent("cl-nav-bar"), __easycom_0$4);
+  const __easycom_0$5 = /* @__PURE__ */ _export_sfc(_sfc_main$j, [["render", _sfc_render$i], ["__file", "D:/code/code-life/uni-app-components/uni_modules/cl-nav-bar/components/cl-nav-bar/cl-nav-bar.vue"]]);
+  const _sfc_main$i = {};
+  function _sfc_render$h(_ctx, _cache) {
+    const _component_cl_nav_bar = resolveEasycom(vue.resolveDynamicComponent("cl-nav-bar"), __easycom_0$5);
     return vue.openBlock(), vue.createElementBlock(
       vue.Fragment,
       null,
@@ -5680,8 +5684,8 @@ if (uni.restoreGlobal) {
       /* STABLE_FRAGMENT */
     );
   }
-  const PagesComponentPageClNavBarIndex = /* @__PURE__ */ _export_sfc(_sfc_main$e, [["render", _sfc_render$d], ["__file", "D:/code/code-life/uni-app-components/pages/componentPage/cl-nav-bar/index.vue"]]);
-  const _sfc_main$d = {
+  const PagesComponentPageClNavBarIndex = /* @__PURE__ */ _export_sfc(_sfc_main$i, [["render", _sfc_render$h], ["__file", "D:/code/code-life/uni-app-components/pages/componentPage/cl-nav-bar/index.vue"]]);
+  const _sfc_main$h = {
     __name: "cl-date-picker",
     props: /* @__PURE__ */ vue.mergeModels({
       dateType: {
@@ -5918,8 +5922,8 @@ if (uni.restoreGlobal) {
       return __returned__;
     }
   };
-  function _sfc_render$c(_ctx, _cache, $props, $setup, $data, $options) {
-    const _component_cl_input = resolveEasycom(vue.resolveDynamicComponent("cl-input"), __easycom_0$b);
+  function _sfc_render$g(_ctx, _cache, $props, $setup, $data, $options) {
+    const _component_cl_input = resolveEasycom(vue.resolveDynamicComponent("cl-input"), __easycom_0$c);
     const _component_uni_popup = resolveEasycom(vue.resolveDynamicComponent("uni-popup"), __easycom_2$1);
     return vue.openBlock(), vue.createElementBlock(
       vue.Fragment,
@@ -6000,8 +6004,8 @@ if (uni.restoreGlobal) {
       /* STABLE_FRAGMENT */
     );
   }
-  const __easycom_1$2 = /* @__PURE__ */ _export_sfc(_sfc_main$d, [["render", _sfc_render$c], ["__scopeId", "data-v-0657bf93"], ["__file", "D:/code/code-life/uni-app-components/uni_modules/cl-date-picker/components/cl-date-picker/cl-date-picker.vue"]]);
-  const _sfc_main$c = {
+  const __easycom_1$3 = /* @__PURE__ */ _export_sfc(_sfc_main$h, [["render", _sfc_render$g], ["__scopeId", "data-v-0657bf93"], ["__file", "D:/code/code-life/uni-app-components/uni_modules/cl-date-picker/components/cl-date-picker/cl-date-picker.vue"]]);
+  const _sfc_main$g = {
     __name: "index",
     setup(__props, { expose: __expose }) {
       __expose();
@@ -6017,9 +6021,9 @@ if (uni.restoreGlobal) {
       return __returned__;
     }
   };
-  function _sfc_render$b(_ctx, _cache, $props, $setup, $data, $options) {
-    const _component_uni_section = resolveEasycom(vue.resolveDynamicComponent("uni-section"), __easycom_0$6);
-    const _component_cl_date_picker = resolveEasycom(vue.resolveDynamicComponent("cl-date-picker"), __easycom_1$2);
+  function _sfc_render$f(_ctx, _cache, $props, $setup, $data, $options) {
+    const _component_uni_section = resolveEasycom(vue.resolveDynamicComponent("uni-section"), __easycom_0$7);
+    const _component_cl_date_picker = resolveEasycom(vue.resolveDynamicComponent("cl-date-picker"), __easycom_1$3);
     return vue.openBlock(), vue.createElementBlock("view", { class: "content" }, [
       vue.createElementVNode("view", { class: "" }, " 使用picker-view和picker-view-column封装的时间选择器，支持年月日时分秒各种形式的组合搭配。 "),
       vue.createVNode(_component_uni_section, null, {
@@ -6062,7 +6066,7 @@ if (uni.restoreGlobal) {
       }, null, 8, ["modelValue"])
     ]);
   }
-  const PagesComponentPageClDatePickerIndex = /* @__PURE__ */ _export_sfc(_sfc_main$c, [["render", _sfc_render$b], ["__scopeId", "data-v-fc709b23"], ["__file", "D:/code/code-life/uni-app-components/pages/componentPage/cl-date-picker/index.vue"]]);
+  const PagesComponentPageClDatePickerIndex = /* @__PURE__ */ _export_sfc(_sfc_main$g, [["render", _sfc_render$f], ["__scopeId", "data-v-fc709b23"], ["__file", "D:/code/code-life/uni-app-components/pages/componentPage/cl-date-picker/index.vue"]]);
   function obj2strClass(obj) {
     let classess = "";
     for (let key in obj) {
@@ -6081,7 +6085,7 @@ if (uni.restoreGlobal) {
     }
     return style;
   }
-  const _sfc_main$b = {
+  const _sfc_main$f = {
     name: "uni-easyinput",
     emits: [
       "click",
@@ -6438,8 +6442,8 @@ if (uni.restoreGlobal) {
       }
     }
   };
-  function _sfc_render$a(_ctx, _cache, $props, $setup, $data, $options) {
-    const _component_uni_icons = resolveEasycom(vue.resolveDynamicComponent("uni-icons"), __easycom_0$c);
+  function _sfc_render$e(_ctx, _cache, $props, $setup, $data, $options) {
+    const _component_uni_icons = resolveEasycom(vue.resolveDynamicComponent("uni-icons"), __easycom_0$d);
     return vue.openBlock(), vue.createElementBlock(
       "view",
       {
@@ -6563,8 +6567,8 @@ if (uni.restoreGlobal) {
       /* CLASS, STYLE */
     );
   }
-  const __easycom_0$3 = /* @__PURE__ */ _export_sfc(_sfc_main$b, [["render", _sfc_render$a], ["__scopeId", "data-v-09fd5285"], ["__file", "D:/code/code-life/uni-app-components/uni_modules/uni-easyinput/components/uni-easyinput/uni-easyinput.vue"]]);
-  const _sfc_main$a = {
+  const __easycom_0$4 = /* @__PURE__ */ _export_sfc(_sfc_main$f, [["render", _sfc_render$e], ["__scopeId", "data-v-09fd5285"], ["__file", "D:/code/code-life/uni-app-components/uni_modules/uni-easyinput/components/uni-easyinput/uni-easyinput.vue"]]);
+  const _sfc_main$e = {
     __name: "cl-more-select-picker",
     props: {
       options: {
@@ -6707,9 +6711,9 @@ if (uni.restoreGlobal) {
       return __returned__;
     }
   };
-  function _sfc_render$9(_ctx, _cache, $props, $setup, $data, $options) {
-    const _component_uni_icons = resolveEasycom(vue.resolveDynamicComponent("uni-icons"), __easycom_0$c);
-    const _component_uni_easyinput = resolveEasycom(vue.resolveDynamicComponent("uni-easyinput"), __easycom_0$3);
+  function _sfc_render$d(_ctx, _cache, $props, $setup, $data, $options) {
+    const _component_uni_icons = resolveEasycom(vue.resolveDynamicComponent("uni-icons"), __easycom_0$d);
+    const _component_uni_easyinput = resolveEasycom(vue.resolveDynamicComponent("uni-easyinput"), __easycom_0$4);
     const _component_uni_popup = resolveEasycom(vue.resolveDynamicComponent("uni-popup"), __easycom_2$1);
     return vue.openBlock(), vue.createElementBlock(
       vue.Fragment,
@@ -6829,8 +6833,8 @@ if (uni.restoreGlobal) {
       /* STABLE_FRAGMENT */
     );
   }
-  const __easycom_0$2 = /* @__PURE__ */ _export_sfc(_sfc_main$a, [["render", _sfc_render$9], ["__scopeId", "data-v-3f537ef0"], ["__file", "D:/code/code-life/uni-app-components/uni_modules/cl-more-select-picker/components/cl-more-select-picker/cl-more-select-picker.vue"]]);
-  const _sfc_main$9 = {
+  const __easycom_0$3 = /* @__PURE__ */ _export_sfc(_sfc_main$e, [["render", _sfc_render$d], ["__scopeId", "data-v-3f537ef0"], ["__file", "D:/code/code-life/uni-app-components/uni_modules/cl-more-select-picker/components/cl-more-select-picker/cl-more-select-picker.vue"]]);
+  const _sfc_main$d = {
     __name: "index",
     setup(__props, { expose: __expose }) {
       __expose();
@@ -6851,8 +6855,8 @@ if (uni.restoreGlobal) {
       return __returned__;
     }
   };
-  function _sfc_render$8(_ctx, _cache, $props, $setup, $data, $options) {
-    const _component_cl_more_select_picker = resolveEasycom(vue.resolveDynamicComponent("cl-more-select-picker"), __easycom_0$2);
+  function _sfc_render$c(_ctx, _cache, $props, $setup, $data, $options) {
+    const _component_cl_more_select_picker = resolveEasycom(vue.resolveDynamicComponent("cl-more-select-picker"), __easycom_0$3);
     return vue.openBlock(), vue.createElementBlock("view", { class: "content" }, [
       vue.createVNode(_component_cl_more_select_picker, {
         modelValue: $setup.val,
@@ -6861,17 +6865,13 @@ if (uni.restoreGlobal) {
       }, null, 8, ["modelValue", "options"])
     ]);
   }
-  const PagesComponentPageClMoreSelectPickerIndex = /* @__PURE__ */ _export_sfc(_sfc_main$9, [["render", _sfc_render$8], ["__scopeId", "data-v-6318dc36"], ["__file", "D:/code/code-life/uni-app-components/pages/componentPage/cl-more-select-picker/index.vue"]]);
-  const _sfc_main$8 = {
+  const PagesComponentPageClMoreSelectPickerIndex = /* @__PURE__ */ _export_sfc(_sfc_main$d, [["render", _sfc_render$c], ["__scopeId", "data-v-6318dc36"], ["__file", "D:/code/code-life/uni-app-components/pages/componentPage/cl-more-select-picker/index.vue"]]);
+  const _sfc_main$c = {
     __name: "cl-autocomplete",
-    props: {
+    props: /* @__PURE__ */ vue.mergeModels({
       options: {
         type: Array,
         default: () => []
-      },
-      modelValue: {
-        type: String,
-        default: ""
       },
       placeholder: {
         type: String,
@@ -6908,33 +6908,67 @@ if (uni.restoreGlobal) {
       type: {
         type: String,
         default: "text"
+      },
+      // 是否启用严格模式。会区分大小写
+      isStrict: {
+        type: Boolean,
+        default: false
+      },
+      // 是否高亮
+      isHighlight: {
+        type: Boolean,
+        default: false
+      },
+      // 高亮颜色
+      highlightColor: {
+        type: String,
+        default: "#007aff"
+      },
+      // 自定义过滤方法
+      customFilter: {
+        type: Function
       }
-    },
-    emits: ["update:modelValue", "focus", "blur", "selected", "clear", "input"],
+    }, {
+      "modelValue": { default: "" },
+      "modelModifiers": {}
+    }),
+    emits: /* @__PURE__ */ vue.mergeModels(["focus", "blur", "selected", "clear", "input"], ["update:modelValue"]),
     setup(__props, { expose: __expose, emit: __emit }) {
       __expose();
       const props = __props;
+      const modelValue = vue.useModel(__props, "modelValue");
       const emits = __emit;
       const visible = vue.ref(false);
-      const showOptions = vue.computed(() => props.options.filter((item) => {
-        var _a, _b;
-        return (_b = item.toLowerCase()) == null ? void 0 : _b.includes(((_a = props.modelValue) == null ? void 0 : _a.toLowerCase()) || "");
-      }));
-      const showVal = vue.computed({
-        get: () => {
-          return props.modelValue;
-        },
-        set: (newV) => {
-          emits("update:modelValue", newV);
-        }
+      const showOptions = vue.computed(() => {
+        return props.options.filter((item) => {
+          var _a, _b;
+          if (props.customFilter) {
+            return props.customFilter(item);
+          }
+          if (props.isStrict) {
+            return item.includes(modelValue.value || "");
+          } else {
+            return (_b = item.toLowerCase()) == null ? void 0 : _b.includes(((_a = modelValue.value) == null ? void 0 : _a.toLowerCase()) || "");
+          }
+        });
       });
+      const setHighlight = (item) => {
+        if (typeof item !== "string") {
+          return "";
+        }
+        if (!props.isHighlight) {
+          return item;
+        }
+        const regxp = props.isStrict ? new RegExp(modelValue.value, "g") : new RegExp(modelValue.value, "gi");
+        return item.replace(regxp, (word) => `<span style="color: ${props.highlightColor};">${word}</span>`);
+      };
       const selected = (item) => {
         visible.value = false;
-        showVal.value = item;
+        modelValue.value = item;
         emits("selected", item);
       };
       const clearHandle = () => {
-        showVal.value = "";
+        modelValue.value = "";
         emits("clear");
       };
       let timeoutId = null;
@@ -6958,7 +6992,7 @@ if (uni.restoreGlobal) {
       const maskClick = (e) => {
         visible.value = false;
       };
-      const __returned__ = { props, emits, visible, showOptions, showVal, selected, clearHandle, get timeoutId() {
+      const __returned__ = { props, modelValue, emits, visible, showOptions, setHighlight, selected, clearHandle, get timeoutId() {
         return timeoutId;
       }, set timeoutId(v) {
         timeoutId = v;
@@ -6967,16 +7001,16 @@ if (uni.restoreGlobal) {
       return __returned__;
     }
   };
-  function _sfc_render$7(_ctx, _cache, $props, $setup, $data, $options) {
-    const _component_uni_easyinput = resolveEasycom(vue.resolveDynamicComponent("uni-easyinput"), __easycom_0$3);
+  function _sfc_render$b(_ctx, _cache, $props, $setup, $data, $options) {
+    const _component_uni_easyinput = resolveEasycom(vue.resolveDynamicComponent("uni-easyinput"), __easycom_0$4);
     return vue.openBlock(), vue.createElementBlock(
       vue.Fragment,
       null,
       [
         vue.createElementVNode("view", { class: "el_select" }, [
           vue.createVNode(_component_uni_easyinput, {
-            modelValue: $setup.showVal,
-            "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => $setup.showVal = $event),
+            modelValue: $setup.modelValue,
+            "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => $setup.modelValue = $event),
             type: $props.type,
             clearable: true,
             placeholder: $props.placeholder,
@@ -7005,14 +7039,27 @@ if (uni.restoreGlobal) {
                   null,
                   vue.renderList($setup.showOptions, (item, index) => {
                     return vue.openBlock(), vue.createElementBlock("view", {
-                      class: vue.normalizeClass(["select_item", { active: item === $setup.showVal }]),
+                      class: vue.normalizeClass(["select_item", { active: item === $setup.modelValue }]),
                       key: index,
                       onClick: ($event) => $setup.selected(item)
-                    }, vue.toDisplayString(item), 11, ["onClick"]);
+                    }, [
+                      vue.createElementVNode("text", {
+                        innerHTML: $setup.setHighlight(item)
+                      }, null, 8, ["innerHTML"])
+                    ], 10, ["onClick"]);
                   }),
                   128
                   /* KEYED_FRAGMENT */
-                ))
+                )),
+                $setup.showOptions.length === 0 ? vue.renderSlot(_ctx.$slots, "empty", { key: 0 }, () => [
+                  vue.createElementVNode(
+                    "view",
+                    { class: "empty_text" },
+                    vue.toDisplayString(_ctx.emptyText),
+                    1
+                    /* TEXT */
+                  )
+                ], true) : vue.createCommentVNode("v-if", true)
               ],
               4
               /* STYLE */
@@ -7029,8 +7076,8 @@ if (uni.restoreGlobal) {
       /* STABLE_FRAGMENT */
     );
   }
-  const __easycom_0$1 = /* @__PURE__ */ _export_sfc(_sfc_main$8, [["render", _sfc_render$7], ["__scopeId", "data-v-2d848f96"], ["__file", "D:/code/code-life/uni-app-components/uni_modules/cl-autocomplete/components/cl-autocomplete/cl-autocomplete.vue"]]);
-  const _sfc_main$7 = {
+  const __easycom_0$2 = /* @__PURE__ */ _export_sfc(_sfc_main$c, [["render", _sfc_render$b], ["__scopeId", "data-v-2d848f96"], ["__file", "D:/code/code-life/uni-app-components/uni_modules/cl-autocomplete/components/cl-autocomplete/cl-autocomplete.vue"]]);
+  const _sfc_main$b = {
     __name: "index",
     setup(__props, { expose: __expose }) {
       __expose();
@@ -7041,8 +7088,8 @@ if (uni.restoreGlobal) {
       return __returned__;
     }
   };
-  function _sfc_render$6(_ctx, _cache, $props, $setup, $data, $options) {
-    const _component_cl_autocomplete = resolveEasycom(vue.resolveDynamicComponent("cl-autocomplete"), __easycom_0$1);
+  function _sfc_render$a(_ctx, _cache, $props, $setup, $data, $options) {
+    const _component_cl_autocomplete = resolveEasycom(vue.resolveDynamicComponent("cl-autocomplete"), __easycom_0$2);
     return vue.openBlock(), vue.createElementBlock("view", { class: "content" }, [
       vue.createElementVNode("text", null, "模仿uni-data-select做的提示输入框，并可以根据输入内容进行过滤"),
       vue.createVNode(_component_cl_autocomplete, {
@@ -7050,11 +7097,12 @@ if (uni.restoreGlobal) {
         "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => $setup.searchText = $event),
         options: $setup.fruitList,
         placeholder: "搜索水果",
-        "max-height": "400"
+        "max-height": "400",
+        "is-highlight": ""
       }, null, 8, ["modelValue"])
     ]);
   }
-  const PagesComponentPageClAutocompleteIndex = /* @__PURE__ */ _export_sfc(_sfc_main$7, [["render", _sfc_render$6], ["__scopeId", "data-v-80363e37"], ["__file", "D:/code/code-life/uni-app-components/pages/componentPage/cl-autocomplete/index.vue"]]);
+  const PagesComponentPageClAutocompleteIndex = /* @__PURE__ */ _export_sfc(_sfc_main$b, [["render", _sfc_render$a], ["__scopeId", "data-v-80363e37"], ["__file", "D:/code/code-life/uni-app-components/pages/componentPage/cl-autocomplete/index.vue"]]);
   const en = {
     "uni-search-bar.cancel": "cancel",
     "uni-search-bar.placeholder": "Search enter content"
@@ -7075,7 +7123,7 @@ if (uni.restoreGlobal) {
   const {
     t
   } = initVueI18n(messages);
-  const _sfc_main$6 = {
+  const _sfc_main$a = {
     name: "UniSearchBar",
     emits: ["input", "update:modelValue", "clear", "cancel", "confirm", "blur", "focus"],
     props: {
@@ -7217,8 +7265,8 @@ if (uni.restoreGlobal) {
       }
     }
   };
-  function _sfc_render$5(_ctx, _cache, $props, $setup, $data, $options) {
-    const _component_uni_icons = resolveEasycom(vue.resolveDynamicComponent("uni-icons"), __easycom_0$c);
+  function _sfc_render$9(_ctx, _cache, $props, $setup, $data, $options) {
+    const _component_uni_icons = resolveEasycom(vue.resolveDynamicComponent("uni-icons"), __easycom_0$d);
     return vue.openBlock(), vue.createElementBlock("view", { class: "uni-searchbar" }, [
       vue.createElementVNode(
         "view",
@@ -7293,8 +7341,8 @@ if (uni.restoreGlobal) {
       )) : vue.createCommentVNode("v-if", true)
     ]);
   }
-  const __easycom_0 = /* @__PURE__ */ _export_sfc(_sfc_main$6, [["render", _sfc_render$5], ["__scopeId", "data-v-f07ef577"], ["__file", "D:/code/code-life/uni-app-components/uni_modules/uni-search-bar/components/uni-search-bar/uni-search-bar.vue"]]);
-  const _sfc_main$5 = {
+  const __easycom_0$1 = /* @__PURE__ */ _export_sfc(_sfc_main$a, [["render", _sfc_render$9], ["__scopeId", "data-v-f07ef577"], ["__file", "D:/code/code-life/uni-app-components/uni_modules/uni-search-bar/components/uni-search-bar/uni-search-bar.vue"]]);
+  const _sfc_main$9 = {
     __name: "cl-auto-page-list",
     props: {
       // 距底部/右边多远时（单位px），触发 scrolltolower 事件
@@ -7333,12 +7381,16 @@ if (uni.restoreGlobal) {
     setup(__props, { expose: __expose }) {
       const props = __props;
       const filterList = vue.ref([]);
-      vue.watch(() => props.list, (newV) => {
-        filterList.value = newV;
-      }, {
-        immediate: true,
-        deep: true
-      });
+      vue.watch(
+        () => props.list,
+        (newV) => {
+          filterList.value = newV;
+        },
+        {
+          immediate: true,
+          deep: true
+        }
+      );
       const emptyIconSrc = vue.computed(() => {
         let svgStr = `<svg t="1745376550584" class="icon" viewBox="0 0 1575 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
 			p-id="2958" id="mx_n_1745376550586" width="100%" height="100%">
@@ -7364,7 +7416,7 @@ if (uni.restoreGlobal) {
           let startIdx = (curPage.value - 1) * props.pageSize;
           let endIdx = startIdx + props.pageSize;
           let newList = filterList.value.slice(startIdx, endIdx);
-          formatAppLog("log", "at uni_modules/cl-auto-page-list/components/cl-auto-page-list/cl-auto-page-list.vue:106", filterList, startIdx, endIdx);
+          formatAppLog("log", "at uni_modules/cl-auto-page-list/components/cl-auto-page-list/cl-auto-page-list.vue:114", filterList, startIdx, endIdx);
           showList.value = showList.value.concat(newList);
           if (showList.value.length === filterList.value.length) {
             loadMoreStatus.value = "noMore";
@@ -7376,8 +7428,10 @@ if (uni.restoreGlobal) {
         refreshLoading.value = false;
       };
       const search = () => {
-        filterList.value = props.list.filter((item) => props.fillterFun ? props.fillterFun(item) : handleFilter(item));
-        formatAppLog("log", "at uni_modules/cl-auto-page-list/components/cl-auto-page-list/cl-auto-page-list.vue:121", filterList.value, "filterList.value");
+        filterList.value = props.list.filter(
+          (item) => props.fillterFun ? props.fillterFun(item) : handleFilter(item)
+        );
+        formatAppLog("log", "at uni_modules/cl-auto-page-list/components/cl-auto-page-list/cl-auto-page-list.vue:131", filterList.value, "filterList.value");
         curPage.value = 1;
         isEnd.value = false;
         showList.value = [];
@@ -7401,6 +7455,7 @@ if (uni.restoreGlobal) {
         });
       };
       const bootmScroll = () => {
+        formatAppLog("log", "at uni_modules/cl-auto-page-list/components/cl-auto-page-list/cl-auto-page-list.vue:163", 123);
         if (!isEnd.value) {
           curPage.value++;
           loadMoreStatus.value = "loading";
@@ -7449,8 +7504,8 @@ if (uni.restoreGlobal) {
       return __returned__;
     }
   };
-  function _sfc_render$4(_ctx, _cache, $props, $setup, $data, $options) {
-    const _component_uni_load_more = resolveEasycom(vue.resolveDynamicComponent("uni-load-more"), __easycom_0$8);
+  function _sfc_render$8(_ctx, _cache, $props, $setup, $data, $options) {
+    const _component_uni_load_more = resolveEasycom(vue.resolveDynamicComponent("uni-load-more"), __easycom_0$9);
     return vue.openBlock(), vue.createElementBlock("scroll-view", {
       style: { "height": "100%" },
       "scroll-y": true,
@@ -7485,22 +7540,25 @@ if (uni.restoreGlobal) {
       ], true) : vue.createCommentVNode("v-if", true)
     ], 40, ["scroll-top", "refresher-triggered", "lower-threshold"]);
   }
-  const __easycom_1$1 = /* @__PURE__ */ _export_sfc(_sfc_main$5, [["render", _sfc_render$4], ["__scopeId", "data-v-40e80ac4"], ["__file", "D:/code/code-life/uni-app-components/uni_modules/cl-auto-page-list/components/cl-auto-page-list/cl-auto-page-list.vue"]]);
-  const _sfc_main$4 = {
+  const __easycom_1$2 = /* @__PURE__ */ _export_sfc(_sfc_main$9, [["render", _sfc_render$8], ["__scopeId", "data-v-40e80ac4"], ["__file", "D:/code/code-life/uni-app-components/uni_modules/cl-auto-page-list/components/cl-auto-page-list/cl-auto-page-list.vue"]]);
+  const _sfc_main$8 = {
     __name: "index",
     setup(__props, { expose: __expose }) {
       __expose();
       const params = vue.reactive({
         label: ""
       });
-      const list = Array.from({
-        length: 20
-      }, (_, index) => {
-        return {
-          label: `我是展示的值${index}`,
-          value: `value${index}`
-        };
-      });
+      const list = Array.from(
+        {
+          length: 60
+        },
+        (_, index) => {
+          return {
+            label: `我是展示的值${index}`,
+            value: `value${index}`
+          };
+        }
+      );
       const clAutoPageListRef = vue.ref();
       const handleSearch = () => {
         clAutoPageListRef.value.search();
@@ -7510,9 +7568,9 @@ if (uni.restoreGlobal) {
       return __returned__;
     }
   };
-  function _sfc_render$3(_ctx, _cache, $props, $setup, $data, $options) {
-    const _component_uni_search_bar = resolveEasycom(vue.resolveDynamicComponent("uni-search-bar"), __easycom_0);
-    const _component_cl_auto_page_list = resolveEasycom(vue.resolveDynamicComponent("cl-auto-page-list"), __easycom_1$1);
+  function _sfc_render$7(_ctx, _cache, $props, $setup, $data, $options) {
+    const _component_uni_search_bar = resolveEasycom(vue.resolveDynamicComponent("uni-search-bar"), __easycom_0$1);
+    const _component_cl_auto_page_list = resolveEasycom(vue.resolveDynamicComponent("cl-auto-page-list"), __easycom_1$2);
     return vue.openBlock(), vue.createElementBlock("view", { class: "cl_flex_page" }, [
       vue.createVNode(_component_uni_search_bar, {
         modelValue: $setup.params.label,
@@ -7552,8 +7610,8 @@ if (uni.restoreGlobal) {
       }, 8, ["list", "params"])
     ]);
   }
-  const PagesComponentPageClAutoPageListIndex = /* @__PURE__ */ _export_sfc(_sfc_main$4, [["render", _sfc_render$3], ["__scopeId", "data-v-9bdff03b"], ["__file", "D:/code/code-life/uni-app-components/pages/componentPage/cl-auto-page-list/index.vue"]]);
-  const _sfc_main$3 = {
+  const PagesComponentPageClAutoPageListIndex = /* @__PURE__ */ _export_sfc(_sfc_main$8, [["render", _sfc_render$7], ["__scopeId", "data-v-9bdff03b"], ["__file", "D:/code/code-life/uni-app-components/pages/componentPage/cl-auto-page-list/index.vue"]]);
+  const _sfc_main$7 = {
     __name: "cl-ftabs",
     props: /* @__PURE__ */ vue.mergeModels({
       option: {
@@ -7608,7 +7666,7 @@ if (uni.restoreGlobal) {
       return __returned__;
     }
   };
-  function _sfc_render$2(_ctx, _cache, $props, $setup, $data, $options) {
+  function _sfc_render$6(_ctx, _cache, $props, $setup, $data, $options) {
     return vue.openBlock(), vue.createElementBlock(
       "view",
       {
@@ -7647,8 +7705,8 @@ if (uni.restoreGlobal) {
       /* CLASS */
     );
   }
-  const __easycom_1 = /* @__PURE__ */ _export_sfc(_sfc_main$3, [["render", _sfc_render$2], ["__scopeId", "data-v-f3f60d72"], ["__file", "D:/code/code-life/uni-app-components/uni_modules/cl-ftabs/components/cl-ftabs/cl-ftabs.vue"]]);
-  const _sfc_main$2 = {
+  const __easycom_1$1 = /* @__PURE__ */ _export_sfc(_sfc_main$7, [["render", _sfc_render$6], ["__scopeId", "data-v-f3f60d72"], ["__file", "D:/code/code-life/uni-app-components/uni_modules/cl-ftabs/components/cl-ftabs/cl-ftabs.vue"]]);
+  const _sfc_main$6 = {
     __name: "index",
     setup(__props, { expose: __expose }) {
       __expose();
@@ -7673,9 +7731,9 @@ if (uni.restoreGlobal) {
       return __returned__;
     }
   };
-  function _sfc_render$1(_ctx, _cache, $props, $setup, $data, $options) {
-    const _component_uni_section = resolveEasycom(vue.resolveDynamicComponent("uni-section"), __easycom_0$6);
-    const _component_cl_ftabs = resolveEasycom(vue.resolveDynamicComponent("cl-ftabs"), __easycom_1);
+  function _sfc_render$5(_ctx, _cache, $props, $setup, $data, $options) {
+    const _component_uni_section = resolveEasycom(vue.resolveDynamicComponent("uni-section"), __easycom_0$7);
+    const _component_cl_ftabs = resolveEasycom(vue.resolveDynamicComponent("cl-ftabs"), __easycom_1$1);
     return vue.openBlock(), vue.createElementBlock("view", { class: "content" }, [
       vue.createVNode(_component_uni_section, null, {
         default: vue.withCtx(() => [
@@ -7743,8 +7801,412 @@ if (uni.restoreGlobal) {
       }, 8, ["modelValue"])
     ]);
   }
-  const PagesComponentPageClTabsIndex = /* @__PURE__ */ _export_sfc(_sfc_main$2, [["render", _sfc_render$1], ["__scopeId", "data-v-c34bfe67"], ["__file", "D:/code/code-life/uni-app-components/pages/componentPage/cl-tabs/index.vue"]]);
-  const _sfc_main$1 = {
+  const PagesComponentPageClTabsIndex = /* @__PURE__ */ _export_sfc(_sfc_main$6, [["render", _sfc_render$5], ["__scopeId", "data-v-c34bfe67"], ["__file", "D:/code/code-life/uni-app-components/pages/componentPage/cl-tabs/index.vue"]]);
+  const __default__ = {
+    name: "ClTableRow"
+  };
+  const _sfc_main$5 = /* @__PURE__ */ Object.assign(__default__, {
+    props: /* @__PURE__ */ vue.mergeModels({
+      columns: {
+        type: Array,
+        default: () => []
+      },
+      curRow: {
+        type: Object,
+        default: () => ({})
+      },
+      border: {
+        type: Boolean,
+        default: true
+      },
+      // 是否启用树
+      isTableTree: {
+        type: Boolean,
+        default: false
+      },
+      childrenField: {
+        type: String,
+        default: "children"
+      },
+      // 子级层级
+      level: Number,
+      offsetWidth: {
+        type: Number,
+        default: 20
+      },
+      defaultExpandAll: {
+        type: Boolean,
+        default: false
+      },
+      rowKey: {
+        type: String,
+        default: "id"
+      },
+      overHidden: {
+        type: Boolean,
+        default: false
+      }
+    }, {
+      "expandKeys": {
+        type: Array,
+        default: () => []
+      },
+      "expandKeysModifiers": {}
+    }),
+    emits: ["update:expandKeys"],
+    setup(__props, { expose: __expose }) {
+      __expose();
+      const props = __props;
+      const slotList = vue.useSlots();
+      const expandKeys = vue.useModel(__props, "expandKeys");
+      const curRowKey = vue.computed(() => {
+        return props.curRow[props.rowKey];
+      });
+      const isExpand = vue.ref(false);
+      vue.watch(() => expandKeys.value, (newV1) => {
+        if (newV1.includes(curRowKey.value)) {
+          isExpand.value = true;
+        }
+      }, {
+        deep: true,
+        immediate: true
+      });
+      const isShowExpandIcon = vue.computed(() => {
+        if (props.isTableTree && Array.isArray(props.curRow[props.childrenField]) && props.curRow[props.childrenField].length > 0) {
+          return true;
+        }
+      });
+      const isShowChildren = vue.computed(() => {
+        return props.isTableTree && isExpand.value;
+      });
+      const handleToggleExpand = () => {
+        if (isExpand.value === false) {
+          expandKeys.value.push(curRowKey.value);
+        } else {
+          expandKeys.value = expandKeys.value.filter((item) => item !== curRowKey.value);
+        }
+        isExpand.value = !isExpand.value;
+      };
+      const __returned__ = { props, slotList, expandKeys, curRowKey, isExpand, isShowExpandIcon, isShowChildren, handleToggleExpand, computed: vue.computed, ref: vue.ref, watch: vue.watch, useSlots: vue.useSlots };
+      Object.defineProperty(__returned__, "__isScriptSetup", { enumerable: false, value: true });
+      return __returned__;
+    }
+  });
+  function _sfc_render$4(_ctx, _cache, $props, $setup, $data, $options) {
+    const _component_uni_icons = resolveEasycom(vue.resolveDynamicComponent("uni-icons"), __easycom_0$d);
+    const _component_ClTableRow = vue.resolveComponent("ClTableRow", true);
+    return vue.openBlock(), vue.createElementBlock(
+      vue.Fragment,
+      null,
+      [
+        vue.createElementVNode("view", { class: "row" }, [
+          (vue.openBlock(true), vue.createElementBlock(
+            vue.Fragment,
+            null,
+            vue.renderList($props.columns, (item, index) => {
+              return vue.openBlock(), vue.createElementBlock(
+                "view",
+                {
+                  key: item.prop,
+                  class: vue.normalizeClass([$props.border && "border", "row_cell", $props.overHidden && "exceed_omit_1"]),
+                  style: vue.normalizeStyle({ ...item.style })
+                },
+                [
+                  index === 0 ? vue.renderSlot(_ctx.$slots, item.prop, {
+                    key: 0,
+                    row: $props.curRow,
+                    column: item,
+                    text: $props.curRow[item.prop]
+                  }, () => [
+                    vue.createElementVNode(
+                      "view",
+                      {
+                        class: vue.normalizeClass([$props.overHidden && "exceed_omit_1"]),
+                        style: vue.normalizeStyle({ paddingLeft: ($setup.isShowExpandIcon ? 0 : $props.level * $setup.props.offsetWidth) + "rpx" })
+                      },
+                      [
+                        $setup.isShowExpandIcon ? (vue.openBlock(), vue.createBlock(_component_uni_icons, {
+                          key: 0,
+                          type: $setup.isExpand ? "bottom" : "right",
+                          class: "expand_icon",
+                          onClick: $setup.handleToggleExpand,
+                          style: vue.normalizeStyle({ paddingLeft: $props.level * $setup.props.offsetWidth + "rpx" })
+                        }, null, 8, ["type", "style"])) : vue.createCommentVNode("v-if", true),
+                        vue.createElementVNode(
+                          "text",
+                          null,
+                          vue.toDisplayString($props.curRow[item.prop]),
+                          1
+                          /* TEXT */
+                        )
+                      ],
+                      6
+                      /* CLASS, STYLE */
+                    )
+                  ], true) : vue.renderSlot(_ctx.$slots, item.prop, {
+                    key: 1,
+                    row: $props.curRow,
+                    column: item,
+                    text: $props.curRow[item.prop]
+                  }, () => [
+                    vue.createElementVNode(
+                      "text",
+                      {
+                        class: vue.normalizeClass([$props.overHidden && "exceed_omit_1"])
+                      },
+                      vue.toDisplayString($props.curRow[item.prop]),
+                      3
+                      /* TEXT, CLASS */
+                    )
+                  ], true)
+                ],
+                6
+                /* CLASS, STYLE */
+              );
+            }),
+            128
+            /* KEYED_FRAGMENT */
+          ))
+        ]),
+        vue.createVNode(vue.Transition, { name: "slide" }, {
+          default: vue.withCtx(() => [
+            $setup.isShowChildren ? (vue.openBlock(), vue.createElementBlock("view", { key: 0 }, [
+              (vue.openBlock(true), vue.createElementBlock(
+                vue.Fragment,
+                null,
+                vue.renderList($props.curRow[$props.childrenField], (item) => {
+                  return vue.openBlock(), vue.createBlock(_component_ClTableRow, {
+                    key: item[$setup.props.rowKey],
+                    columns: $props.columns,
+                    curRow: item,
+                    border: $props.border,
+                    defaultExpandAll: $props.defaultExpandAll,
+                    isTableTree: $props.isTableTree,
+                    childrenField: $props.childrenField,
+                    level: $props.level + 1,
+                    expandKeys: $setup.expandKeys,
+                    "onUpdate:expandKeys": _cache[0] || (_cache[0] = ($event) => $setup.expandKeys = $event),
+                    offsetWidth: $props.offsetWidth,
+                    overHidden: $props.overHidden
+                  }, vue.createSlots({
+                    _: 2
+                    /* DYNAMIC */
+                  }, [
+                    vue.renderList($setup.slotList, (itm, slotName) => {
+                      return {
+                        name: slotName,
+                        fn: vue.withCtx((data) => [
+                          vue.renderSlot(_ctx.$slots, slotName, vue.normalizeProps(vue.guardReactiveProps(data)), void 0, true)
+                        ])
+                      };
+                    })
+                  ]), 1032, ["columns", "curRow", "border", "defaultExpandAll", "isTableTree", "childrenField", "level", "expandKeys", "offsetWidth", "overHidden"]);
+                }),
+                128
+                /* KEYED_FRAGMENT */
+              ))
+            ])) : vue.createCommentVNode("v-if", true)
+          ]),
+          _: 3
+          /* FORWARDED */
+        })
+      ],
+      64
+      /* STABLE_FRAGMENT */
+    );
+  }
+  const ClTableRow = /* @__PURE__ */ _export_sfc(_sfc_main$5, [["render", _sfc_render$4], ["__scopeId", "data-v-8ce7a118"], ["__file", "D:/code/code-life/uni-app-components/uni_modules/cl-table/components/cl-table/cl-table-row.vue"]]);
+  const _sfc_main$4 = {
+    __name: "cl-table",
+    props: /* @__PURE__ */ vue.mergeModels({
+      // 表格数据
+      data: {
+        type: Array,
+        default: () => []
+      },
+      // 表格列
+      columns: {
+        type: Array,
+        default: () => []
+      },
+      // 表格header的样式（可用于修改背景色以及文字样式）
+      headerStyle: {
+        type: Object,
+        default: () => ({})
+      },
+      // 行key
+      rowKey: {
+        type: String,
+        default: "id"
+      },
+      // 边框
+      border: {
+        type: Boolean,
+        default: true
+      },
+      // 是否启用树
+      isTableTree: {
+        type: Boolean,
+        default: false
+      },
+      // 树表的子字段
+      childrenField: {
+        type: String,
+        default: "children"
+      },
+      // 树结构向右偏移量
+      offsetWidth: {
+        type: Number,
+        default: 20
+      },
+      // 是否默认展开所有
+      defaultExpandAll: {
+        type: Boolean,
+        default: false
+      },
+      // 超出行隐藏
+      overHidden: {
+        type: Boolean,
+        default: false
+      }
+    }, {
+      "expandKeys": {
+        type: Array,
+        default: () => []
+      },
+      "expandKeysModifiers": {}
+    }),
+    emits: ["update:expandKeys"],
+    setup(__props, { expose: __expose }) {
+      __expose();
+      const slotList = vue.useSlots();
+      const props = __props;
+      const expandKeys = vue.useModel(__props, "expandKeys");
+      const getChildrenKeys = (tree, childrenKey = "children") => {
+        const result = [];
+        function traverse(nodeList) {
+          if (!Array.isArray(nodeList) || nodeList.length === 0) {
+            return;
+          }
+          for (const node of nodeList) {
+            const children = node[childrenKey];
+            if (Array.isArray(children) && children.length > 0) {
+              if (node.id !== void 0) {
+                result.push(node.id);
+              }
+              traverse(children);
+            }
+          }
+        }
+        traverse(tree);
+        return result;
+      };
+      vue.watch(() => props.defaultExpandAll, (newV) => {
+        if (newV) {
+          expandKeys.value = getChildrenKeys(props.data);
+        }
+      }, {
+        immediate: true,
+        deep: true
+      });
+      const __returned__ = { slotList, props, expandKeys, getChildrenKeys, useSlots: vue.useSlots, watch: vue.watch, ClTableRow };
+      Object.defineProperty(__returned__, "__isScriptSetup", { enumerable: false, value: true });
+      return __returned__;
+    }
+  };
+  function _sfc_render$3(_ctx, _cache, $props, $setup, $data, $options) {
+    return vue.openBlock(), vue.createElementBlock(
+      "view",
+      {
+        class: vue.normalizeClass(["table", $props.border && "border"])
+      },
+      [
+        vue.createElementVNode(
+          "view",
+          {
+            class: "table_header",
+            style: vue.normalizeStyle($props.headerStyle)
+          },
+          [
+            (vue.openBlock(true), vue.createElementBlock(
+              vue.Fragment,
+              null,
+              vue.renderList($props.columns, (item) => {
+                return vue.openBlock(), vue.createElementBlock(
+                  "view",
+                  {
+                    key: item.prop,
+                    class: "table_header_cell",
+                    style: vue.normalizeStyle(item.style || {})
+                  },
+                  [
+                    vue.renderSlot(_ctx.$slots, item.prop + "-header", { column: item }, () => [
+                      vue.createElementVNode(
+                        "text",
+                        {
+                          class: vue.normalizeClass([$props.overHidden && "exceed_omit_1"])
+                        },
+                        vue.toDisplayString(item.label),
+                        3
+                        /* TEXT, CLASS */
+                      )
+                    ], true)
+                  ],
+                  4
+                  /* STYLE */
+                );
+              }),
+              128
+              /* KEYED_FRAGMENT */
+            ))
+          ],
+          4
+          /* STYLE */
+        ),
+        vue.createElementVNode("view", { class: "table_body" }, [
+          (vue.openBlock(true), vue.createElementBlock(
+            vue.Fragment,
+            null,
+            vue.renderList($props.data, (item) => {
+              return vue.openBlock(), vue.createBlock($setup["ClTableRow"], {
+                expandKeys: $setup.expandKeys,
+                "onUpdate:expandKeys": _cache[0] || (_cache[0] = ($event) => $setup.expandKeys = $event),
+                key: item[$props.rowKey],
+                columns: $props.columns,
+                curRow: item,
+                border: $props.border,
+                isTableTree: $props.isTableTree,
+                childrenField: $props.childrenField,
+                level: 0,
+                offsetWidth: $props.offsetWidth,
+                defaultExpandAll: $props.defaultExpandAll,
+                overHidden: $props.overHidden,
+                rowKey: $props.rowKey
+              }, vue.createSlots({
+                _: 2
+                /* DYNAMIC */
+              }, [
+                vue.renderList($setup.slotList, (itm, slotName) => {
+                  return {
+                    name: slotName,
+                    fn: vue.withCtx((data) => [
+                      vue.renderSlot(_ctx.$slots, slotName, vue.normalizeProps(vue.guardReactiveProps(data)), void 0, true)
+                    ])
+                  };
+                })
+              ]), 1032, ["expandKeys", "columns", "curRow", "border", "isTableTree", "childrenField", "offsetWidth", "defaultExpandAll", "overHidden", "rowKey"]);
+            }),
+            128
+            /* KEYED_FRAGMENT */
+          ))
+        ])
+      ],
+      2
+      /* CLASS */
+    );
+  }
+  const __easycom_1 = /* @__PURE__ */ _export_sfc(_sfc_main$4, [["render", _sfc_render$3], ["__scopeId", "data-v-330af27e"], ["__file", "D:/code/code-life/uni-app-components/uni_modules/cl-table/components/cl-table/cl-table.vue"]]);
+  const _sfc_main$3 = {
     __name: "index",
     setup(__props, { expose: __expose }) {
       __expose();
@@ -7833,28 +8295,225 @@ if (uni.restoreGlobal) {
           children: []
         }
       ];
-      const columns = [{
-        prop: "id",
-        label: "id",
-        style: {
-          flex: "0 0 140rpx",
-          textAlign: "left"
+      const columns = [
+        {
+          prop: "id",
+          label: "id",
+          style: {
+            flex: "0 0 140rpx",
+            textAlign: "left"
+          }
+        },
+        {
+          prop: "name",
+          label: "名称"
         }
-      }, {
-        prop: "name",
-        label: "名称"
-      }];
+      ];
       const __returned__ = { expandKeys1, expandKeys2, treeData, columns, ref: vue.ref };
       Object.defineProperty(__returned__, "__isScriptSetup", { enumerable: false, value: true });
       return __returned__;
     }
   };
-  function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
+  function _sfc_render$2(_ctx, _cache, $props, $setup, $data, $options) {
+    const _component_uni_section = resolveEasycom(vue.resolveDynamicComponent("uni-section"), __easycom_0$7);
+    const _component_cl_table = resolveEasycom(vue.resolveDynamicComponent("cl-table"), __easycom_1);
     return vue.openBlock(), vue.createElementBlock("view", { class: "content" }, [
-      vue.createCommentVNode(' <uni-section>普通用法</uni-section>\r\n		<cl-table style="max-height: 300px;" :columns="columns" :data="treeData" overHidden>\r\n		</cl-table>\r\n		<uni-section>\r\n			<text>表格树</text>\r\n		</uni-section>\r\n		<cl-table style="max-height: 300px;" v-model:expandKeys="expandKeys1" :columns="columns" :data="treeData"\r\n			isTableTree overHidden>\r\n		</cl-table>\r\n		<view>展开数据{{expandKeys1}}</view>\r\n		<uni-section>\r\n			<text>表格树（默认展开数据）</text>\r\n		</uni-section>\r\n		<cl-table style="max-height: 300px;" v-model:expandKeys="expandKeys2" :columns="columns" :data="treeData"\r\n			isTableTree overHidden defaultExpandAll>\r\n		</cl-table>\r\n		<view>展开数据{{expandKeys2}}</view>\r\n		<uni-section>\r\n			<text>表格树（表头和内容插槽）</text>\r\n		</uni-section>\r\n		<cl-table style="max-height: 300px;" :columns="columns" :data="treeData" isTableTree overHidden defaultExpandAll>\r\n			<template #id-header="{column}">\r\n				<text style="color: red;">我是{{column.label}}</text>\r\n			</template>\r\n			<template #name="{text}">\r\n				<text style="color: green;">我使用了插槽：{{text}}</text>\r\n			</template>\r\n		</cl-table> ')
+      vue.createVNode(_component_uni_section, null, {
+        default: vue.withCtx(() => [
+          vue.createTextVNode("普通用法")
+        ]),
+        _: 1
+        /* STABLE */
+      }),
+      vue.createVNode(_component_cl_table, {
+        style: { "max-height": "300px" },
+        columns: $setup.columns,
+        data: $setup.treeData,
+        overHidden: ""
+      }),
+      vue.createVNode(_component_uni_section, null, {
+        default: vue.withCtx(() => [
+          vue.createElementVNode("text", null, "表格树")
+        ]),
+        _: 1
+        /* STABLE */
+      }),
+      vue.createVNode(_component_cl_table, {
+        style: { "max-height": "300px" },
+        expandKeys: $setup.expandKeys1,
+        "onUpdate:expandKeys": _cache[0] || (_cache[0] = ($event) => $setup.expandKeys1 = $event),
+        columns: $setup.columns,
+        data: $setup.treeData,
+        isTableTree: "",
+        overHidden: ""
+      }, null, 8, ["expandKeys"]),
+      vue.createElementVNode(
+        "view",
+        null,
+        "展开数据" + vue.toDisplayString($setup.expandKeys1),
+        1
+        /* TEXT */
+      ),
+      vue.createVNode(_component_uni_section, null, {
+        default: vue.withCtx(() => [
+          vue.createElementVNode("text", null, "表格树（默认展开数据）")
+        ]),
+        _: 1
+        /* STABLE */
+      }),
+      vue.createVNode(_component_cl_table, {
+        style: { "max-height": "300px" },
+        expandKeys: $setup.expandKeys2,
+        "onUpdate:expandKeys": _cache[1] || (_cache[1] = ($event) => $setup.expandKeys2 = $event),
+        columns: $setup.columns,
+        data: $setup.treeData,
+        isTableTree: "",
+        overHidden: "",
+        defaultExpandAll: ""
+      }, null, 8, ["expandKeys"]),
+      vue.createElementVNode(
+        "view",
+        null,
+        "展开数据" + vue.toDisplayString($setup.expandKeys2),
+        1
+        /* TEXT */
+      ),
+      vue.createVNode(_component_uni_section, null, {
+        default: vue.withCtx(() => [
+          vue.createElementVNode("text", null, "表格树（表头和内容插槽）")
+        ]),
+        _: 1
+        /* STABLE */
+      }),
+      vue.createVNode(_component_cl_table, {
+        style: { "max-height": "300px" },
+        columns: $setup.columns,
+        data: $setup.treeData,
+        isTableTree: "",
+        overHidden: "",
+        defaultExpandAll: ""
+      }, {
+        "id-header": vue.withCtx(({ column }) => [
+          vue.createElementVNode(
+            "text",
+            { style: { "color": "red" } },
+            "我是" + vue.toDisplayString(column.label),
+            1
+            /* TEXT */
+          )
+        ]),
+        name: vue.withCtx(({ text }) => [
+          vue.createElementVNode(
+            "text",
+            { style: { "color": "green" } },
+            "我使用了插槽：" + vue.toDisplayString(text),
+            1
+            /* TEXT */
+          )
+        ]),
+        _: 1
+        /* STABLE */
+      })
     ]);
   }
-  const PagesComponentPageClTableIndex = /* @__PURE__ */ _export_sfc(_sfc_main$1, [["render", _sfc_render], ["__scopeId", "data-v-314957e2"], ["__file", "D:/code/code-life/uni-app-components/pages/componentPage/cl-table/index.vue"]]);
+  const PagesComponentPageClTableIndex = /* @__PURE__ */ _export_sfc(_sfc_main$3, [["render", _sfc_render$2], ["__scopeId", "data-v-314957e2"], ["__file", "D:/code/code-life/uni-app-components/pages/componentPage/cl-table/index.vue"]]);
+  const block0 = (Comp) => {
+    (Comp.$renderjs || (Comp.$renderjs = [])).push("video");
+    (Comp.$renderjsModules || (Comp.$renderjsModules = {}))["video"] = "6c5b202d";
+  };
+  const _sfc_main$2 = {
+    props: {
+      // 视频地址
+      src: {
+        type: String,
+        default: ""
+      },
+      // 视频封面
+      poster: {
+        type: String,
+        default: ""
+      },
+      // 只在App端有效
+      // 封面格式，base64 或 path
+      // b64就是将canvas转为base64字符串，注意对一些高清大图可能不是太合适
+      // path就是将canvas转为图片路径存到本地，使用地址的方式使用，注意可能会有权限问题
+      posterType: {
+        type: String,
+        default: "base64"
+      },
+      // 封面质量 0~1
+      posterQuality: {
+        type: Number,
+        default: 0.8
+      }
+    },
+    data() {
+      return {
+        // 从视频里面获取到的封面
+        aotoPoster: ""
+      };
+    },
+    methods: {
+      getPoster(poster) {
+        this.$emit("getPoster", poster);
+        this.aotoPoster = poster;
+      },
+      // 设置封面失败
+      setPosterError(error) {
+        this.$emit("setPosterError", error);
+      }
+    }
+  };
+  function _sfc_render$1(_ctx, _cache, $props, $setup, $data, $options) {
+    return vue.openBlock(), vue.createElementBlock(
+      vue.Fragment,
+      null,
+      [
+        vue.createElementVNode("video", vue.mergeProps({
+          src: $props.src,
+          poster: $data.aotoPoster
+        }, _ctx.$attrs), null, 16, ["src", "poster"]),
+        vue.createCommentVNode(" 空白属性用于触发renderjs,注意这里的属性的顺序会影响renderjs里面方法的调用顺序，所以src一定要在最后 "),
+        vue.createElementVNode("view", {
+          poster: vue.wp($props.poster),
+          "change:poster": _ctx.video.setRenderjsPoster,
+          posterType: vue.wp($props.posterType),
+          "change:posterType": _ctx.video.setRenderjsPosterType,
+          posterQuality: vue.wp($props.posterQuality),
+          "change:posterQuality": _ctx.video.setRenderjsPosterQuality,
+          src: vue.wp($props.src),
+          "change:src": _ctx.video.setPoster,
+          style: { "display": "none" }
+        }, null, 8, ["poster", "change:poster", "posterType", "change:posterType", "posterQuality", "change:posterQuality", "src", "change:src"])
+      ],
+      64
+      /* STABLE_FRAGMENT */
+    );
+  }
+  if (typeof block0 === "function")
+    block0(_sfc_main$2);
+  const __easycom_0 = /* @__PURE__ */ _export_sfc(_sfc_main$2, [["render", _sfc_render$1], ["__file", "D:/code/code-life/uni-app-components/uni_modules/cl-video/components/cl-video/cl-video.vue"]]);
+  const src = "https://code-life-1302946402.cos.ap-chongqing.myqcloud.com/other/video/strawberry.mp4";
+  const _sfc_main$1 = {
+    __name: "index",
+    setup(__props, { expose: __expose }) {
+      __expose();
+      const __returned__ = { src };
+      Object.defineProperty(__returned__, "__isScriptSetup", { enumerable: false, value: true });
+      return __returned__;
+    }
+  };
+  function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
+    const _component_cl_video = resolveEasycom(vue.resolveDynamicComponent("cl-video"), __easycom_0);
+    return vue.openBlock(), vue.createBlock(_component_cl_video, {
+      src: $setup.src,
+      posterQuality: 1,
+      posterType: "path",
+      "object-fit": "contain",
+      style: { "width": "400px", "height": "300px" }
+    });
+  }
+  const PagesComponentPageClVideoIndex = /* @__PURE__ */ _export_sfc(_sfc_main$1, [["render", _sfc_render], ["__file", "D:/code/code-life/uni-app-components/pages/componentPage/cl-video/index.vue"]]);
   __definePage("pages/index/index", PagesIndexIndex);
   __definePage("pages/componentPage/cl-select-picker/index", PagesComponentPageClSelectPickerIndex);
   __definePage("pages/componentPage/cl-scroll-view/index", PagesComponentPageClScrollViewIndex);
@@ -7866,6 +8525,7 @@ if (uni.restoreGlobal) {
   __definePage("pages/componentPage/cl-auto-page-list/index", PagesComponentPageClAutoPageListIndex);
   __definePage("pages/componentPage/cl-tabs/index", PagesComponentPageClTabsIndex);
   __definePage("pages/componentPage/cl-table/index", PagesComponentPageClTableIndex);
+  __definePage("pages/componentPage/cl-video/index", PagesComponentPageClVideoIndex);
   const _sfc_main = {
     onLaunch: function() {
       formatAppLog("log", "at App.vue:4", "App Launch");
@@ -7878,24 +8538,8 @@ if (uni.restoreGlobal) {
     }
   };
   const App = /* @__PURE__ */ _export_sfc(_sfc_main, [["__file", "D:/code/code-life/uni-app-components/App.vue"]]);
-  const allowSharePageList = ["pages/course/detail"];
-  const disabledShare = {
-    onLoad: () => {
-      const pages = getCurrentPages();
-      let nowPage = pages[pages.length - 1];
-      formatAppLog("log", "at hooks/disabledShare.js:9", nowPage, "nowPage");
-      if (!allowSharePageList.includes(nowPage.route || "")) {
-        uni.hideShareMenu({ hideShareItems: [] });
-      }
-    },
-    onShareAppMessage: () => {
-    },
-    onShareTimeline: () => {
-    }
-  };
   function createApp() {
     const app = vue.createVueApp(App);
-    app.mixin(disabledShare);
     return {
       app
     };

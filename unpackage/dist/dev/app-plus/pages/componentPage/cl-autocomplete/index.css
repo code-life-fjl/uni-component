@@ -734,6 +734,12 @@
 		/* background-color: rgba(0, 0, 0, .1); */
 		z-index: 2;
 }
+.empty_text[data-v-2d848f96] {
+		text-align: center;
+		line-height: 30px;
+		color: gray;
+		font-size: 0.875rem;
+}
 
 
 .content[data-v-80363e37] {
