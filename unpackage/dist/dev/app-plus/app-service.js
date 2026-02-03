@@ -8433,7 +8433,6 @@ if (uni.restoreGlobal) {
         type: String,
         default: ""
       },
-      // 只在App端有效
       // 封面格式，base64 或 path
       // b64就是将canvas转为base64字符串，注意对一些高清大图可能不是太合适
       // path就是将canvas转为图片路径存到本地，使用地址的方式使用，注意可能会有权限问题
@@ -8449,7 +8448,7 @@ if (uni.restoreGlobal) {
     },
     data() {
       return {
-        // 从视频里面获取到的封面
+        // 从视频里面自动获取到的封面
         aotoPoster: ""
       };
     },
@@ -8498,7 +8497,13 @@ if (uni.restoreGlobal) {
     __name: "index",
     setup(__props, { expose: __expose }) {
       __expose();
-      const __returned__ = { src };
+      const getPoster = (poster) => {
+        formatAppLog("log", "at pages/componentPage/cl-video/index.vue:17", poster, "poster");
+      };
+      const play = () => {
+        formatAppLog("log", "at pages/componentPage/cl-video/index.vue:20", "play");
+      };
+      const __returned__ = { src, getPoster, play };
       Object.defineProperty(__returned__, "__isScriptSetup", { enumerable: false, value: true });
       return __returned__;
     }
@@ -8507,10 +8512,11 @@ if (uni.restoreGlobal) {
     const _component_cl_video = resolveEasycom(vue.resolveDynamicComponent("cl-video"), __easycom_0);
     return vue.openBlock(), vue.createBlock(_component_cl_video, {
       src: $setup.src,
-      posterQuality: 1,
       posterType: "path",
       "object-fit": "contain",
-      style: { "width": "400px", "height": "300px" }
+      style: { "width": "400px", "height": "300px" },
+      onGetPoster: $setup.getPoster,
+      onPlay: $setup.play
     });
   }
   const PagesComponentPageClVideoIndex = /* @__PURE__ */ _export_sfc(_sfc_main$1, [["render", _sfc_render], ["__file", "D:/code/code-life/uni-app-components/pages/componentPage/cl-video/index.vue"]]);

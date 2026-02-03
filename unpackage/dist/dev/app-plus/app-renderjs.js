@@ -97,6 +97,27 @@ __renderjsModules["6c5b202d"] = (() => {
           video.load();
           video.remove();
         }
+      },
+      base64ToTempUrl(base64Str, ownerInstance) {
+        try {
+          if (!base64Str || !base64Str.startsWith("data:image/")) {
+            throw new Error("\u65E0\u6548\u7684base64\u56FE\u7247\u683C\u5F0F");
+          }
+          const [metaData, base64Data] = base64Str.split(",");
+          const mime = metaData.match(/:(.*?);/)[1];
+          const byteCharacters = atob(base64Data);
+          const byteNumbers = new Array(byteCharacters.length);
+          for (let i = 0; i < byteCharacters.length; i++) {
+            byteNumbers[i] = byteCharacters.charCodeAt(i);
+          }
+          const byteArray = new Uint8Array(byteNumbers);
+          const blob = new Blob([byteArray], { type: mime });
+          const tempUrl = URL.createObjectURL(blob);
+          return tempUrl;
+        } catch (error) {
+          ownerInstance.callMethod("setPosterError", error);
+          return "";
+        }
       }
     }
   };

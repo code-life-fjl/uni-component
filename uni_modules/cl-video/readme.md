@@ -8,8 +8,7 @@
 - ✅ 支持跨端使用（H5、App）
 - ✅ 支持自定义封面
 - ✅ 支持设置封面质量
-- ✅ App 端支持封面保存为本地文件或 base64
-- ✅ 自动处理跨域问题
+- ✅ 支持封面类型为 path（h5 为 blobUrl）或 base64
 
 ## 基础用法
 
@@ -31,12 +30,12 @@ export default {
 
 ## Props 属性
 
-| 参数          | 类型   | 默认值   | 说明                                                                                                                        |
-| ------------- | ------ | -------- | --------------------------------------------------------------------------------------------------------------------------- |
-| src           | String | ''       | 视频地址（必填）                                                                                                            |
-| poster        | String | ''       | 自定义封面地址，如果设置则不会自动提取                                                                                      |
-| posterType    | String | 'base64' | 封面格式，可选值：`base64`、`path`<br>**仅 App 端有效**<br>`base64`: 返回 base64 字符串<br>`path`: 保存为本地文件并返回路径 |
-| posterQuality | Number | 0.8      | 封面质量，取值范围：0~1<br>值越大质量越高，文件也越大                                                                       |
+| 参数          | 类型   | 默认值   | 说明                                                                                                                          |
+| ------------- | ------ | -------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| src           | String | ''       | 视频地址（必填）                                                                                                              |
+| poster        | String | ''       | 自定义封面地址，如果设置则不会自动提取                                                                                        |
+| posterType    | String | 'base64' | 封面格式，可选值：`base64`、`path`<br>`base64`: 返回 base64 字符串<br>`path`: APP 保存到本地文件并返回路径，h5 返回为 blobUrl |
+| posterQuality | Number | 0.8      | 封面质量，取值范围：0~1<br>值越大质量越高，文件也越大                                                                         |
 
 > **注意**：组件支持 `v-bind="$attrs"` 透传，可以传入 uni-app video 组件的所有原生属性（如 `controls`、`autoplay`、`muted` 等）
 
@@ -64,7 +63,8 @@ export default {
   methods: {
     onGetPoster(poster) {
       console.log('封面数据:', poster)
-      // H5: data:image/jpeg;base64,/9j/4AAQSkZJRg...
+      // H5 (base64): data:image/jpeg;base64,/9j/4AAQSkZJRg...
+      // H5 (path): blob:http://localhost:5173/af60ed0e-fcde-4f...
       // App (base64): data:image/jpeg;base64,/9j/4AAQSkZJRg...
       // App (path): file:///storage/emulated/0/Android/data/.../poster.jpg
     },
@@ -145,93 +145,6 @@ export default {
 </style>
 ```
 
-### 自定义封面
-
-```vue
-<template>
-  <cl-video
-    :src="videoUrl"
-    poster="https://example.com/custom-poster.jpg"
-    controls
-  />
-</template>
-
-<script>
-export default {
-  data() {
-    return {
-      videoUrl: 'https://example.com/video.mp4',
-    }
-  },
-}
-</script>
-```
-
-### App 端保存封面为本地文件
-
-```vue
-<template>
-  <view>
-    <cl-video
-      :src="videoUrl"
-      posterType="path"
-      :posterQuality="0.9"
-      controls
-      @getPoster="handleGetPoster"
-    />
-
-    <button @click="uploadPoster" v-if="posterPath">上传封面</button>
-  </view>
-</template>
-
-<script>
-export default {
-  data() {
-    return {
-      videoUrl: 'https://example.com/video.mp4',
-      posterPath: '',
-    }
-  },
-  methods: {
-    handleGetPoster(poster) {
-      this.posterPath = poster
-      console.log('封面本地路径:', poster)
-      // file:///storage/emulated/0/Android/data/.../poster.jpg
-    },
-    uploadPoster() {
-      // 使用本地路径上传文件
-      uni.uploadFile({
-        url: 'https://api.example.com/upload',
-        filePath: this.posterPath,
-        name: 'file',
-        success: (res) => {
-          console.log('上传成功', res)
-        },
-      })
-    },
-  },
-}
-</script>
-```
-
-### 调整封面质量
-
-```vue
-<template>
-  <view>
-    <!-- 高质量封面（文件较大） -->
-    <cl-video src="https://example.com/video.mp4" :posterQuality="1" controls />
-
-    <!-- 低质量封面（文件较小） -->
-    <cl-video
-      src="https://example.com/video2.mp4"
-      :posterQuality="0.3"
-      controls
-    />
-  </view>
-</template>
-```
-
 ## 注意事项
 
 ### 1. 跨域问题
@@ -272,8 +185,7 @@ export default {
 | ------------------- | --------- | --- |
 | 自动提取封面        | ✅        | ✅  |
 | posterType='base64' | ✅ (默认) | ✅  |
-| posterType='path'   | ❌        | ✅  |
-| 跨域处理            | ✅        | ✅  |
+| posterType='path'   | ✅        | ✅  |
 
 ## 常见问题
 
@@ -300,9 +212,8 @@ export default {
 **解决方法**：
 
 - 组件已使用 `plus.io.convertLocalFileSystemURL` 转换为绝对路径
-- 如仍有问题，可切换为 `posterType='base64'`
+- 如仍有问题，可切换为 `posterType='base64'` 或者检查有无读写文件权限
 
-### Q3: 如何手动触发封面更新？
 
 组件会在 `src` 变化时自动重新提取封面。如需手动触发，可以修改 `src` 的值：
 

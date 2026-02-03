@@ -27,7 +27,6 @@ export default {
       type: String,
       default: '',
     },
-    // 只在App端有效
     // 封面格式，base64 或 path
     // b64就是将canvas转为base64字符串，注意对一些高清大图可能不是太合适
     // path就是将canvas转为图片路径存到本地，使用地址的方式使用，注意可能会有权限问题
@@ -43,7 +42,7 @@ export default {
   },
   data() {
     return {
-      // 从视频里面获取到的封面
+      // 从视频里面自动获取到的封面
       aotoPoster: '',
     }
   },
@@ -108,8 +107,8 @@ export default {
                 ctx.drawImage(video, 0, 0, width, height);
                 let base64 = canvas.toDataURL('image/jpeg', posterQuality);
                 // 3. 根据类型获取图片数据
-                // #ifdef APP-PLUS
                 if (posterType === 'path') {
+                    // #ifdef APP-PLUS
                     const bitmap = new plus.nativeObj.Bitmap('video_poster_' + Date.now());
                     bitmap.loadBase64Data(base64, () => {
                         const url = '_doc/poster.jpg';
@@ -126,16 +125,18 @@ export default {
                         ownerInstance.callMethod('setPosterError', error);
                         this.disposeVideo(video);
                     });
+                    // #endif
+                    // #ifdef H5
+                    const blobUrl = this.base64ToTempUrl(base64, ownerInstance);
+                    if (blobUrl) {
+                        ownerInstance.callMethod('getPoster', blobUrl);
+                    }
+                    this.disposeVideo(video);
+                    // #endif
                 } else {
                     ownerInstance.callMethod('getPoster', base64);
                     this.disposeVideo(video);
                 }
-
-                // #endif
-                // #ifndef APP-PLUS
-                 ownerInstance.callMethod('getPoster', base64);
-                this.disposeVideo(video);
-                // #endif
             });
 
             video.addEventListener('error', () => {
@@ -154,7 +155,36 @@ export default {
                 video.load();
                 video.remove();
             }
-        }
+        },
+        base64ToTempUrl(base64Str, ownerInstance) {
+            try {
+                // 1. 校验base64格式（基础校验）
+                if (!base64Str || !base64Str.startsWith('data:image/')) {
+                    throw new Error('无效的base64图片格式')
+                }
+
+                // 2. 拆分base64的类型和内容部分
+                const [metaData, base64Data] = base64Str.split(',')
+                const mime = metaData.match(/:(.*?);/)[1] // 提取图片类型（如image/jpeg）
+
+                // 3. 将base64解码为二进制数据
+                const byteCharacters = atob(base64Data)
+                const byteNumbers = new Array(byteCharacters.length)
+                for (let i = 0; i < byteCharacters.length; i++) {
+                    byteNumbers[i] = byteCharacters.charCodeAt(i)
+                }
+                const byteArray = new Uint8Array(byteNumbers)
+
+                // 4. 创建Blob对象并生成临时URL
+                const blob = new Blob([byteArray], { type: mime })
+                const tempUrl = URL.createObjectURL(blob)
+
+                return tempUrl
+            } catch (error) {
+                ownerInstance.callMethod('setPosterError', error);
+                return ''
+            }
+        },
     }
 }
 </script>
