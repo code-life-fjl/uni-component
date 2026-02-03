@@ -47,8 +47,9 @@
         }
     },
     "h5": {
+        "publicPath": "/uni-app-component/",
         "router": {
-            "base": "./"
+            "base": "/uni-app-component/"
         }
     },
     /* 快应用特有相关 */
