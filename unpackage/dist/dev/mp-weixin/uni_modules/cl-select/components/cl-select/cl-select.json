@@ -1,7 +1,0 @@
-{
-  "component": true,
-  "usingComponents": {
-    "uni-icons": "../../../uni-icons/components/uni-icons/uni-icons",
-    "cl-input": "../../../cl-input/components/cl-input/cl-input"
-  }
-}

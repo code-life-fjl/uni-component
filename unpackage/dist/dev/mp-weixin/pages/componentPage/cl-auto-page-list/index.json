@@ -1,7 +1,0 @@
-{
-  "navigationBarTitleText": "本地数据虚拟分页",
-  "usingComponents": {
-    "uni-search-bar": "../../../uni_modules/uni-search-bar/components/uni-search-bar/uni-search-bar",
-    "cl-auto-page-list": "../../../uni_modules/cl-auto-page-list/components/cl-auto-page-list/cl-auto-page-list"
-  }
-}
